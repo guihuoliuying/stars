@@ -1,7 +1,7 @@
 package com.stars.services.rank.userdata;
 
-import com.stars.db.DBUtil;
-import com.stars.db.SqlUtil;
+import com.stars.core.db.DBUtil;
+import com.stars.core.db.SqlUtil;
 import com.stars.modules.dragonboat.DragonBoatManager;
 import com.stars.modules.dragonboat.prodata.DragonBoatVo;
 import com.stars.network.server.buffer.NewByteBuffer;

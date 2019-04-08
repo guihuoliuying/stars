@@ -1,6 +1,6 @@
 package com.stars.modules.raffle.define;
 
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.util.LogUtil;
 
 import java.sql.SQLException;

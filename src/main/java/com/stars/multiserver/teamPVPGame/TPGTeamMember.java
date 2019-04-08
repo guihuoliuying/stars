@@ -1,8 +1,8 @@
 package com.stars.multiserver.teamPVPGame;
 
-import com.stars.db.DBUtil;
-import com.stars.db.DbRow;
-import com.stars.db.SqlUtil;
+import com.stars.core.db.DBUtil;
+import com.stars.core.db.DbRow;
+import com.stars.core.db.SqlUtil;
 import com.stars.modules.scene.fightdata.FighterEntity;
 import com.stars.network.server.buffer.NewByteBuffer;
 import com.stars.services.baseteam.BaseTeamMember;

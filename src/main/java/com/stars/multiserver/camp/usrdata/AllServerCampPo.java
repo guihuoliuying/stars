@@ -1,8 +1,8 @@
 package com.stars.multiserver.camp.usrdata;
 
-import com.stars.db.DBUtil;
-import com.stars.db.DbRow;
-import com.stars.db.SqlUtil;
+import com.stars.core.db.DBUtil;
+import com.stars.core.db.DbRow;
+import com.stars.core.db.SqlUtil;
 import com.stars.modules.camp.CampManager;
 import com.stars.modules.camp.prodata.CampAtrVo;
 import com.stars.modules.camp.prodata.CampCityVo;

@@ -1,7 +1,7 @@
 package com.stars.multiserver.rpctest;
 
-import com.stars.coreManager.SchedulerManager;
-import com.stars.db.DBUtil;
+import com.stars.core.schedule.SchedulerManager;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.data.DataModuleFactory;
 import com.stars.modules.email.EmailModuleFactory;
 import com.stars.modules.role.RoleModuleFactory;

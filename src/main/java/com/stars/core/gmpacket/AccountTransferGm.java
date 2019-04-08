@@ -1,7 +1,7 @@
 package com.stars.core.gmpacket;
 
 import com.stars.AccountRow;
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.demologin.LoginModuleHelper;
 import com.stars.modules.demologin.userdata.AccountRole;
 import com.stars.server.main.gmpacket.GmPacketHandler;

@@ -1,9 +1,9 @@
 package com.stars.services.newofflinepvp;
 
 import com.stars.bootstrap.SchedulerHelper;
-import com.stars.core.dao.DbRowDao;
+import com.stars.core.persist.DbRowDao;
 import com.stars.core.player.PlayerUtil;
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.data.DataManager;
 import com.stars.modules.newofflinepvp.NewOfflinePvpManager;
 import com.stars.modules.newofflinepvp.event.OfflinePvpClientStageFinishEvent;

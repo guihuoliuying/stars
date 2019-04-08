@@ -1,6 +1,6 @@
 package com.stars.services.id;
 
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.util.LogUtil;
 import com.stars.util.uid.IdAllocator;
 

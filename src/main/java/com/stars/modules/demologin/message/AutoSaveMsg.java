@@ -1,6 +1,6 @@
 package com.stars.modules.demologin.message;
 
-import com.stars.coreManager.SaveDbResult;
+import com.stars.core.persist.SaveDbResult;
 
 /**
  * Created by zhaowenshuo on 2016/1/6.

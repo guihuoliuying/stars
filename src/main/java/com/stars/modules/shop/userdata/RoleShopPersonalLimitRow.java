@@ -1,8 +1,8 @@
 package com.stars.modules.shop.userdata;
 
-import com.stars.db.DBUtil;
-import com.stars.db.DbRow;
-import com.stars.db.SqlUtil;
+import com.stars.core.db.DBUtil;
+import com.stars.core.db.DbRow;
+import com.stars.core.db.SqlUtil;
 
 /**
  * Created by zhouyaohui on 2016/9/7.

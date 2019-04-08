@@ -1,4 +1,4 @@
-package com.stars.coreManager;
+package com.stars;
 
 import com.stars.AccountRow;
 import com.stars.startup.MainStartup;

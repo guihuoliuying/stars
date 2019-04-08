@@ -1,7 +1,7 @@
 package com.stars.services.rank.userdata;
 
-import com.stars.db.DBUtil;
-import com.stars.db.SqlUtil;
+import com.stars.core.db.DBUtil;
+import com.stars.core.db.SqlUtil;
 import com.stars.modules.camp.CampManager;
 import com.stars.modules.camp.prodata.CampRankAwardVo;
 import com.stars.network.server.buffer.NewByteBuffer;

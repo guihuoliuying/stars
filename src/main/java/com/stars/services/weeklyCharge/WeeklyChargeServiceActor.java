@@ -1,6 +1,6 @@
 package com.stars.services.weeklyCharge;
 
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.services.ServiceSystem;
 import com.stars.core.actor.invocation.ServiceActor;
 

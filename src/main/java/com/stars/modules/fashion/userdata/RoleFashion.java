@@ -2,9 +2,9 @@ package com.stars.modules.fashion.userdata;
 
 import com.stars.core.attr.Attribute;
 import com.stars.core.attr.FormularUtils;
-import com.stars.db.DBUtil;
-import com.stars.db.DbRow;
-import com.stars.db.SqlUtil;
+import com.stars.core.db.DBUtil;
+import com.stars.core.db.DbRow;
+import com.stars.core.db.SqlUtil;
 import com.stars.modules.fashion.FashionManager;
 import com.stars.modules.fashion.prodata.FashionAttrVo;
 import com.stars.modules.fashion.prodata.FashionVo;

@@ -1,8 +1,8 @@
 package com.stars.services.offlinepvp;
 
-import com.stars.coreManager.ExcutorKey;
-import com.stars.coreManager.SchedulerManager;
-import com.stars.db.DBUtil;
+import com.stars.ExcutorKey;
+import com.stars.core.schedule.SchedulerManager;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.offlinepvp.OfflinePvpManager;
 import com.stars.modules.offlinepvp.prodata.OPMatchVo;
 import com.stars.modules.role.summary.RoleSummaryComponent;

@@ -1,6 +1,6 @@
 package com.stars.multiserver.teamPVPGame.helper;
 
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.demologin.packet.ClientText;
 import com.stars.modules.scene.SceneManager;
 import com.stars.modules.scene.fightdata.FighterEntity;

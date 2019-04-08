@@ -4,7 +4,7 @@ import com.stars.core.event.EventDispatcher;
 import com.stars.core.module.AbstractModuleFactory;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.baseteam.BaseTeamManager;
 import com.stars.modules.baseteam.handler.CampCityTeamHandler;
 import com.stars.modules.camp.event.*;

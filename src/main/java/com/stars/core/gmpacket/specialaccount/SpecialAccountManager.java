@@ -1,6 +1,6 @@
 package com.stars.core.gmpacket.specialaccount;
 
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.util._HashMap;
 
 import java.sql.SQLException;

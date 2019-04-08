@@ -2,7 +2,7 @@ package com.stars.modules.role.gm;
 
 import com.stars.core.module.Module;
 import com.stars.core.player.PlayerUtil;
-import com.stars.coreManager.SaveDBManager;
+import com.stars.core.persist.SaveDBManager;
 import com.stars.modules.demologin.packet.ClientText;
 import com.stars.modules.gm.GmHandler;
 

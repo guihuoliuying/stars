@@ -1,6 +1,6 @@
 package com.stars.services.mooncake;
 
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.demologin.packet.ClientText;
 import com.stars.modules.mooncake.MoonCakeConst;
 import com.stars.modules.mooncake.packet.ClientMoonCake;

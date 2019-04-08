@@ -1,8 +1,8 @@
 package com.stars.core.module;
 
-import com.stars.core.dao.DbRowDao;
+import com.stars.core.persist.DbRowDao;
 import com.stars.core.recordmap.RecordMap;
-import com.stars.db.DbRow;
+import com.stars.core.db.DbRow;
 
 import java.util.HashSet;
 import java.util.List;

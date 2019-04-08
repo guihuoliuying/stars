@@ -1,6 +1,6 @@
 package com.stars.services.family.main.memdata;
 
-import com.stars.db.DbRow;
+import com.stars.core.db.DbRow;
 import com.stars.services.family.main.userdata.FamilyApplicationPo;
 
 /**

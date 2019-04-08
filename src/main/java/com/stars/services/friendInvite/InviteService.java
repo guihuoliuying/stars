@@ -1,6 +1,6 @@
 package com.stars.services.friendInvite;
 
-import com.stars.db.DbRow;
+import com.stars.core.db.DbRow;
 import com.stars.modules.friendInvite.userdata.RoleBeInvitePo;
 import com.stars.modules.friendInvite.userdata.RoleInvitePo;
 import com.stars.services.Service;

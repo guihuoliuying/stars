@@ -1,8 +1,8 @@
 package com.stars.multiserver.familywar.data;
 
-import com.stars.db.DBUtil;
-import com.stars.db.DbRow;
-import com.stars.db.SqlUtil;
+import com.stars.core.db.DBUtil;
+import com.stars.core.db.DbRow;
+import com.stars.core.db.SqlUtil;
 
 import java.util.HashMap;
 import java.util.Map;

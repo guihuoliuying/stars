@@ -1,6 +1,6 @@
 package com.stars.services.rank.userdata;
 
-import com.stars.db.DbRow;
+import com.stars.core.db.DbRow;
 import com.stars.network.server.buffer.NewByteBuffer;
 
 /**

@@ -1,8 +1,8 @@
 package com.stars.modules.popUp.userdata;
 
-import com.stars.db.DBUtil;
-import com.stars.db.DbRow;
-import com.stars.db.SqlUtil;
+import com.stars.core.db.DBUtil;
+import com.stars.core.db.DbRow;
+import com.stars.core.db.SqlUtil;
 import com.stars.modules.popUp.PopUpConstant;
 import com.stars.modules.popUp.PopUpManager;
 import com.stars.modules.popUp.prodata.PopUpInfo;

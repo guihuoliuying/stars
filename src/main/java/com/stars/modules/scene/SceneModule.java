@@ -6,7 +6,7 @@ import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerPacket;
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.MConst;
 import com.stars.modules.demologin.LoginModule;
 import com.stars.modules.familyactivities.invade.FamilyInvadeModule;

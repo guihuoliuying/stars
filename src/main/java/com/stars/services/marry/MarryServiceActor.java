@@ -1,12 +1,12 @@
 package com.stars.services.marry;
 
-import com.stars.core.dao.DbRowDao;
+import com.stars.core.persist.DbRowDao;
 import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
 import com.stars.core.hotupdate.YinHanHotUpdateManager;
 import com.stars.core.player.PlayerUtil;
-import com.stars.coreManager.ExcutorKey;
-import com.stars.coreManager.SchedulerManager;
-import com.stars.db.DBUtil;
+import com.stars.ExcutorKey;
+import com.stars.core.schedule.SchedulerManager;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.MConst;
 import com.stars.modules.baseteam.BaseTeamManager;
 import com.stars.modules.baseteam.packet.ClientBaseTeamInvite;

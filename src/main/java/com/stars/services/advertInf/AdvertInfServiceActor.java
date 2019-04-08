@@ -1,7 +1,7 @@
 package com.stars.services.advertInf;
 
-import com.stars.coreManager.ExcutorKey;
-import com.stars.coreManager.SchedulerManager;
+import com.stars.ExcutorKey;
+import com.stars.core.schedule.SchedulerManager;
 import com.stars.http.net.HttpConn;
 import com.stars.modules.demologin.LoginConstant;
 import com.stars.modules.demologin.userdata.AdvertInfResponse;

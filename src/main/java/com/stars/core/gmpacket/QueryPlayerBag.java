@@ -1,6 +1,6 @@
 package com.stars.core.gmpacket;
 
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.data.DataManager;
 import com.stars.modules.tool.ToolManager;
 import com.stars.modules.tool.productdata.ItemVo;

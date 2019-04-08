@@ -1,8 +1,8 @@
 package com.stars.modules.daily5v5.userdata;
 
-import com.stars.db.DBUtil;
-import com.stars.db.DbRow;
-import com.stars.db.SqlUtil;
+import com.stars.core.db.DBUtil;
+import com.stars.core.db.DbRow;
+import com.stars.core.db.SqlUtil;
 
 public class RoleDaily5v5Po extends DbRow{
 	

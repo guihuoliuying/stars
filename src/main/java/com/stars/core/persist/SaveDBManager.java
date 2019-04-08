@@ -1,4 +1,4 @@
-package com.stars.coreManager;
+package com.stars.core.persist;
 
 import com.stars.services.chat.cache.MyLinkedList;
 import com.stars.services.chat.cache.MyLinkedListNode;

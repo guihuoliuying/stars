@@ -1,6 +1,6 @@
 package com.stars.services.family.main;
 
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.family.FamilyManager;
 import com.stars.services.ServiceHelper;
 import com.stars.services.family.main.memdata.RecommendationFamily;

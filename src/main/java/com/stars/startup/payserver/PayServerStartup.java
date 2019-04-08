@@ -2,7 +2,7 @@ package com.stars.startup.payserver;
 
 import com.stars.bootstrap.SchedulerHelper;
 import com.stars.bootstrap.ServerManager;
-import com.stars.coreManager.SchedulerManager;
+import com.stars.core.schedule.SchedulerManager;
 import com.stars.multiserver.payServer.PayServerServieManager;
 import com.stars.network.server.packet.Packet;
 import com.stars.network.server.packet.PacketManager;

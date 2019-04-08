@@ -7,7 +7,7 @@ import com.stars.core.module.Module;
 import com.stars.core.player.Player;
 import com.stars.core.recordmap.RoleRecord;
 import com.stars.core.recordmap.RoleRecordMapImpl;
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.MConst;
 import com.stars.modules.daily.DailyManager;
 import com.stars.modules.daily.event.DailyFuntionEvent;

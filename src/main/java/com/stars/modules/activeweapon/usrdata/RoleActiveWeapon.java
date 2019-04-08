@@ -1,9 +1,9 @@
 package com.stars.modules.activeweapon.usrdata;
 
 import com.google.common.collect.Maps;
-import com.stars.db.DBUtil;
-import com.stars.db.DbRow;
-import com.stars.db.SqlUtil;
+import com.stars.core.db.DBUtil;
+import com.stars.core.db.DbRow;
+import com.stars.core.db.SqlUtil;
 import com.stars.util.LogUtil;
 import com.stars.util.StringUtil;
 

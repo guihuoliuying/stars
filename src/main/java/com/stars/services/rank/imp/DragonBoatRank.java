@@ -1,7 +1,7 @@
 package com.stars.services.rank.imp;
 
-import com.stars.core.dao.DbRowDao;
-import com.stars.db.DBUtil;
+import com.stars.core.persist.DbRowDao;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.dragonboat.DragonBoatManager;
 import com.stars.modules.dragonboat.event.DragonBoatHistorySendEvent;
 import com.stars.modules.dragonboat.prodata.DragonBoatVo;

@@ -1,7 +1,7 @@
 package com.stars.services.mail;
 
 import com.google.common.cache.*;
-import com.stars.core.dao.DbRowDao;
+import com.stars.core.persist.DbRowDao;
 import com.stars.core.exception.AffixsCoolTimeException;
 import com.stars.core.gmpacket.email.condition.RoleMatcherFactory;
 import com.stars.core.gmpacket.email.util.EmailUtils;
@@ -9,8 +9,8 @@ import com.stars.core.gmpacket.email.vo.AllEmailGmPo;
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerSystem;
 import com.stars.core.player.PlayerUtil;
-import com.stars.db.DBUtil;
-import com.stars.db.DbRow;
+import com.stars.core.db.DBUtil;
+import com.stars.core.db.DbRow;
 import com.stars.modules.data.DataManager;
 import com.stars.modules.email.EmailManager;
 import com.stars.modules.email.event.EmailLogEvent;

@@ -1,7 +1,7 @@
 package com.stars.services.rank.imp;
 
-import com.stars.core.dao.DbRowDao;
-import com.stars.db.DBUtil;
+import com.stars.core.persist.DbRowDao;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.camp.CampManager;
 import com.stars.modules.camp.prodata.CampCityVo;
 import com.stars.services.rank.AbstractRank;

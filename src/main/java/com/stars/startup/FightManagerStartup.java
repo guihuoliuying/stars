@@ -1,6 +1,6 @@
 package com.stars.startup;
 
-import com.stars.coreManager.SchedulerManager;
+import com.stars.core.schedule.SchedulerManager;
 import com.stars.multiserver.fightManager.RMFSManagerServiceManager;
 import com.stars.network.server.packet.Packet;
 import com.stars.network.server.packet.PacketManager;

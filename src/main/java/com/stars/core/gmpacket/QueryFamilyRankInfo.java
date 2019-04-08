@@ -1,7 +1,7 @@
 package com.stars.core.gmpacket;
 
 
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.server.main.gmpacket.GmPacketHandler;
 import com.stars.server.main.gmpacket.GmPacketResponse;
 import com.stars.services.ServiceHelper;

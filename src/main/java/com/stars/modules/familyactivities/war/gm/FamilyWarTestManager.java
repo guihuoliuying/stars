@@ -1,7 +1,7 @@
 package com.stars.modules.familyactivities.war.gm;
 
-import com.stars.coreManager.ExcutorKey;
-import com.stars.coreManager.SchedulerManager;
+import com.stars.ExcutorKey;
+import com.stars.core.schedule.SchedulerManager;
 import com.stars.multiserver.MainRpcHelper;
 import com.stars.multiserver.MultiServerHelper;
 import com.stars.multiserver.fight.handler.FightConst;

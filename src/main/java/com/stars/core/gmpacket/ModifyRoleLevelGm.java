@@ -2,7 +2,7 @@ package com.stars.core.gmpacket;
 
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerSystem;
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.role.RoleManager;
 import com.stars.modules.role.event.ModifyRoleLevelEvent;
 import com.stars.modules.role.userdata.Role;

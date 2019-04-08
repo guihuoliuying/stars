@@ -1,8 +1,8 @@
 package com.stars.modules.friendShare.userdata;
 
-import com.stars.db.DBUtil;
-import com.stars.db.DbRow;
-import com.stars.db.SqlUtil;
+import com.stars.core.db.DBUtil;
+import com.stars.core.db.DbRow;
+import com.stars.core.db.SqlUtil;
 
 /**
  * Created by chenxie on 2017/6/8.

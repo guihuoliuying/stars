@@ -1,8 +1,8 @@
 package com.stars.startup;
 
 import com.stars.bootstrap.SchedulerHelper;
-import com.stars.coreManager.SchedulerManager;
-import com.stars.db.DBUtil;
+import com.stars.core.schedule.SchedulerManager;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.daily5v5.Daily5v5ModuleFactory;
 import com.stars.modules.data.DataModuleFactory;
 import com.stars.modules.scene.SceneModuleFactory;

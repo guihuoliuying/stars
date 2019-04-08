@@ -1,6 +1,6 @@
 package com.stars.core.clientpatch;
 
-import com.stars.coreManager.SchedulerManager;
+import com.stars.core.schedule.SchedulerManager;
 
 import java.util.concurrent.TimeUnit;
 

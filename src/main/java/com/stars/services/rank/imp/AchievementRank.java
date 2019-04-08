@@ -1,6 +1,6 @@
 package com.stars.services.rank.imp;
 
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.services.rank.AbstractRank;
 import com.stars.services.rank.userdata.AbstractRankPo;
 import com.stars.services.rank.userdata.AchievementRankPo;

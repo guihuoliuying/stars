@@ -1,6 +1,6 @@
 package com.stars.services.rank.imp;
 
-import com.stars.core.dao.DbRowDao;
+import com.stars.core.persist.DbRowDao;
 import com.stars.core.player.PlayerUtil;
 import com.stars.modules.MConst;
 import com.stars.modules.rank.packet.ClientRank;

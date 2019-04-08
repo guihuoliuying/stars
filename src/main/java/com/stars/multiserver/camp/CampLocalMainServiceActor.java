@@ -2,11 +2,11 @@ package com.stars.multiserver.camp;
 
 import com.stars.bootstrap.ServerManager;
 import com.stars.core.SystemRecordMap;
-import com.stars.core.dao.DbRowDao;
+import com.stars.core.persist.DbRowDao;
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerSystem;
-import com.stars.coreManager.SchedulerManager;
-import com.stars.db.DBUtil;
+import com.stars.core.schedule.SchedulerManager;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.MConst;
 import com.stars.modules.camp.CampManager;
 import com.stars.modules.camp.event.*;

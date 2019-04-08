@@ -1,8 +1,8 @@
 package com.stars.services.sevendaygoal;
 
-import com.stars.core.dao.DbRowDao;
+import com.stars.core.persist.DbRowDao;
 import com.stars.core.player.PlayerUtil;
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.demologin.packet.ClientText;
 import com.stars.modules.sevendaygoal.SevenDayGoalManager;
 import com.stars.modules.sevendaygoal.event.RewardCountChangeEvent;

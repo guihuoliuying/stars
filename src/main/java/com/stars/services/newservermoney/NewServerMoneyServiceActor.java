@@ -1,8 +1,8 @@
 package com.stars.services.newservermoney;
 
 import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
-import com.stars.coreManager.ExcutorKey;
-import com.stars.coreManager.SchedulerManager;
+import com.stars.ExcutorKey;
+import com.stars.core.schedule.SchedulerManager;
 import com.stars.modules.data.DataManager;
 import com.stars.modules.newservermoney.NewServerMoneyManager;
 import com.stars.modules.newservermoney.event.NSMoneyRewardEvent;

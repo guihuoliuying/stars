@@ -1,9 +1,9 @@
 package com.stars.modules.demologin.userdata;
 
 import com.stars.bootstrap.ServerManager;
-import com.stars.db.DBUtil;
-import com.stars.db.DbRow;
-import com.stars.db.SqlUtil;
+import com.stars.core.db.DBUtil;
+import com.stars.core.db.DbRow;
+import com.stars.core.db.SqlUtil;
 
 /**
  * Created by liuyuheng on 2017/1/16.

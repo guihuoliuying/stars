@@ -1,7 +1,7 @@
 package com.stars.services.shop;
 
-import com.stars.core.dao.DbRowDao;
-import com.stars.db.DBUtil;
+import com.stars.core.persist.DbRowDao;
+import com.stars.core.db.DBUtil;
 import com.stars.services.Service;
 import com.stars.util.LogUtil;
 

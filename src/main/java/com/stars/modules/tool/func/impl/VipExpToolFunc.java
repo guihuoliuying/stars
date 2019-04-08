@@ -2,8 +2,8 @@ package com.stars.modules.tool.func.impl;
 
 import com.stars.AccountRow;
 import com.stars.core.module.Module;
-import com.stars.db.DBUtil;
-import com.stars.db.SqlUtil;
+import com.stars.core.db.DBUtil;
+import com.stars.core.db.SqlUtil;
 import com.stars.modules.MConst;
 import com.stars.modules.demologin.LoginModule;
 import com.stars.modules.role.RoleModule;

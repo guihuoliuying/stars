@@ -1,6 +1,6 @@
 package com.stars.services.family.event;
 
-import com.stars.core.dao.DbRowDao;
+import com.stars.core.persist.DbRowDao;
 import com.stars.services.family.event.userdata.FamilyEventPo;
 
 import java.util.List;

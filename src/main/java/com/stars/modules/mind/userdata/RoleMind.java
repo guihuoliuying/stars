@@ -1,8 +1,8 @@
 package com.stars.modules.mind.userdata;
 
-import com.stars.db.DBUtil;
-import com.stars.db.DbRow;
-import com.stars.db.SqlUtil;
+import com.stars.core.db.DBUtil;
+import com.stars.core.db.DbRow;
+import com.stars.core.db.SqlUtil;
 
 /**
  * Created by gaoepidian on 2016/9/21.

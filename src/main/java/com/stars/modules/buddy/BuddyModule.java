@@ -8,7 +8,7 @@ import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
 import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.MConst;
 import com.stars.modules.buddy.event.BuddyAchieveEvent;
 import com.stars.modules.buddy.event.BuddyActiveEvent;

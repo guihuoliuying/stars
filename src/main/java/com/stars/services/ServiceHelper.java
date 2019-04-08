@@ -1,7 +1,7 @@
 package com.stars.services;
 
-import com.stars.coreManager.ExcutorKey;
-import com.stars.coreManager.SchedulerManager;
+import com.stars.ExcutorKey;
+import com.stars.core.schedule.SchedulerManager;
 import com.stars.multiserver.camp.*;
 import com.stars.multiserver.daily5v5.Daily5v5MatchService;
 import com.stars.multiserver.daily5v5.Daily5v5Service;

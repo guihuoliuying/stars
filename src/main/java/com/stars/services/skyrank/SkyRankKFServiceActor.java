@@ -2,8 +2,8 @@ package com.stars.services.skyrank;
 
 import com.stars.bootstrap.BootstrapConfig;
 import com.stars.bootstrap.GameBootstrap;
-import com.stars.coreManager.ExcutorKey;
-import com.stars.coreManager.SchedulerManager;
+import com.stars.ExcutorKey;
+import com.stars.core.schedule.SchedulerManager;
 import com.stars.modules.skyrank.SkyRankManager;
 import com.stars.modules.skyrank.prodata.SkyRankConfig;
 import com.stars.modules.skyrank.prodata.SkyRankSeasonVo;

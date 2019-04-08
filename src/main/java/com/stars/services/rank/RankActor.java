@@ -1,10 +1,10 @@
 package com.stars.services.rank;
 
-import com.stars.core.dao.DbRowDao;
+import com.stars.core.persist.DbRowDao;
 import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
-import com.stars.coreManager.ExcutorKey;
-import com.stars.coreManager.SchedulerManager;
-import com.stars.db.DBUtil;
+import com.stars.ExcutorKey;
+import com.stars.core.schedule.SchedulerManager;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.data.DataManager;
 import com.stars.modules.dragonboat.DragonBoatManager;
 import com.stars.modules.rank.RankManager;

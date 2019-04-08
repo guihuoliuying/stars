@@ -1,9 +1,9 @@
 package com.stars.modules.newfirstrecharge.usrdata;
 
 import com.stars.core.module.Module;
-import com.stars.db.DBUtil;
-import com.stars.db.DbRow;
-import com.stars.db.SqlUtil;
+import com.stars.core.db.DBUtil;
+import com.stars.core.db.DbRow;
+import com.stars.core.db.SqlUtil;
 import com.stars.modules.MConst;
 import com.stars.modules.vip.VipModule;
 import com.stars.util.LogUtil;

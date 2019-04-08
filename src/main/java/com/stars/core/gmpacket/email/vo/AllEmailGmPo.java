@@ -2,9 +2,9 @@ package com.stars.core.gmpacket.email.vo;
 
 import com.google.gson.Gson;
 import com.stars.core.gmpacket.email.util.EmailUtils;
-import com.stars.db.DBUtil;
-import com.stars.db.DbRow;
-import com.stars.db.SqlUtil;
+import com.stars.core.db.DBUtil;
+import com.stars.core.db.DbRow;
+import com.stars.core.db.SqlUtil;
 import com.stars.util.StringUtil;
 
 import java.util.*;

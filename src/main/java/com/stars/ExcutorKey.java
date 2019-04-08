@@ -1,4 +1,4 @@
-package com.stars.coreManager;
+package com.stars;
 
 /**
  * Created by wuyuxing on 2017/1/20.

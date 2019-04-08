@@ -2,9 +2,9 @@ package com.stars.services.friendInvite;
 
 import com.stars.bootstrap.BootstrapConfig;
 import com.stars.bootstrap.ServerManager;
-import com.stars.core.dao.DbRowDao;
-import com.stars.db.DBUtil;
-import com.stars.db.DbRow;
+import com.stars.core.persist.DbRowDao;
+import com.stars.core.db.DBUtil;
+import com.stars.core.db.DbRow;
 import com.stars.modules.friendInvite.userdata.RoleBeInvitePo;
 import com.stars.modules.friendInvite.userdata.RoleInvitePo;
 import com.stars.multiserver.MainRpcHelper;

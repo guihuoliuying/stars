@@ -1,4 +1,4 @@
-package com.stars.coreManager;
+package com.stars.core.schedule;
 
 import com.stars.util.LogUtil;
 

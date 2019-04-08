@@ -1,7 +1,7 @@
 package com.stars.multiserver;
 
 import com.stars.bootstrap.ServerManager;
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.pk.packet.ModifyConnectorRoute;
 import com.stars.network.server.packet.PacketManager;
 import com.stars.network.server.session.GameSession;

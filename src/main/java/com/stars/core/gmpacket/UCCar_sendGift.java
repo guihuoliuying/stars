@@ -1,7 +1,7 @@
 package com.stars.core.gmpacket;
 
-import com.stars.core.dao.DbRowDao;
-import com.stars.db.DBUtil;
+import com.stars.core.persist.DbRowDao;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.tool.ToolManager;
 import com.stars.modules.tool.userdata.RoleUCGiftRecord;
 import com.stars.server.main.gmpacket.GmPacketHandler;

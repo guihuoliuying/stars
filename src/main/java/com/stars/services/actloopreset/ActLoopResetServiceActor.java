@@ -3,7 +3,7 @@ package com.stars.services.actloopreset;
 import com.stars.bootstrap.SchedulerHelper;
 import com.stars.core.activityflow.ActivityFlowUtil;
 import com.stars.core.module.ModuleManager;
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.operateactivity.OperateActivityManager;
 import com.stars.modules.operateactivity.opentime.ActOpenTime2;
 import com.stars.modules.operateactivity.prodata.OperateActVo;

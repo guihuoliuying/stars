@@ -2,8 +2,8 @@ package com.stars.startup;
 
 import com.stars.core.actor.ActorSystem;
 import com.stars.core.module.ModuleManager;
-import com.stars.coreManager.SchedulerManager;
-import com.stars.db.DBUtil;
+import com.stars.core.schedule.SchedulerManager;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.data.DataModuleFactory;
 import com.stars.modules.skyrank.SkyRankModuleFactory;
 import com.stars.multiserver.MultiServerHelper;

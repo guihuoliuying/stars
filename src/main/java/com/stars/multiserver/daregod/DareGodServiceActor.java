@@ -1,8 +1,8 @@
 package com.stars.multiserver.daregod;
 
 import com.stars.bootstrap.SchedulerHelper;
-import com.stars.core.dao.DbRowDao;
-import com.stars.db.DBUtil;
+import com.stars.core.persist.DbRowDao;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.daregod.DareGodManager;
 import com.stars.modules.daregod.event.DareGodEnterFightEvent;
 import com.stars.modules.daregod.event.DareGodGetAwardEvent;

@@ -1,8 +1,8 @@
 package com.stars.services.accounttransfer.po;
 
-import com.stars.db.DBUtil;
-import com.stars.db.DbRow;
-import com.stars.db.SqlUtil;
+import com.stars.core.db.DBUtil;
+import com.stars.core.db.DbRow;
+import com.stars.core.db.SqlUtil;
 
 /**
  * Created by huwenjun on 2017/10/19.

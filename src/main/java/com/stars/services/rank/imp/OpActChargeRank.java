@@ -1,7 +1,7 @@
 package com.stars.services.rank.imp;
 
 import com.stars.core.player.PlayerUtil;
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.rank.packet.ClientRank;
 import com.stars.services.rank.AbstractRank;
 import com.stars.services.rank.userdata.AbstractRankPo;

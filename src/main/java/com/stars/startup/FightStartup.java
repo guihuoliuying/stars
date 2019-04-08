@@ -1,7 +1,7 @@
 package com.stars.startup;
 
-import com.stars.coreManager.SchedulerManager;
-import com.stars.db.DBUtil;
+import com.stars.core.schedule.SchedulerManager;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.arroundPlayer.Packet.ServerHeartbeat;
 import com.stars.modules.camp.packet.ServerCampFightPacket;
 import com.stars.modules.chat.packet.ServerChatMessage;

@@ -1,5 +1,7 @@
-package com.stars.coreManager;
+package com.stars.core.persist;
 
+import com.stars.core.persist.SaveDBManager;
+import com.stars.core.persist.SaveDbResult;
 import com.stars.core.player.PlayerSystem;
 import com.stars.modules.demologin.message.AutoSaveMsg;
 import com.stars.services.chat.cache.MyLinkedListNode;

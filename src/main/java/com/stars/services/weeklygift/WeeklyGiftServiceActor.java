@@ -1,9 +1,9 @@
 package com.stars.services.weeklygift;
 
-import com.stars.core.dao.DbRowDao;
-import com.stars.coreManager.ExcutorKey;
-import com.stars.coreManager.SchedulerManager;
-import com.stars.db.DBUtil;
+import com.stars.core.persist.DbRowDao;
+import com.stars.ExcutorKey;
+import com.stars.core.schedule.SchedulerManager;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.data.DataManager;
 import com.stars.modules.drop.DropUtil;
 import com.stars.modules.foreshow.summary.ForeShowSummaryComponent;

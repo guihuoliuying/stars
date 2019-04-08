@@ -1,4 +1,4 @@
-package com.stars.db;
+package com.stars.core.db;
 
 import java.util.LinkedList;
 import java.util.List;

@@ -2,8 +2,8 @@ package com.stars.startup;
 
 import com.google.common.base.Preconditions;
 import com.stars.bootstrap.SchedulerHelper;
-import com.stars.coreManager.SchedulerManager;
-import com.stars.db.DBUtil;
+import com.stars.core.schedule.SchedulerManager;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.arroundPlayer.Packet.ServerHeartbeat;
 import com.stars.modules.buddy.BuddyModuleFactory;
 import com.stars.modules.data.DataModuleFactory;

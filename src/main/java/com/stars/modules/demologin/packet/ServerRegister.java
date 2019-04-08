@@ -1,8 +1,8 @@
 package com.stars.modules.demologin.packet;
 
 import com.stars.AccountRow;
-import com.stars.db.DBUtil;
-import com.stars.db.SqlUtil;
+import com.stars.core.db.DBUtil;
+import com.stars.core.db.SqlUtil;
 import com.stars.modules.data.DataManager;
 import com.stars.modules.demologin.LoginModuleHelper;
 import com.stars.modules.demologin.LoginPacketSet;

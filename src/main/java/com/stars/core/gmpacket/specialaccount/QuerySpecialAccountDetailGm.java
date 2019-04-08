@@ -1,6 +1,6 @@
 package com.stars.core.gmpacket.specialaccount;
 
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.MConst;
 import com.stars.modules.role.summary.RoleSummaryComponent;
 import com.stars.multiserver.MultiServerHelper;

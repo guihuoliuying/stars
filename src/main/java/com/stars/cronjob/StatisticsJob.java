@@ -1,6 +1,6 @@
 package com.stars.cronjob;
 
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.serverLog.ServerLogModule;
 import com.stars.modules.serverLog.ThemeType;
 import com.stars.modules.serverLog.logBean.Stat2Bean;

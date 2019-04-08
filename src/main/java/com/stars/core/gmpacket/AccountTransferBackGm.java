@@ -1,6 +1,6 @@
 package com.stars.core.gmpacket;
 
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.demologin.userdata.AccountTransfer;
 import com.stars.server.main.gmpacket.GmPacketHandler;
 import com.stars.server.main.gmpacket.GmPacketResponse;

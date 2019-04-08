@@ -2,7 +2,7 @@ package com.stars.core.gmpacket.email;
 
 import com.google.gson.Gson;
 import com.stars.core.gmpacket.email.vo.AllEmailGmPo;
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.server.main.gmpacket.GmPacketHandler;
 import com.stars.server.main.gmpacket.GmPacketResponse;
 import com.stars.util.LogUtil;

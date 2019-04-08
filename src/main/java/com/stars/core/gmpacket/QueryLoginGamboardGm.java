@@ -1,6 +1,6 @@
 package com.stars.core.gmpacket;
 
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.gameboard.prodata.GameboardVo;
 import com.stars.multiserver.MultiServerHelper;
 import com.stars.server.main.gmpacket.GmPacketHandler;

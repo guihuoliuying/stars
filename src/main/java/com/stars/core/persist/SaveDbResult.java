@@ -1,4 +1,4 @@
-package com.stars.coreManager;
+package com.stars.core.persist;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

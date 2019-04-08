@@ -1,7 +1,7 @@
 package com.stars.multiserver.camp;
 
-import com.stars.coreManager.ExcutorKey;
-import com.stars.coreManager.SchedulerManager;
+import com.stars.ExcutorKey;
+import com.stars.core.schedule.SchedulerManager;
 import com.stars.modules.camp.CampManager;
 import com.stars.modules.camp.activity.CampActivity;
 import com.stars.modules.camp.event.ActivityFinishEvent;

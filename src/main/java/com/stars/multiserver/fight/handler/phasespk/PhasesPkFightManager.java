@@ -1,7 +1,7 @@
 package com.stars.multiserver.fight.handler.phasespk;
 
-import com.stars.coreManager.ExcutorKey;
-import com.stars.coreManager.SchedulerManager;
+import com.stars.ExcutorKey;
+import com.stars.core.schedule.SchedulerManager;
 import com.stars.server.main.actor.ActorServer;
 import com.stars.util.LogUtil;
 import com.stars.core.actor.Actor;

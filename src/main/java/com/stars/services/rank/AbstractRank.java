@@ -1,6 +1,6 @@
 package com.stars.services.rank;
 
-import com.stars.core.dao.DbRowDao;
+import com.stars.core.persist.DbRowDao;
 import com.stars.services.rank.userdata.AbstractRankPo;
 
 import java.sql.SQLException;

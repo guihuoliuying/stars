@@ -1,7 +1,7 @@
-package com.stars.core.dao;
+package com.stars.core.persist;
 
-import com.stars.db.DBUtil;
-import com.stars.db.DbRow;
+import com.stars.core.db.DBUtil;
+import com.stars.core.db.DbRow;
 import com.stars.util.LogUtil;
 
 import java.sql.Connection;

@@ -1,8 +1,8 @@
 package com.stars.services.fightingmaster.data;
 
-import com.stars.db.DBUtil;
-import com.stars.db.DbRow;
-import com.stars.db.SqlUtil;
+import com.stars.core.db.DBUtil;
+import com.stars.core.db.DbRow;
+import com.stars.core.db.SqlUtil;
 import com.stars.multiserver.MultiServerHelper;
 
 import java.util.HashSet;

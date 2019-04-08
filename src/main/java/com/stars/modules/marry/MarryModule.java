@@ -7,7 +7,7 @@ import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerUtil;
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.MConst;
 import com.stars.modules.daily.DailyManager;
 import com.stars.modules.daily.DailyModule;

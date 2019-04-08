@@ -1,8 +1,8 @@
 package com.stars.multiserver.familywar.knockout.fight.normal;
 
 import com.stars.core.attr.Attribute;
-import com.stars.coreManager.ExcutorKey;
-import com.stars.coreManager.SchedulerManager;
+import com.stars.ExcutorKey;
+import com.stars.core.schedule.SchedulerManager;
 import com.stars.modules.demologin.packet.ClientText;
 import com.stars.modules.drop.DropManager;
 import com.stars.modules.familyactivities.war.FamilyActWarManager;

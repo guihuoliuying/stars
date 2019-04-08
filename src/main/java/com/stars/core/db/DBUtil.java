@@ -1,4 +1,4 @@
-package com.stars.db;
+package com.stars.core.db;
 
 import com.stars.util.LogUtil;
 import com.stars.util._HashMap;

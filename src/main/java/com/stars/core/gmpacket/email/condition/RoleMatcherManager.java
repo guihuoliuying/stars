@@ -1,6 +1,6 @@
 package com.stars.core.gmpacket.email.condition;
 
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.MConst;
 import com.stars.modules.email.pojodata.EmailConditionArgs;
 import com.stars.modules.role.summary.RoleSummaryComponent;

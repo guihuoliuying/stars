@@ -5,7 +5,7 @@ import com.stars.core.event.EventDispatcher;
 import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.MConst;
 import com.stars.modules.activeweapon.handler.ConditionHandler;
 import com.stars.modules.activeweapon.handler.ConditionHandlerFactory;

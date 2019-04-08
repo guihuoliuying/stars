@@ -1,8 +1,8 @@
 package com.stars.services.rank.imp;
 
-import com.stars.core.dao.DbRowDao;
+import com.stars.core.persist.DbRowDao;
 import com.stars.core.player.PlayerUtil;
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.bestcp520.BestCPManager;
 import com.stars.modules.bestcp520.packet.ClientBestCPPacket;
 import com.stars.modules.bestcp520.prodata.BestCP;

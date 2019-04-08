@@ -1,9 +1,9 @@
 package com.stars.modules.book.userdata;
 
 import com.stars.core.attr.Attribute;
-import com.stars.db.DBUtil;
-import com.stars.db.DbRow;
-import com.stars.db.SqlUtil;
+import com.stars.core.db.DBUtil;
+import com.stars.core.db.DbRow;
+import com.stars.core.db.SqlUtil;
 
 /**
  * Created by zhoujin on 2017/5/9.

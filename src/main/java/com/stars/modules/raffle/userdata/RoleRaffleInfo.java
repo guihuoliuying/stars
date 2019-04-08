@@ -1,8 +1,8 @@
 package com.stars.modules.raffle.userdata;
 
-import com.stars.db.DBUtil;
-import com.stars.db.DbRow;
-import com.stars.db.SqlUtil;
+import com.stars.core.db.DBUtil;
+import com.stars.core.db.DbRow;
+import com.stars.core.db.SqlUtil;
 import com.stars.modules.raffle.define.RaffleDefineManager;
 import com.stars.modules.raffle.define.RaffleRewardEntry;
 import com.stars.modules.raffle.define.Range;

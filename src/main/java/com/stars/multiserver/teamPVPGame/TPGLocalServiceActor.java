@@ -1,8 +1,8 @@
 package com.stars.multiserver.teamPVPGame;
 
-import com.stars.coreManager.ExcutorKey;
-import com.stars.coreManager.SchedulerManager;
-import com.stars.db.DBUtil;
+import com.stars.ExcutorKey;
+import com.stars.core.schedule.SchedulerManager;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.teampvpgame.TeamPVPGameManager;
 import com.stars.modules.teampvpgame.packet.ClientTPGScoreRank;
 import com.stars.modules.teampvpgame.prodata.DoublePVPRewardVo;

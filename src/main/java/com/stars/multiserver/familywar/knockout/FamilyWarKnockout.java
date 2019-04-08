@@ -1,6 +1,6 @@
 package com.stars.multiserver.familywar.knockout;
 
-import com.stars.core.dao.DbRowDao;
+import com.stars.core.persist.DbRowDao;
 import com.stars.modules.MConst;
 import com.stars.modules.data.DataManager;
 import com.stars.modules.demologin.packet.ClientText;

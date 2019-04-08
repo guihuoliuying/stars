@@ -1,7 +1,7 @@
 package com.stars.multiserver.teamPVPGame;
 
 import com.stars.bootstrap.ServerManager;
-import com.stars.db.DBUtil;
+import com.stars.core.db.DBUtil;
 import com.stars.modules.teampvpgame.packet.ClientTPGData;
 import com.stars.modules.teampvpgame.packet.ClientTPGScoreRank;
 import com.stars.multiserver.MainRpcHelper;
