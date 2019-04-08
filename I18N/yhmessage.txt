@@ -1,0 +1,415 @@
+﻿########
+# 格式说明
+# {模块名}.[{子模块名}.]{提示标识符}=提示
+# 请严格遵守，多用有道词典，把逼格提高
+########
+
+#伙伴
+buddy.fly.stagelvNotEnough=伙伴阶级不足,无法飞升
+buddy.fly.costNotEnough=消耗道具不足,无法飞升
+buddy.flyupgrade.costNotEnough=消耗道具不足,无法提升
+
+#法宝
+trump.NotExit=法宝不存在
+trump.alreadyUnlock=该法宝已经解封
+trump.mustUnlock=该法宝并未解封
+trump.maxLevel=该法宝已达最大等级
+trump.toolNotEnough=材料不足
+trump.alreadyPutOn=该法宝已经佩戴
+trump.noPosition=没有空闲的孔位
+
+#坐骑
+ride.error = 数据异常
+ride.Owned = 已拥有了该坐骑
+ride.NotOwned = 未拥有该坐骑
+ride.Not = 不存在坐骑
+ride.click = 请勿频繁点击
+ride.notNextLevel = 不存在下一级数据
+ride.OwnedSkin = 已拥有了该坐骑皮肤
+
+#家族(远征)
+family.expedition.notStart = 请通关
+family.expedition.end = 已领取
+family.expedition.notItemId = 没有道具id
+family.expedition.buff = 不能在安全区使用buff
+family.expedition.notFamily = 没有家族
+
+#家族（篝火）
+family.bonfire.activityEnd=活动结束
+family.bonfire.hasNoWood=干柴数量不足
+family.bonfire.hasNoGold=元宝数量不足
+
+
+#成就
+achievement.notExist=成就不存在
+achievement.notAchieve=该成就未达成
+achievement.rewarded=已经领取
+
+#商店
+store.itemNotExist=该商品存在
+store.overTimes=超过单次购买数量
+store.toolNotEnough=道具不足
+store.buyCount.negative=购买数量为负数
+store.payfresh.max = 已达刷新上限
+store.condition.fail = 不满足购买条件
+
+#日常
+daily.hasgetaward=您已经领取过该奖励
+daily.awardnotexist=该奖励不存在
+daily.canNotReward=活跃度不足,无法领取
+
+#技能
+skill.hasmaxlevel={0}已经达到最大等级
+skill.unfulfilrolelevel=需要角色达到{0}级
+skill.unfulfilitem={0}不足{1}
+skill.unpassdungeon=需要通关{0}-{1}
+skill.unreqskilllevel=需要升级{0}技能到{1}级
+
+#系统开放预告
+foreshow.error=数据错误
+
+#召唤boss
+callboss.errorTime=未到召唤时间,无法召唤
+callboss.roleLvlNotEnough=角色等级不足,无法召唤
+callboss.costNotEnough=消耗不足,无法召唤
+callboss.rankIdError=召唤boss排行榜唯一Id错误
+
+#关卡
+dungeon.chapterLock=领取失败,章节未解锁
+dungeon.rewarded=章节集星奖励已领取
+dungeon.starNotEnough=章节集星数量不足
+dungeon.notFullStarPass=没有三星通关,不能扫荡
+dungeon.produce.canNotFind=找不到等级对应经验副本
+
+#家族活动(外族入侵)
+family.invade.awardBoxOpened=宝箱已开启过
+family.invade.awardBoxTimeout=宝箱已失效
+family.invade.awardBoxNotInTrigger=角色不在宝箱触发范围内
+family.invade.familyIdError=家族不存在
+
+#场景scene
+scene.transferError=坐标错误,传送失败
+scene.noReviveConfig=没有复活数据配置
+scene.reviveLimit=超过复活限制次数
+scene.reviveCostNotEnough=免费次数已用完,消耗道具不足
+scene.statusError=不在死亡状态或cd还没到
+
+#组队
+team.dataError=队伍副本数据错误
+team.levelLimit=您的等级不满足要求
+team.targetLevelLimit=对方等级不满足要求
+team.targetEnterNumNotEnough=活动次数不足
+team.enterNumNotEnough=副本参加次数不足，不能接受邀请
+team.sendInvite=邀请已发送,等待对方响应
+team.noTeam=您没有队伍
+team.noDungeon=没有找到该副本
+team.noInvite=邀请不存在
+team.noMatchTeam=当前未在匹配队伍
+team.cancelMatchTeamSuc=已取消匹配队伍
+team.cancelMatchMemberSuc=已取消匹配队员
+team.isInTeam=您已加入队伍
+team.targetNotInvited=对方不在邀请队列中
+team.notCaptain=您不是队长，无权限操作
+team.targetNotInTeam=对方没有加入队伍
+team.targetHasTeam=对方已有队伍
+team.teamNotExist=队伍不存在
+team.full = 队伍已满
+team.dailyTimeNotEnough = 活动次数不足
+team.protectNotOpen=守护屈原未开放
+team.challenge=组队挑战未开放
+team.fighting=您当前处于战斗中
+
+# 邮件
+email.delete.noSuchEmail = 不存在该邮件
+email.delete.notFetchedAffixs = 邮件存在附件没领取
+email.delete.stillcooling = 邮件还在冻结时间内,{0}天后可删除
+email.fetch.failToAdd = 不能添加道具，领取失败
+
+# 好友
+friend.apply.forbidToMakeFriendWithSelf = 不能申请与自己成为好友
+friend.apply.notEnoughLevel = 申请方等级不足够
+friend.apply.alreadyDone = 已申请
+friend.apply.notifyObject = {0}申请好友
+friend.agree.forbidToMakeFriendWithSelf = 不能同意与自己成为好友
+friend.agree.noSuchApplication = 没有这个申请
+friend.recomm.notEnoughLevel = 等级不够
+friend.search.noSuchRole = 找不到对应的玩家数据
+friend.search.illegalText = 搜索内容不正确
+friend.blacklist.forbidToAddSelf = 不能把自己加到黑名单
+friend.vigor.dailySendMax = 赠送体力已达今次上限
+friend.vigor.dailyReceiveMax = 接收体力已达今次上限
+friend.vigor.dailyOneTimes = 每日只能给每个玩家赠送一次体力
+friend.vigor.receiveSuccess = 成功领取{0}体力
+friend.vigor.haveNone = 无体力可领取
+friend.vigor.sendSuccess = 赠送体力成功
+
+# 家族
+family.management.reqNotEmptyName = 家族名不能为空
+family.management.reqNotEmptyNotice = 公告内容为空
+family.management.reqTooOften = 点击间隔过短
+family.management.reqOtherOnline = 对方不在线
+family.management.reqOtherJoinFamily = 受邀者没有家族
+family.management.reqOtherIsNotMaster = 对方为族长
+family.management.reqOtherMinLevel = 不满足最小等级
+family.management.reqOtherMinFightScore = 不满足最小战力
+family.management.noSuchFamily = 不存在家族
+family.management.notJoinFamily = 还没有加入家族
+family.management.noSuchMember = 不存在对应的家族成员数据
+family.management.noSuchMaster = 不存在对应的家族族长数据
+family.management.noSuchFamilyLevel = 没有对应的家族等级数据
+family.management.alreadyFull = 家族已满员
+family.management.alreadyMaxFamilyLevel = 已是最大等级
+family.management.lackProductData = 缺少产品数据
+family.management.incorrectProductData = 产品数据错误
+family.management.noSuchInvitee = 不存在受邀者
+family.management.noSuchInviter = 不存在邀请者
+family.management.noSuchApplication = 不存在对应的申请数据
+family.management.alreadChangePost = 家族成员数据已发生改变
+family.management.noSuchPlaceholder = 不存在对应的占位项
+family.management.skill.incorrectData = 请求数据有误
+family.management.skill.alreadyMaxLevel = 已达最大等级
+family.management.apply.alreadySent = 申请已发送
+family.management.apply.noSuchApplicant = 不存在该申请者
+family.management.verify.succeedAdding = 成功添加成员
+family.management.appoint.forbidToAppointSelf = 不能对自己进行任命
+family.management.appoint.noSuchPost = 不存在该职位
+family.management.appoint.forbidToAppointToMaster = 不能任命为族长
+family.management.appoint.forbidToAppointToSamePost = 职位相同
+family.management.search.illegalText = 搜索内容不正确
+family.management.otherunopen=对方家族未开放
+family.rp.seizeSelf = 自己不能抢自己的红包
+family.rp.alreadySeize = 已经抢过红包
+family.task.behelp.tips = <color=#1b7dbc>你</color>求助的<color=#1b7dbc>%s</color>已被<color=#1b7dbc>%s</color>提交
+
+
+# 装备
+equipment.hasnoequipments = 还未拥有该装备
+equipment.gem.cannotlevel = 当前宝石无法升级
+equipment.gem.rolelevelisnotenough = 当前人物等级不够
+equipment.gem.gemholenotopen = 当前槽还没有开放镶嵌,先升级锻造等级吧
+equipment.gem.gemmaxlevel = 当前宝石已达到最大等级
+equipment.gem.onekeyembed.cooldown = 请稍侯2秒
+
+# 新装备
+newequip.notOwnEquipment = 还未拥有该装备
+newequip.maxStrengthLevel = 强化至最高等级
+newequip.levelNotEnough = 人物等级不足
+newequip.transferToolNotEnough = 转移材料不足
+newequip.washToolNotEnough = 洗练道具不足
+newequip.recoverToolNotEnough = 复原材料不足
+newequip.noExtraAttr = 无额外属性,无法进行洗练
+newequip.noNeedToWash = 装备最高额外属性战力低于当前装备最低额外属性战力，无需洗练
+newequip.outTimeMessage = 消息已过期
+newequip.jobDifference = 职业不同，你无法穿上这件装备
+newequip.bagFull = 装备背包已满
+newequip.token.notTokenEquipment = 该装备是非符文装备
+newequip.token.allLocked = 已锁定所有位置，无法重铸
+newequip.token.toolNotEnough = 材料不足
+newequip.token.hadNotToken = 还未拥有符文
+newequip.token.exitsMaxLevelToken = 符文已经达到最高级
+
+
+
+# 探宝
+searchtreasure.isnotinmap = 当前不在探宝图中
+searchtreasure.ismapnotrunning = 当前探宝图不在运行状态下
+searchtreasure.isnoboxinhere = 当前位置没有宝箱
+searchtreasure.searcompletecanoprpoint = 当前层已探索完毕,无法继续进行探索点的操作
+searchtreasure.aleadyrandomeddata = 该探索点已请求过随机数据
+searchtreasure.illegalopr = 请求的探索点不合法
+searchtreasure.ismapnotexist = 请求的探索地图不存在
+searchtreasure.isnotenoughtoreward = 不满足奖励领取条件
+searchtreasure.istoolnothas = 没有找到该角色有该物品数据
+
+#洞府
+gamecave.currentGameIsPlaying=当前游戏还在继续,无法进行其他游戏
+gamecave.getProductDataError=获取游戏配置异常
+gamecave.gamecave_cantgame=当前游戏已结束, 请前往下一个游戏
+gamecave.getTinyGameDataError=获取小游戏数据出错
+gamecave.cantPlayGame=无法进入游戏
+gamecave.getTinyGameCaseError=获取小游戏实例失败
+
+#心法
+mind.cantFindMindProductData=找不到该心法的产品数据
+mind.callboss_itemshort=所需%s不足
+mind.itemNotEnoughCantActive=道具不足无法激活
+mind.mindReachMaxLevelCantUpgrade=该心法已满级，不可再升级了
+mind.cantFindProductDataAfterUpgrade=找不到升级后的心法等级的产品数据
+mind.itemNotEnoughCantUpgrade=道具不足无法升级
+mind.mind_btntext_levelupsuc=修炼成功
+mind.mind_active_errordesc_rolelvl=角色等级不足
+mind.mind_active_errordesc_trump=法宝未解封
+mind.mind_active_errordesc_trumpactive=尚未获得足够法宝
+
+#时装
+fashion.getFashionProductDataFail=获取时装配置失败
+fashion.theFashionIsActived=该时装已经激活
+fashion.theFashionIsNotActived=该时装还未激活
+fashion.theFashionIsDressed=该时装已穿戴
+fashion.theFashionIsNotDressed=该时装未穿戴
+fashion.fashion_tips_takeon=穿戴成功
+fashion.fashion_tips_takeoff=时装效果已取消
+fashion.theFashionIsExpired=该时装已过期
+
+
+#签到
+signin.signined=今日已签到
+signin.unopen=签到未开放
+signin.aftertoday=只能签今天或者补签之前的
+signin.signrepeat=无需重复补签
+signin.itemnotenough=补签所需材料不足
+signin.acccountnotenough=累积次数不足
+signin.getawardrepeat=不能重复领取奖励
+signin.notaccdata=找不到累积奖励数据
+
+#道具
+tool.compound.costNotEngough=材料不足,无法合成
+tool.gift.exchangeSuc=激活码兑换成功
+tool.gift.codeUsed=激活码已使用
+tool.gift.codeNotExist=激活码不存在
+tool.gift.rewarded=已兑换过该礼包
+tool.gift.codeOutDate=激活码已过期
+
+#神兵
+deity.forge.maxlevelLimit=已达最高等级
+deity.forge.materialNotEnough=材料不足,无法锻造
+deity.forge.nothistypedeity=没有这个类型的神兵
+deity.forge.isexpired=神兵已经过期了
+deity.dress.isalreadydressed=已经在穿戴中了
+deity.dress.isnotdressed=没有在穿戴中
+deity.dress.islevellimit=请先提升等级到{0}
+#运镖
+escort.cargoIsReady = 镖车已准备完毕
+escort.cargoIsNotReady = 镖车还在准备中
+escort.cargoNotExist = 该镖车已押镖完毕,请重新选择目标
+escort.inFighting = 该镖车正在战斗中,请重新选择目标
+escort.inProtect = 该镖车正在保护时间内,请稍等
+escort.maskNotEnough = 面具不足,无法使用面具劫镖
+escort.refreshToolNotEnough = 刷新道具不足,无法进行刷新
+escort.operateAgain = 镖车信息已刷新,请重新选择
+escort.hasUsed = 镖车已运送完毕，请重新选择目标
+
+#结婚
+marry.break.email = 决裂补偿
+marry.break.wedding = 已经预约豪华婚礼，不能决裂
+marry.break.cd = 决裂冷却中
+marry.wedding.miss.email = 豪华宴席过期补偿
+marry.claim.sensitive = 宣言中包含敏感词
+marry.claim.cancel = 取消成功
+marry.claim.distribute = 发布成功
+marry.claim.too.long = 宣言过长
+marry.profress.profressed = 已经申请
+marry.profress.claim.overtime = 对方宣言已过期
+marry.profress.inconformity = 不符合对方结义要求
+marry.profress.responsed = 已经处理过该申请
+marry.profress.not.singel = 不是单身状态
+marry.profress.other.not.single = 对方不是单身状态
+marry.other.offline = 对方不在线
+marry.appointment.failed = 无法预约
+marry.appointment.cd = 预约冷却中
+marry.appointment.already.deal = 已经处理预约
+marry.appointment.overtime = 已过期,请重新预约
+marry.luxurious.appoint = 已经预约了豪华宴席
+marry.luxurious.later = 该时段已经别预约
+marry.luxurious.success = 预约成功
+marry.luxurious.wedding = 豪华宴席
+marry.info.single = 目前单身
+marry.team.inconformity = 不符合组队条件
+marry.team.in = 已经处于队伍中，创建队伍失败
+marry.team.not.dungeon = 不是情谊副本
+marry.team.not.couple = 与对方不是结义对象
+marry.team.dungeon.over = 参与情谊副本次数已达上限
+marry.wedding.inactivity = 不在活动期内
+marry.luxurious.appoint.deadline = 已经超过可预约时间
+marry.wedding.backcity.failed = 婚礼期间不能退出该场景
+marry.wedding.already.appoint = 已经预约了豪华婚礼
+marry.profress.target.locked = 对方未开放系统
+marry.appoint.luxurious.email = 预约豪华宴席奖励
+marry.profess.btninfo.notfriend = 非好友，无法预约
+marry.profess.btninfo.notfriendship = 好友度不够无法预约
+marry.profess.btninfo.notincity = 对方不在主城镇，无法预约
+marry.refuse.general.return.email = 普通预约被拒绝返还
+marry.refuse.luxurious.return.email = 豪华预约被拒绝返还
+marry.agree.general.award.email = 普通预约成功奖励
+marry.agree.luxurious.award.email = 豪华预约成功奖励
+marry.max.profress.limit = 申请条数已达最大限制，请耐心等待回复
+marry.profress.outtime = 该申请已过期
+marry.max.profressed.limit = 该玩家被申请列表已达最大限制
+marry.max.wedding.limit = 同时举办豪华婚宴场次太多，请耐心等候
+marry.notcan.function = 无法使用
+
+#门客
+guest.req.error = 门客请求错误
+guest.active.not.exist = 门客不存在
+guest.active.level.limit = 要求等级达到{0}级
+guest.active.exist = 门客已经存在
+guest.active.tool.lack = 道具不足
+guest.upstar.inactive = 门客未激活
+guest.upstar.maxstar = 已达最大星数
+guest.fresh.product.null = 产品数据缺失
+guest.fresh.max = 已达最大刷新次数
+guest.dispatch.empty = 参数错误
+guest.dispatch.mission.unexist = 任务不存在
+guest.dispatch.mission.done = 任务已经派遣
+guest.dispatch.unfit = 门客不符合任务要求
+guest.dispatch.overtime = 任务已过期
+guest.dispatch.onmission = 门客已经在执行任务中
+guest.flush.tool.lack = 道具不足
+guest.award.mission = 任务不存在，领取失败
+guest.award.state = 不是完成状态，无法领取
+guest.ask.sensitive = 求助信息包含敏感词
+guest.ask.too.long = 输入的信息过长
+guest.ask.no.family = 请先加入家族
+guest.ask.too.much = 求助次数已达上限
+guest.ask.success = 求助成功
+guest.give.not.family = 不是家族成员
+guest.give.not.found = 对方未发布求助信息
+guest.give.over.time = 已超过有效时间
+guest.give.done = 已经收集完成
+guest.give.do.before = 已经给予
+guest.give.email = 门客收集
+guest.give.self = 自己不能给予自己
+guest.tool.error = 门客任务道具使用错误
+guest.not.open = 门客系统未开放
+guest.mission.exist = 门客任务已存在
+guest.help.limit.time = 每天最多只能给予{0}次
+guest.cannot.help = 不能求助
+
+#新服冲战力
+newserver.fightscore.actFinish=活动已结束
+
+
+#鉴宝
+authentic.unopen=鉴宝未开放
+authentic.timeslarge=鉴宝次数过大
+authentic.timesoverlimit=超过次数限制
+authentic.newbeeonlyone=目前处于新手期，只允许一次鉴宝
+authentic.constnotenoug=材料不足
+
+#常用
+common.serverName = {0}服
+common.parameter.error = 参数错误
+common.resource.lack = 资源不足
+common.dailyTimes.notEnough = 今日次数不足
+
+#新版家族红包
+newredbag.send.failed = 发送红包失败
+newredbag.not.family.memeber = 不是家族成员
+newredbag.self.max = 已达自定义红包上限
+newredbag.get.null = 红包已经发完
+newredbag.already.get = 已经领取过该红包
+newredbag.over.deadline = 红包已过期
+
+#典籍
+book.level.limit = 玩家等级不足
+book.viplevel.limit = 玩家贵族等级不足
+book.item.no.enough = 道具不足
+book.learn.max.level = 典籍已领悟到最大等级
+book.read.max.limit = 同时只能阅读典籍{0}本
+book.is.reading = 该典籍正在阅读中
+book.help.quyuan.maxtimes = 今日已经帮助屈原10次了
+book.collect.not.enough = 典籍碎片未收集满
+
+#等级加速
+level.speedup.tips = 额外获得{0}经验
+

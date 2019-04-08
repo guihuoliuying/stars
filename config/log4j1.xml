@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="utf8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<!-- logLevels :  DEBUG / INFO / WARN / ERROR / FATAL / OFF-->
+	<!-- 注意：不是所有的日志都需要加上如下代码，有需求才加-->
+	<!--log4j.appender.xxx.Hostname = 127.0.0.1-->
+	<!--log4j.appender.xxx.Port = 7777-->
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<!--<param name="threshold" value="WARN" />-->
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{MM-dd HH:mm:ss} %p - %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="console-file" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="ImmediateFlush" value="false" />
+		<param name="BufferedIO" value="true" />
+		<param name="BufferSize" value="1024" />
+		<param name="File" value="log/${sys:server-log}/console/console.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %p - %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="error" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="ImmediateFlush" value="false" />
+		<param name="BufferedIO" value="true" />
+		<param name="BufferSize" value="512" />
+		<param name="File" value="log/${sys:server-log}/exception/exception.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m%n" />
+		</layout>
+	</appender>
+
+	<!-- 使用异步appender start -->
+	<appender name="async-console" class="org.apache.log4j.AsyncAppender">
+		<param name="BufferSize" value="512" />
+		<param name="Blocking" value="true" />
+		<appender-ref ref="console" />
+	</appender>
+
+	<appender name="async-console-file" class="org.apache.log4j.AsyncAppender">
+		<param name="BufferSize" value="512" />
+		<param name="Blocking" value="true" />
+		<appender-ref ref="console-file" />
+	</appender>
+	<!-- 使用异步appender end -->
+
+	<appender name="sql_err" class="org.apache.log4j.rolling.RollingFileAppender">
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="log/${sys:server-log}/sql_err/sql_err.log.%d{yyyy-MM-dd-HH}" />
+			<param name="FileName" value="log/${sys:server-log}/sql_err/sql_err.log" />
+		</rollingPolicy>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m%n" />
+		</layout>
+	</appender>
+
+	<appender name="core_account" class="org.apache.log4j.rolling.RollingFileAppender">
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="log/${sys:server-log}/core_account/core_account.log.%d{yyyy-MM-dd-HH}" />
+			<param name="FileName" value="log/${sys:server-log}/core_account/core_account.log" />
+		</rollingPolicy>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m%n" />
+		</layout>
+	</appender>
+
+	<appender name="core_account_flume" class="org.apache.flume.clients.log4jappender.Log4jAppender">
+		<param name="Hostname" value="127.0.0.1" />
+		<param name="Port" value="7777" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m" />
+		</layout>
+	</appender>
+
+	<appender name="core_gamesvr" class="org.apache.log4j.rolling.RollingFileAppender">
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="log/${sys:server-log}/core_gamesvr/core_gamesvr.log.%d{yyyy-MM-dd-HH}" />
+			<param name="FileName" value="log/${sys:server-log}/core_gamesvr/core_gamesvr.log" />
+		</rollingPolicy>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m%n" />
+		</layout>
+	</appender>
+
+	<appender name="core_gamesvr_flume" class="org.apache.flume.clients.log4jappender.Log4jAppender">
+		<param name="Hostname" value="127.0.0.1" />
+		<param name="Port" value="7777" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m" />
+		</layout>
+	</appender>
+
+	<appender name="core_role" class="org.apache.log4j.rolling.RollingFileAppender">
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="log/${sys:server-log}/core_role/core_role.log.%d{yyyy-MM-dd-HH}" />
+			<param name="FileName" value="log/${sys:server-log}/core_role/core_role.log" />
+		</rollingPolicy>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m%n" />
+		</layout>
+	</appender>
+
+	<appender name="core_role_flume" class="org.apache.flume.clients.log4jappender.Log4jAppender">
+		<param name="Hostname" value="127.0.0.1" />
+		<param name="Port" value="7777" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m" />
+		</layout>
+	</appender>
+
+	<appender name="core_item" class="org.apache.log4j.rolling.RollingFileAppender">
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="log/${sys:server-log}/core_item/core_item.log.%d{yyyy-MM-dd-HH}" />
+			<param name="FileName" value="log/${sys:server-log}/core_item/core_item.log" />
+		</rollingPolicy>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m%n" />
+		</layout>
+	</appender>
+
+	<appender name="core_item_flume" class="org.apache.flume.clients.log4jappender.Log4jAppender">
+		<param name="Hostname" value="127.0.0.1" />
+		<param name="Port" value="7777" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m" />
+		</layout>
+	</appender>
+
+	<appender name="core_pay" class="org.apache.log4j.rolling.RollingFileAppender">
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="log/${sys:server-log}/core_pay/core_pay.log.%d{yyyy-MM-dd-HH}" />
+			<param name="FileName" value="log/${sys:server-log}/core_pay/core_pay.log" />
+		</rollingPolicy>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m%n" />
+		</layout>
+	</appender>
+
+	<appender name="core_pay_flume" class="org.apache.flume.clients.log4jappender.Log4jAppender">
+		<param name="Hostname" value="127.0.0.1" />
+		<param name="Port" value="7777" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m" />
+		</layout>
+	</appender>
+
+	<appender name="core_coin" class="org.apache.log4j.rolling.RollingFileAppender">
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="log/${sys:server-log}/core_coin/core_coin.log.%d{yyyy-MM-dd-HH}" />
+			<param name="FileName" value="log/${sys:server-log}/core_coin/core_coin.log" />
+		</rollingPolicy>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m%n" />
+		</layout>
+	</appender>
+
+	<appender name="core_coin_flume" class="org.apache.flume.clients.log4jappender.Log4jAppender">
+		<param name="Hostname" value="127.0.0.1" />
+		<param name="Port" value="7777" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m" />
+		</layout>
+	</appender>
+
+	<appender name="core_case" class="org.apache.log4j.rolling.RollingFileAppender">
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="log/${sys:server-log}/core_case/core_case.log.%d{yyyy-MM-dd-HH}" />
+			<param name="FileName" value="log/${sys:server-log}/core_case/core_case.log" />
+		</rollingPolicy>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m%n" />
+		</layout>
+	</appender>
+
+	<appender name="core_case_flume" class="org.apache.flume.clients.log4jappender.Log4jAppender">
+		<param name="Hostname" value="127.0.0.1" />
+		<param name="Port" value="7777" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m" />
+		</layout>
+	</appender>
+
+	<appender name="core_stat_1" class="org.apache.log4j.rolling.RollingFileAppender">
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="log/${sys:server-log}/core_stat_1/core_stat_1.log.%d{yyyy-MM-dd-HH}" />
+			<param name="FileName" value="log/${sys:server-log}/core_stat_1/core_stat_1.log" />
+		</rollingPolicy>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m%n" />
+		</layout>
+	</appender>
+
+	<appender name="core_stat_1_flume" class="org.apache.flume.clients.log4jappender.Log4jAppender">
+		<param name="Hostname" value="127.0.0.1" />
+		<param name="Port" value="7777" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m" />
+		</layout>
+	</appender>
+
+	<appender name="core_stat_2" class="org.apache.log4j.rolling.RollingFileAppender">
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="log/${sys:server-log}/core_stat_2/core_stat_2.log.%d{yyyy-MM-dd-HH}" />
+			<param name="FileName" value="log/${sys:server-log}/core_stat_2/core_stat_2.log" />
+		</rollingPolicy>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m%n" />
+		</layout>
+	</appender>
+
+	<appender name="core_stat_2_flume" class="org.apache.flume.clients.log4jappender.Log4jAppender">
+		<param name="Hostname" value="127.0.0.1" />
+		<param name="Port" value="7777" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m" />
+		</layout>
+	</appender>
+
+	<appender name="core_client" class="org.apache.log4j.rolling.RollingFileAppender">
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="log/${sys:server-log}/core_client/core_client.log.%d{yyyy-MM-dd-HH}" />
+			<param name="FileName" value="log/${sys:server-log}/core_client/core_client.log" />
+		</rollingPolicy>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m%n" />
+		</layout>
+	</appender>
+
+	<appender name="core_finance" class="org.apache.log4j.rolling.RollingFileAppender">
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="log/${sys:server-log}/core_finance/core_finance.log.%d{yyyy-MM-dd-HH}" />
+			<param name="FileName" value="log/${sys:server-log}/core_finance/core_finance.log" />
+		</rollingPolicy>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m%n" />
+		</layout>
+	</appender>
+
+	<appender name="core_finance_flume" class="org.apache.flume.clients.log4jappender.Log4jAppender">
+		<param name="Hostname" value="127.0.0.1" />
+		<param name="Port" value="7777" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m" />
+		</layout>
+	</appender>
+
+	<appender name="core_activity" class="org.apache.log4j.rolling.RollingFileAppender">
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="log/${sys:server-log}/core_activity/core_activity.log.%d{yyyy-MM-dd-HH}" />
+			<param name="FileName" value="log/${sys:server-log}/core_activity/core_activity.log" />
+		</rollingPolicy>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m%n" />
+		</layout>
+	</appender>
+
+	<appender name="core_activity_flume" class="org.apache.flume.clients.log4jappender.Log4jAppender">
+		<param name="Hostname" value="127.0.0.1" />
+		<param name="Port" value="7777" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m" />
+		</layout>
+	</appender>
+
+	<appender name="core_task" class="org.apache.log4j.rolling.RollingFileAppender">
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="log/${sys:server-log}/core_task/core_task.log.%d{yyyy-MM-dd-HH}" />
+			<param name="FileName" value="log/${sys:server-log}/core_task/core_task.log" />
+		</rollingPolicy>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m%n" />
+		</layout>
+	</appender>
+
+	<appender name="core_task_flume" class="org.apache.flume.clients.log4jappender.Log4jAppender">
+		<param name="Hostname" value="127.0.0.1" />
+		<param name="Port" value="7777" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m" />
+		</layout>
+	</appender>
+
+	<appender name="core_market" class="org.apache.log4j.rolling.RollingFileAppender">
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="log/${sys:server-log}/core_market/core_market.log.%d{yyyy-MM-dd-HH}" />
+			<param name="FileName" value="log/${sys:server-log}/core_market/core_market.log" />
+		</rollingPolicy>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m%n" />
+		</layout>
+	</appender>
+
+	<appender name="core_market_flume" class="org.apache.flume.clients.log4jappender.Log4jAppender">
+		<param name="Hostname" value="127.0.0.1" />
+		<param name="Port" value="7777" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m" />
+		</layout>
+	</appender>
+
+	<appender name="core_action" class="org.apache.log4j.rolling.RollingFileAppender">
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="log/${sys:server-log}/core_action/core_action.log.%d{yyyy-MM-dd-HH}" />
+			<param name="FileName" value="log/${sys:server-log}/core_action/core_action.log" />
+		</rollingPolicy>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m%n" />
+		</layout>
+	</appender>
+
+	<appender name="core_action_flume" class="org.apache.flume.clients.log4jappender.Log4jAppender">
+		<param name="Hostname" value="127.0.0.1" />
+		<param name="Port" value="7777" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m" />
+		</layout>
+	</appender>
+
+	<appender name="dynamic_chat" class="org.apache.log4j.rolling.RollingFileAppender">
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="log/${sys:server-log}/dynamic_chat/dynamic_chat.log.%d{yyyy-MM-dd-HH}" />
+			<param name="FileName" value="log/${sys:server-log}/dynamic_chat/dynamic_chat.log" />
+		</rollingPolicy>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m%n" />
+		</layout>
+	</appender>
+
+	<appender name="dynamic_chat_flume" class="org.apache.flume.clients.log4jappender.Log4jAppender">
+		<param name="Hostname" value="127.0.0.1" />
+		<param name="Port" value="7777" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m" />
+		</layout>
+	</appender>
+
+	<appender name="monitor_mail" class="org.apache.log4j.rolling.RollingFileAppender">
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="log/${sys:server-log}/monitor_mail/monitor_mail.log.%d{yyyy-MM-dd-HH}" />
+			<param name="FileName" value="log/${sys:server-log}/monitor_mail/monitor_mail.log" />
+		</rollingPolicy>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m%n" />
+		</layout>
+	</appender>
+
+	<appender name="monitor_mail_flume" class="org.apache.flume.clients.log4jappender.Log4jAppender">
+		<param name="Hostname" value="127.0.0.1" />
+		<param name="Port" value="7777" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m" />
+		</layout>
+	</appender>
+
+	<appender name="dynamic_4" class="org.apache.log4j.rolling.RollingFileAppender">
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="log/${sys:server-log}/dynamic_4/dynamic_4.log.%d{yyyy-MM-dd-HH}" />
+			<param name="FileName" value="log/${sys:server-log}/dynamic_4/dynamic_4.log" />
+		</rollingPolicy>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m%n" />
+		</layout>
+	</appender>
+
+	<appender name="dynamic_4_flume" class="org.apache.flume.clients.log4jappender.Log4jAppender">
+		<param name="Hostname" value="127.0.0.1" />
+		<param name="Port" value="7777" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m" />
+		</layout>
+	</appender>
+
+	<appender name="static_4" class="org.apache.log4j.rolling.RollingFileAppender">
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="log/${sys:server-log}/static_4/static_4.log.%d{yyyy-MM-dd-HH}" />
+			<param name="FileName" value="log/${sys:server-log}/static_4/static_4.log" />
+		</rollingPolicy>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m%n" />
+		</layout>
+	</appender>
+
+	<appender name="static_4_flume" class="org.apache.flume.clients.log4jappender.Log4jAppender">
+		<param name="Hostname" value="127.0.0.1" />
+		<param name="Port" value="7777" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m" />
+		</layout>
+	</appender>
+
+	<appender name="vipInfo" class="org.apache.log4j.rolling.RollingFileAppender">
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="log/${sys:server-log}/vipInfo/vipInfo.log.%d{yyyy-MM-dd-HH}" />
+			<param name="FileName" value="log/${sys:server-log}/vipInfo/vipInfo.log" />
+		</rollingPolicy>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m%n" />
+		</layout>
+	</appender>
+
+	<appender name="vipInfo_flume" class="org.apache.flume.clients.log4jappender.Log4jAppender">
+		<param name="Hostname" value="127.0.0.1" />
+		<param name="Port" value="7777" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m" />
+		</layout>
+	</appender>
+	<appender name="dynamic_survey" class="org.apache.log4j.rolling.RollingFileAppender">
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="log/${sys:server-log}/dynamic_survey/dynamic_survey.log.%d{yyyy-MM-dd-HH}" />
+			<param name="FileName" value="log/${sys:server-log}/dynamic_survey/dynamic_survey.log" />
+		</rollingPolicy>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m%n" />
+		</layout>
+	</appender>
+
+	<appender name="dynamic_survey_flume" class="org.apache.flume.clients.log4jappender.Log4jAppender">
+		<param name="Hostname" value="127.0.0.1" />
+		<param name="Port" value="7777" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m" />
+		</layout>
+	</appender>
+	<logger name="error"> <level value="ALL" /> <appender-ref ref="error" /> </logger>
+	<logger name="sql_err" additivity="false"> <level value="ALL" /> <appender-ref ref="sql_err" /> </logger>
+	<logger name="core_account" additivity="false"> <level value="ALL" /> <appender-ref ref="core_account" /> <appender-ref ref="core_account_flume" /> </logger>
+	<logger name="core_gamesvr" additivity="false"> <level value="ALL" /> <appender-ref ref="core_gamesvr" /> <appender-ref ref="core_gamesvr_flume" /> </logger>
+	<logger name="core_role" additivity="false"> <level value="ALL" /> <appender-ref ref="core_role" /> <appender-ref ref="core_role_flume" /> </logger>
+	<logger name="core_item" additivity="false"> <level value="ALL" /> <appender-ref ref="core_item" /> <appender-ref ref="core_item_flume" /> </logger>
+	<logger name="core_pay" additivity="false"> <level value="ALL" /> <appender-ref ref="core_pay" /> <appender-ref ref="core_pay_flume" /> </logger>
+	<logger name="core_coin" additivity="false"> <level value="ALL" /> <appender-ref ref="core_coin" /> <appender-ref ref="core_coin_flume" /> </logger>
+	<logger name="core_case" additivity="false"> <level value="ALL" /> <appender-ref ref="core_case" /> <appender-ref ref="core_case_flume" /> </logger>
+	<logger name="core_stat_1" additivity="false"> <level value="ALL" /> <appender-ref ref="core_stat_1" /> <appender-ref ref="core_stat_1_flume" /> </logger>
+	<logger name="core_stat_2" additivity="false"> <level value="ALL" /> <appender-ref ref="core_stat_2" /> <appender-ref ref="core_stat_2_flume" /> </logger>
+	<logger name="core_client" additivity="false"> <level value="ALL" /> <appender-ref ref="core_client" /> </logger>
+	<logger name="core_finance" additivity="false"> <level value="ALL" /> <appender-ref ref="core_finance" /> <appender-ref ref="core_finance_flume" /> </logger>
+	<logger name="core_activity" additivity="false"> <level value="ALL" /> <appender-ref ref="core_activity" /> <appender-ref ref="core_activity_flume" /> </logger>
+	<logger name="core_task" additivity="false"> <level value="ALL" /> <appender-ref ref="core_task" /> <appender-ref ref="core_task_flume" /> </logger>
+	<logger name="core_action" additivity="false"> <level value="ALL" /> <appender-ref ref="core_action" /> <appender-ref ref="core_action_flume" /> </logger>
+	<logger name="core_market" additivity="false"> <level value="ALL" /> <appender-ref ref="core_market" /> <appender-ref ref="core_market_flume" /> </logger>
+	<logger name="dynamic_chat" additivity="false"> <level value="ALL" /> <appender-ref ref="dynamic_chat" /> <appender-ref ref="dynamic_chat_flume" /> </logger>
+	<logger name="monitor_mail" additivity="false"> <level value="ALL" /> <appender-ref ref="monitor_mail" /> <appender-ref ref="monitor_mail_flume" /> </logger>
+	<logger name="dynamic_4" additivity="false"> <level value="ALL" /> <appender-ref ref="dynamic_4" /> <appender-ref ref="dynamic_4_flume" /> </logger>
+	<logger name="static_4" additivity="false"> <level value="ALL" /> <appender-ref ref="static_4" /> <appender-ref ref="static_4_flume" /> </logger>
+	<logger name="vipInfo" additivity="false"> <level value="ALL" /> <appender-ref ref="vipInfo" /> <appender-ref ref="vipInfo_flume" /> </logger>
+	<logger name="dynamic_survey" additivity="false"><level value="ALL" /><appender-ref ref="dynamic_survey" /> <appender-ref ref="dynamic_survey_flume" /> </logger>
+	<root>
+		<priority value="info" />
+		<appender-ref ref="async-console" />
+		<appender-ref ref="async-console-file" />
+	</root>
+</log4j:configuration>
