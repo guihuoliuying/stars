@@ -1,9 +1,7 @@
 package com.stars.modules.tool.func.impl;
 
 import com.stars.core.module.Module;
-import com.stars.modules.MConst;
 import com.stars.modules.demologin.packet.ClientText;
-import com.stars.modules.fashioncard.FashionCardModule;
 import com.stars.modules.tool.func.ToolFunc;
 import com.stars.modules.tool.func.ToolFuncResult;
 import com.stars.modules.tool.productdata.ItemVo;
@@ -52,9 +50,6 @@ public class FashionCardToolFunc extends ToolFunc {
     @Override
     public Map<Integer, Integer> use(Map<String, Module> moduleMap, int count, Object... args) {
         if (count <= 0) return null;
-        FashionCardModule cardModule = (FashionCardModule) moduleMap.get(MConst.FashionCard);
-        int real = addUseHour * count;
-        cardModule.activeFashionCard(fashionCardId, real, fashionItemId);
         return null;
     }
 }

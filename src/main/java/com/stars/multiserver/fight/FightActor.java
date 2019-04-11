@@ -1,14 +1,16 @@
 package com.stars.multiserver.fight;
 
+import com.stars.core.actor.AbstractActor;
+import com.stars.core.actor.Actor;
 import com.stars.modules.demologin.packet.ClientText;
-import com.stars.modules.familyactivities.war.packet.ui.ServerFamilyWarSafeSceneEnter;
-import com.stars.modules.pk.packet.ConnectRegisterToFightServer;
 import com.stars.modules.scene.packet.ServerExitFight;
 import com.stars.multiserver.MultiServerHelper;
 import com.stars.multiserver.fight.handler.FightHandler;
-import com.stars.multiserver.fight.message.*;
+import com.stars.multiserver.fight.message.AddNewfighterToFightActor;
+import com.stars.multiserver.fight.message.NoticeFightServerAddServerOrder;
+import com.stars.multiserver.fight.message.NoticeFightServerReady;
+import com.stars.multiserver.fight.message.RemoveFromFightActor;
 import com.stars.multiserver.packet.StopFightActor;
-import com.stars.network.PacketUtil;
 import com.stars.network.server.buffer.NewByteBuffer;
 import com.stars.network.server.packet.Packet;
 import com.stars.network.server.packet.PacketManager;
@@ -16,8 +18,6 @@ import com.stars.server.connector.packet.FrontendClosedN2mPacket;
 import com.stars.server.main.message.Disconnected;
 import com.stars.util.LogUtil;
 import com.stars.util.LuaUtil;
-import com.stars.core.actor.AbstractActor;
-import com.stars.core.actor.Actor;
 import io.netty.buffer.UnpooledByteBufAllocator;
 import org.keplerproject.luajava.LuaObject;
 import org.keplerproject.luajava.LuaState;
@@ -76,8 +76,7 @@ public class FightActor extends AbstractActor {
     public void onReceived(Object message, Actor sender) {
         if (message instanceof FrontendClosedN2mPacket
                 || message instanceof Disconnected
-                || message instanceof ServerExitFight
-                || message instanceof ServerFamilyWarSafeSceneEnter) {
+                || message instanceof ServerExitFight) {
             Packet fp = (Packet) message;
             if (fightHandler != null) {
                 if (message instanceof FrontendClosedN2mPacket) {
@@ -85,9 +84,6 @@ public class FightActor extends AbstractActor {
                 }
                 if (message instanceof ServerExitFight) {
                     fightHandler.handleFighterExit(fp.getRoleId());
-                }
-                if (message instanceof ServerFamilyWarSafeSceneEnter) {
-                    fightHandler.handleFighterExitToFamilySafeScene(fp.getRoleId());
                 }
             }
             return;
@@ -99,15 +95,6 @@ public class FightActor extends AbstractActor {
             return;
         }
 
-        if (message instanceof AddMonsterMessage) {
-            addServerOrder(PacketUtil.packetToBytes(((AddMonsterMessage) message).getPacket()));
-            return;
-        }
-
-        if (message instanceof ConnectRegisterToFightServer) {
-            fightHandler.handChangeConn(((ConnectRegisterToFightServer) message).getFighter());
-            return;
-        }
         if (message instanceof NoticeFightServerReady) {
             NoticeFightServerReady ready = (NoticeFightServerReady) message;
             try {

@@ -4,13 +4,11 @@ import com.stars.core.player.Player;
 import com.stars.core.player.PlayerPacket;
 import com.stars.modules.MConst;
 import com.stars.modules.friend.FriendPacketSet;
-import com.stars.modules.marry.summary.MarrySummaryComponent;
 import com.stars.modules.role.summary.RoleSummaryComponent;
 import com.stars.network.server.buffer.NewByteBuffer;
 import com.stars.services.ServiceHelper;
 import com.stars.services.friend.userdata.BlackerPo;
 import com.stars.services.summary.Summary;
-import com.stars.services.summary.SummaryConst;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -93,12 +91,6 @@ public class ClientBlacker extends PlayerPacket {
             buff.writeInt(component.getRoleLevel());
             buff.writeInt(component.getFightScore());
             buff.writeInt(summary.getOfflineTimestamp());
-            MarrySummaryComponent comp = (MarrySummaryComponent) summary.getComponent(SummaryConst.C_MARRY);
-            if(comp != null){
-                buff.writeByte(comp.getMarryState());
-            }else{
-                buff.writeByte((byte)0);
-            }
         }
     }
 
@@ -111,12 +103,6 @@ public class ClientBlacker extends PlayerPacket {
         buff.writeInt(component.getRoleLevel());
         buff.writeInt(component.getFightScore());
         buff.writeInt(summary.getOfflineTimestamp());
-        MarrySummaryComponent comp = (MarrySummaryComponent) summary.getComponent(SummaryConst.C_MARRY);
-        if(comp != null){
-            buff.writeByte(comp.getMarryState());
-        }else{
-            buff.writeByte((byte)0);
-        }
     }
 
     private void writeBlackerIdList(com.stars.network.server.buffer.NewByteBuffer buff) {

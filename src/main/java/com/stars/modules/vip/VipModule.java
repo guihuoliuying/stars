@@ -1,12 +1,12 @@
 package com.stars.modules.vip;
 
 import com.stars.AccountRow;
+import com.stars.core.db.DBUtil;
 import com.stars.core.event.EventDispatcher;
 import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
 import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
-import com.stars.core.db.DBUtil;
 import com.stars.modules.MConst;
 import com.stars.modules.data.DataManager;
 import com.stars.modules.demologin.AccountRowAware;
@@ -81,8 +81,6 @@ public class VipModule extends AbstractModule implements OpActivityModule, Accou
         sendChargeSwitchState();
         // 检查发放vip等级奖励
         vipLevelUpReward(accountRow.getVipLevel(), roleVip.getTotalCharge(), Boolean.FALSE);
-        signCalRedPoint(MConst.Vip, RedPointConst.MONTHCARD_GETAWARD);
-        signCalRedPoint(MConst.Vip, RedPointConst.MONTHCARD_RENEW);
         vipCompensate();
     }
 
@@ -125,8 +123,6 @@ public class VipModule extends AbstractModule implements OpActivityModule, Accou
         roleVip.setDailyChargeSum(0);
         context().update(roleVip);
         sendUpdateVipData(ClientVipData.MONTH_CARD_DAILY_REWARD);
-        signCalRedPoint(MConst.Vip, RedPointConst.MONTHCARD_GETAWARD);
-        signCalRedPoint(MConst.Vip, RedPointConst.MONTHCARD_RENEW);
     }
 
     @Override
@@ -321,8 +317,6 @@ public class VipModule extends AbstractModule implements OpActivityModule, Accou
         ToolModule toolModule = module(MConst.Tool);
         toolModule.addAndSend(VipManager.monthCardAward, EventType.PAY.getCode());
         sendUpdateVipData(ClientVipData.MONTH_CARD_DAILY_REWARD);
-        signCalRedPoint(MConst.Vip, RedPointConst.MONTHCARD_GETAWARD);
-        signCalRedPoint(MConst.Vip, RedPointConst.MONTHCARD_RENEW);
     }
 
     @Override
@@ -432,8 +426,6 @@ public class VipModule extends AbstractModule implements OpActivityModule, Accou
         }
         roleVip.setMonthCardRest(roleVip.getMonthCardRest() + VipManager.monthCardDays);
         context().update(roleVip);
-        signCalRedPoint(MConst.Vip, RedPointConst.MONTHCARD_GETAWARD);
-        signCalRedPoint(MConst.Vip, RedPointConst.MONTHCARD_RENEW);
     }
 
     public boolean isOpActMonthCardOpen() {
@@ -607,8 +599,6 @@ public class VipModule extends AbstractModule implements OpActivityModule, Accou
         }
         roleVip.setMonthCardRest((byte) (roleVip.getMonthCardRest() + days));
         context().update(roleVip);
-        signCalRedPoint(MConst.Vip, RedPointConst.MONTHCARD_GETAWARD);
-        signCalRedPoint(MConst.Vip, RedPointConst.MONTHCARD_RENEW);
     }
 
     public int getDailyChargeSum() {

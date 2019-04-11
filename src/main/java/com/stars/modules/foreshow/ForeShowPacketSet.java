@@ -1,5 +1,6 @@
 package com.stars.modules.foreshow;
 
+
 import com.stars.modules.foreshow.packet.ClientForeShow;
 import com.stars.modules.foreshow.packet.ServerForeShow;
 import com.stars.network.PacketSet;
@@ -17,7 +18,7 @@ public class ForeShowPacketSet extends PacketSet {
     public static final short S_FORESHOW = 0x0161;//请求
 
     @Override
-    public List<Class<? extends com.stars.network.server.packet.Packet>> getPacketList() {
+    public List<Class<? extends Packet>> getPacketList() {
         List<Class<? extends Packet>> al = new ArrayList<>();
         al.add(ServerForeShow.class);
         al.add(ClientForeShow.class);

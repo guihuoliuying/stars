@@ -34,7 +34,6 @@ public class StatisticsJob implements Job{
 		stat_2_level();
 		stat_2_vip();
 		ServiceHelper.familyMainService().log_family();
-		ServiceHelper.skyRankLocalService().static_log();
 	}
 	
 	/**

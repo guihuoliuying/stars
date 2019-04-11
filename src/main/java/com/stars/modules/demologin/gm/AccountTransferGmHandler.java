@@ -5,7 +5,6 @@ import com.stars.modules.MConst;
 import com.stars.modules.demologin.LoginModule;
 import com.stars.modules.demologin.userdata.AccountTransfer;
 import com.stars.modules.gm.GmHandler;
-import com.stars.services.ServiceHelper;
 
 import java.util.Map;
 
@@ -23,12 +22,10 @@ public class AccountTransferGmHandler implements GmHandler {
             switch (accounts[0]) {
                 case "back": {
                     AccountTransfer accountTransfer=new AccountTransfer(accounts[1], accounts[2],System.currentTimeMillis());
-                    ServiceHelper.accountTransferService().transferBack(accountTransfer);
 
                 }
                 break;
                 case "transfer": {
-                    ServiceHelper.accountTransferService().transfer(accounts[1], accounts[2], "账号转移",null);
                 }
                 break;
             }

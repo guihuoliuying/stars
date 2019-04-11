@@ -4,13 +4,11 @@ import com.stars.core.player.Player;
 import com.stars.core.player.PlayerPacket;
 import com.stars.modules.MConst;
 import com.stars.modules.friend.FriendPacketSet;
-import com.stars.modules.marry.summary.MarrySummaryComponent;
 import com.stars.modules.role.summary.RoleSummaryComponent;
 import com.stars.network.server.buffer.NewByteBuffer;
 import com.stars.services.ServiceHelper;
 import com.stars.services.friend.userdata.ContactsPo;
 import com.stars.services.summary.Summary;
-import com.stars.services.summary.SummaryConst;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -93,12 +91,6 @@ public class ClientContacts extends PlayerPacket {
             buff.writeInt(component.getFightScore()); // 联系人战力
             buff.writeInt(summary.getOfflineTimestamp()); // 联系人离线时间
             buff.writeInt(po.getLastContactsTimestamp()); // 联系人最后联系时间
-            MarrySummaryComponent comp = (MarrySummaryComponent) summary.getComponent(SummaryConst.C_MARRY);
-            if(comp != null){
-                buff.writeByte(comp.getMarryState());
-            }else{
-                buff.writeByte((byte)0);
-            }
         }
     }
 

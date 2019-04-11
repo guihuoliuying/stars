@@ -3,15 +3,16 @@ package com.stars.modules.demologin.packet;
 import com.stars.AccountRow;
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerPacket;
-import com.stars.modules.changejob.ChangeJobManager;
-import com.stars.modules.changejob.prodata.ChangeJobVo;
 import com.stars.modules.demologin.LoginPacketSet;
 import com.stars.modules.demologin.userdata.AccountRole;
 import com.stars.modules.role.userdata.Role;
 import com.stars.network.server.buffer.NewByteBuffer;
 
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * 推送帐号角色列表;
@@ -126,12 +127,6 @@ public class ClientAccountRoleList extends PlayerPacket {
             }
             if (jobTypes.size() == 0) {
                 jobTypes = new ArrayList<>();
-                for (Map.Entry<Integer, ChangeJobVo> entry : ChangeJobManager.changeJobMap.entrySet()) {
-                    ChangeJobVo changeJobVo = entry.getValue();
-                    if (changeJobVo.getChange() == 1) {
-                        jobTypes.add(changeJobVo.getJobType());
-                    }
-                }
             }
             /**
              * 被激活的职业id

@@ -1,13 +1,12 @@
 package com.stars.modules.daily;
 
 import com.stars.core.attr.FormularUtils;
+import com.stars.core.db.DBUtil;
 import com.stars.core.event.EventDispatcher;
 import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
-import com.stars.core.db.DBUtil;
 import com.stars.modules.MConst;
-import com.stars.modules.buddy.BuddyModule;
 import com.stars.modules.daily.event.DailyCountUseUpEvent;
 import com.stars.modules.daily.packet.ClientDailyData;
 import com.stars.modules.daily.prodata.DailyAwardVo;
@@ -18,18 +17,13 @@ import com.stars.modules.daily.userdata.RoleTagFightDelta;
 import com.stars.modules.daily.userdata.RoleTmpDayInfo;
 import com.stars.modules.data.DataManager;
 import com.stars.modules.foreshow.ForeShowModule;
-import com.stars.modules.gem.GemModule;
-import com.stars.modules.masternotice.MasterNoticeManager;
-import com.stars.modules.newequipment.NewEquipmentModule;
 import com.stars.modules.redpoint.RedPointConst;
-import com.stars.modules.retrievereward.event.PreDailyRecordResetEvent;
 import com.stars.modules.role.RoleManager;
 import com.stars.modules.role.RoleModule;
 import com.stars.modules.serverLog.EventType;
 import com.stars.modules.serverLog.ServerLogModule;
 import com.stars.modules.tool.ToolManager;
 import com.stars.modules.tool.ToolModule;
-import com.stars.modules.vip.VipModule;
 import com.stars.util.LogUtil;
 import com.stars.util.StringUtil;
 
@@ -212,15 +206,9 @@ public class DailyModule extends AbstractModule {
      * 获得今日最多可玩次数
     */
     public byte getMaxCount(short dailyId){
-    	if (dailyId == DailyManager.DAILYID_MASTER_NOTICE) {//皇榜悬赏的总次数，需要做特殊处理
-    		VipModule vipModule = (VipModule)module(MConst.Vip);
-    		int myNobleLevel = vipModule.getVipLevel();
-			return (byte) MasterNoticeManager.getTotalCountByNobelLevel(myNobleLevel);
-		}else{
 			DailyVo dv = DailyManager.getDailyVo(dailyId);
 			if(dv == null) return 0;
 			return dv.getCount();
-		}
     }
     
     //获取对应的活跃次数;
@@ -330,8 +318,7 @@ public class DailyModule extends AbstractModule {
     }
     
     public void tellDailyReset(){
-    	Map<Short, Integer> tempMap = new HashMap<Short, Integer>(this.dailyRecord.getRecordMap());
-        eventDispatcher().fire(new PreDailyRecordResetEvent(tempMap));//通知日常活动将要重置
+
     }
 
     /**
@@ -559,13 +546,6 @@ public class DailyModule extends AbstractModule {
         }
 
         //宝石、装备、伙伴系统的特殊处理
-        if(sysName.equals(RoleManager.FIGHTSCORE_GEM)){
-            return context().recordMap().getInt(GemModule.GEM_MAX_HISTORY_FIGHTSCORE,0);
-        }else if(sysName.equals(RoleManager.FIGHTSCORE_EQUIPMENT)){
-            return context().recordMap().getInt(NewEquipmentModule.NEWEQUIPMENT_MAX_HISTORY_FIGHTSCORE,0);
-        }else if(sysName.equals(MConst.Buddy)){
-            return context().recordMap().getInt(BuddyModule.BUDDY_MAX_HISTORY_FIGHTSCORE,0);
-        }
 
         RoleModule roleModule = (RoleModule) module(MConst.Role);
         Map<String, Integer> fightScoreMap = roleModule.getRoleRow().getFightScoreMap();
@@ -791,15 +771,11 @@ public class DailyModule extends AbstractModule {
         //计算需要减掉的战力
         Map<String, Integer> fightScoreMap = roleModule.getRoleRow().getFightScoreMap();
         for(String sysName:fightScoreMap.keySet()){
-            if(!(sysName.equals(RoleManager.FIGHTSCORE_GEM) || sysName.equals(RoleManager.FIGHTSCORE_EQUIPMENT) || sysName.equals(MConst.Buddy)))
+            if (!(sysName.equals(RoleManager.FIGHTSCORE_GEM) || sysName.equals(RoleManager.FIGHTSCORE_EQUIPMENT)))
                 continue;
             needReduceFightScore += fightScoreMap.get(sysName);
         }
         //计算需要增加的战力
-        int maxGemHistoryFightScore = context().recordMap().getInt(GemModule.GEM_MAX_HISTORY_FIGHTSCORE,0);
-        int maxEquipmentHistoryFightScore = context().recordMap().getInt(NewEquipmentModule.NEWEQUIPMENT_MAX_HISTORY_FIGHTSCORE,0);
-        int maxBuddyHistoryFightScore = context().recordMap().getInt(BuddyModule.BUDDY_MAX_HISTORY_FIGHTSCORE,0);
-        needIncreFightScore = maxGemHistoryFightScore + maxEquipmentHistoryFightScore + maxBuddyHistoryFightScore;
         //获得玩家历史最高战力
         totalFightScore = totalFightScore - needReduceFightScore + needIncreFightScore;
 

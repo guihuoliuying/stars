@@ -2,10 +2,6 @@ package com.stars.multiserver;
 
 import com.stars.bootstrap.ServerManager;
 import com.stars.core.db.DBUtil;
-import com.stars.modules.pk.packet.ModifyConnectorRoute;
-import com.stars.network.server.packet.PacketManager;
-import com.stars.network.server.session.GameSession;
-import com.stars.network.server.session.SessionManager;
 import com.stars.util.I18n;
 import com.stars.util.LogUtil;
 
@@ -29,12 +25,12 @@ public class MultiServerHelper {
     public static String SOCKETCLIENT_FLAG_LOOTSERVER2FIGHTSERVER = "lootserver2fightserver";
 
     public static void modifyConnectorRoute(long roleId, int aimServer) {
-        com.stars.util.LogUtil.info("切换连接, roleId={}, toServerId={}", roleId, aimServer);
-        ModifyConnectorRoute modifyConnectorRoute = new ModifyConnectorRoute();
-        modifyConnectorRoute.setServerId(aimServer);
-        modifyConnectorRoute.setRoleId(roleId);
-        GameSession gs = SessionManager.getSessionMap().get(roleId);
-        PacketManager.send(gs, modifyConnectorRoute);
+//        com.stars.util.LogUtil.info("切换连接, roleId={}, toServerId={}", roleId, aimServer);
+//        ModifyConnectorRoute modifyConnectorRoute = new ModifyConnectorRoute();
+//        modifyConnectorRoute.setServerId(aimServer);
+//        modifyConnectorRoute.setRoleId(roleId);
+//        GameSession gs = SessionManager.getSessionMap().get(roleId);
+//        PacketManager.send(gs, modifyConnectorRoute);
     }
 
     public static int getServerId() {

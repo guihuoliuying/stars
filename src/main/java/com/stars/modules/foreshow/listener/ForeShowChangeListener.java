@@ -1,5 +1,6 @@
 package com.stars.modules.foreshow.listener;
 
+
 import com.stars.core.event.Event;
 import com.stars.core.module.AbstractEventListener;
 import com.stars.modules.foreshow.ForeShowModule;

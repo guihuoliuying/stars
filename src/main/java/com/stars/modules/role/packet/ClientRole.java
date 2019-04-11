@@ -3,7 +3,6 @@ package com.stars.modules.role.packet;
 import com.stars.core.attr.Attribute;
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerPacket;
-import com.stars.modules.camp.usrdata.RoleCampPo;
 import com.stars.modules.role.RoleManager;
 import com.stars.modules.role.RolePacketSet;
 import com.stars.modules.role.prodata.Grade;
@@ -46,7 +45,6 @@ public class ClientRole extends PlayerPacket {
     private List<String> dragonBallIdList; //外显Id （龙珠）
     private int levelSpeedUpAddtion;//等级加速 经验加成
     private Role role;
-    private RoleCampPo roleCampPo;
     private int clientSystemConstant = 0;//客户端系统常量,为了资源变化做提示用;
     private byte isShow = 1;// 战力通知是否提示,默认需要弹出提示
 
@@ -156,11 +154,6 @@ public class ClientRole extends PlayerPacket {
         buffer.writeString(curResource.getHeadIcon());
         buffer.writeInt(curResource.getNpctalkmodel());
         buffer.writeInt(role.getSafeStageId());
-        if (roleCampPo != null) {
-            buffer.writeInt(roleCampPo.getCampType());//所属阵营,0表示没有阵营
-        } else {
-            buffer.writeInt(0);
-        }
         buffer.writeInt(role.getBabyStage());
         buffer.writeInt(role.getBabyLevel());
         buffer.writeInt(role.getCurFashionCardId());
@@ -278,11 +271,4 @@ public class ClientRole extends PlayerPacket {
         this.levelSpeedUpAddtion = levelSpeedUpAddtion;
     }
 
-    public RoleCampPo getRoleCampPo() {
-        return roleCampPo;
-    }
-
-    public void setRoleCampPo(RoleCampPo roleCampPo) {
-        this.roleCampPo = roleCampPo;
-    }
 }

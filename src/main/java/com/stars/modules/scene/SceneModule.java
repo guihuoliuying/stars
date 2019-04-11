@@ -1,16 +1,14 @@
 package com.stars.modules.scene;
 
+import com.stars.core.db.DBUtil;
 import com.stars.core.event.Event;
 import com.stars.core.event.EventDispatcher;
 import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerPacket;
-import com.stars.core.db.DBUtil;
 import com.stars.modules.MConst;
 import com.stars.modules.demologin.LoginModule;
-import com.stars.modules.familyactivities.invade.FamilyInvadeModule;
-import com.stars.modules.gamecave.GameCaveManager;
 import com.stars.modules.role.RoleModule;
 import com.stars.modules.scene.event.BackCityEvent;
 import com.stars.modules.scene.event.EnterSceneEvent;
@@ -19,7 +17,6 @@ import com.stars.modules.scene.event.TalkWithNpcEvent;
 import com.stars.modules.scene.packet.ClientCampVo;
 import com.stars.modules.scene.packet.ClientDrama;
 import com.stars.modules.scene.packet.ClientRoleRevive;
-import com.stars.modules.scene.packet.ServerAreaSpawnMonster;
 import com.stars.modules.scene.packet.clientEnterFight.ClientEnterFight;
 import com.stars.modules.scene.prodata.*;
 import com.stars.modules.scene.userdata.RoleDrama;
@@ -27,7 +24,6 @@ import com.stars.modules.serverLog.EventType;
 import com.stars.modules.skill.prodata.SkillVo;
 import com.stars.modules.tool.ToolModule;
 import com.stars.network.server.packet.Packet;
-import com.stars.services.ServiceHelper;
 import com.stars.util.I18n;
 import com.stars.util.LogUtil;
 import com.stars.util.StringUtil;
@@ -112,7 +108,6 @@ public class SceneModule extends AbstractModule {
             SafeinfoVo safeinfoVo = SceneManager.getSafeVo(roleModule.getSafeStageId());
             /**当退出游戏前所在场景为游园场景时，需特殊处理，直接把玩家放到指定主城*/
             if ((byte) safeinfoVo.getType() == SceneManager.SCENETYPE_GAMECAVE) {
-                roleModule.updateSafeStageId(GameCaveManager.defaultCityId);
             }
 
             enterScene(SceneManager.SCENETYPE_CITY, roleModule.getSafeStageId(), "");
@@ -240,23 +235,7 @@ public class SceneModule extends AbstractModule {
      * @param
      */
     public void areaSpawnMonster(byte sceneType, PlayerPacket packet) {
-        if (sceneType == SceneManager.SCENETYPE_TEAMDUNGEON) {
-            ServiceHelper.teamDungeonService().receiveFightPacket(packet);
-        } else if (sceneType == SceneManager.SCENETYPE_ELITEDUNGEON) {
-            ServiceHelper.eliteDungeonService().receiveFightPacket(packet);
-        } else if (sceneType == SceneManager.SCENETYPE_FAMILY_INVADE) {
-            FamilyInvadeModule familyInvadeModule = module("family.act.invade");
-            familyInvadeModule.receiveFightPacket(packet);
-        } else if (sceneType == SceneManager.SCENETYPE_ROB_ROBOT) {
-            ServiceHelper.escortService().receiveFightPacket(packet);
-        } else if (sceneType == SceneManager.SCENETYPE_MARRY_DUNGEON) {
-            ServiceHelper.teamDungeonService().receiveMarryFightPacket(packet);
-        } else {
-            if (scene instanceof FightScene) {
-                ServerAreaSpawnMonster serverAreaSpawnMonster = (ServerAreaSpawnMonster) packet;
-                ((FightScene) scene).areaSpawnMonster(moduleMap(), serverAreaSpawnMonster.getSpawnId());
-            }
-        }
+
     }
 
     /**
@@ -286,11 +265,7 @@ public class SceneModule extends AbstractModule {
      * 开始/继续战斗场景计时
      */
     public void startFightTime(byte sceneType) {
-        if (sceneType == SceneManager.SCENETYPE_ELITEDUNGEON) {
-            ServiceHelper.eliteDungeonService().startFightTime(id());
-        } else if (sceneType == SceneManager.SCENETYPE_CAMP_CITY_FIGHT) {
-            ServiceHelper.campCityFightService().startFightTime(id());
-        } else {
+        {
             if (scene instanceof FightScene) {
                 com.stars.network.server.packet.Packet packet = ((FightScene) scene).startFightTime();
                 if (packet != null)
@@ -480,20 +455,7 @@ public class SceneModule extends AbstractModule {
      * @param packet
      */
     public void receiveFightPacket(byte sceneType, PlayerPacket packet) {
-        if (sceneType == SceneManager.SCENETYPE_TEAMDUNGEON) {
-            ServiceHelper.teamDungeonService().receiveFightPacket(packet);
-        } else if (sceneType == SceneManager.SCENETYPE_ELITEDUNGEON) {
-            ServiceHelper.eliteDungeonService().receiveFightPacket(packet);
-        } else if (sceneType == SceneManager.SCENETYPE_FAMILY_INVADE) {
-            FamilyInvadeModule familyInvadeModule = module("family.act.invade");
-            familyInvadeModule.receiveFightPacket(packet);
-        } else if (sceneType == SceneManager.SCENETYPE_ROB_ROBOT) {
-            ServiceHelper.escortService().receiveFightPacket(packet);
-        } else if (sceneType == SceneManager.SCENETYPE_MARRY_DUNGEON) {
-            ServiceHelper.teamDungeonService().receiveMarryFightPacket(packet);
-        } else if (sceneType == SceneManager.SCENETYPE_CAMP_CITY_FIGHT) {
-            ServiceHelper.campCityFightService().receiveFightPacket(packet);
-        } else {
+        {
             if (scene instanceof FightScene) {
                 ((FightScene) scene).receivePacket(moduleMap(), packet);
             }
@@ -553,11 +515,7 @@ public class SceneModule extends AbstractModule {
             }
         }
         boolean result = false;
-        if (stageType == SceneManager.SCENETYPE_TEAMDUNGEON || stageType == SceneManager.SCENETYPE_MARRY_DUNGEON) {
-            result = ServiceHelper.teamDungeonService().checkResurgence(id());
-        } else if (stageType == SceneManager.SCENETYPE_ELITEDUNGEON) {
-            result = ServiceHelper.eliteDungeonService().checkResurgence(id());
-        } else {
+        {
             if (scene instanceof FightScene) {
                 result = ((FightScene) scene).checkRevive(String.valueOf(id()));
             }

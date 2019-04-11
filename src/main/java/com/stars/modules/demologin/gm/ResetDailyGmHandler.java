@@ -8,7 +8,6 @@ import com.stars.modules.gm.GmHandler;
 import com.stars.modules.role.RoleModule;
 import com.stars.services.ServiceHelper;
 import com.stars.services.chat.ChatManager;
-import com.stars.services.rank.RankConstant;
 
 import java.util.Map;
 
@@ -30,14 +29,10 @@ public class ResetDailyGmHandler implements GmHandler {
         LoginModuleHelper.resetDaily(false);
         LoginModuleHelper.FiveOClockResetDaily(false);
         // 排行榜每日发奖
-        ServiceHelper.rankService().rewardHandler(RankConstant.REWARD_TYPE_DAILY);
         ServiceHelper.familyMainService().resetDaily();
         // 排行榜每日重置
-        ServiceHelper.rankService().dailyReset();
         // 召唤boss每日重置
-        ServiceHelper.callBossService().dailyReset();
         // 离线pvp每日重置
-        ServiceHelper.offlinePvpService().dailyReset();
         //重置所有活动
         //ServiceHelper.operateActivityService().resetAllActivitise();
     }

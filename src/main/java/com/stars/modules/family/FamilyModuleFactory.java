@@ -1,11 +1,10 @@
 package com.stars.modules.family;
 
+import com.stars.core.db.DBUtil;
 import com.stars.core.event.EventDispatcher;
 import com.stars.core.module.AbstractModuleFactory;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
-import com.stars.core.db.DBUtil;
-import com.stars.modules.changejob.event.ChangeJobEvent;
 import com.stars.modules.family.event.*;
 import com.stars.modules.family.gm.FamilyEmailGmHandler;
 import com.stars.modules.family.gm.FamilyGmHandler;
@@ -13,14 +12,11 @@ import com.stars.modules.family.gm.FamilyRedPacketGmHandler;
 import com.stars.modules.family.gm.FamilySkillGmHandler;
 import com.stars.modules.family.listener.*;
 import com.stars.modules.family.prodata.FamilySkillVo;
-import com.stars.modules.family.submodules.shop.FamilyShopExtCondHandle;
 import com.stars.modules.family.summary.FamilySummaryComponentImpl;
-import com.stars.modules.familyactivities.treasure.event.LeaveOrKickOutFamilyEvent;
 import com.stars.modules.gm.GmManager;
 import com.stars.modules.name.event.RoleRenameEvent;
 import com.stars.modules.role.event.FightScoreChangeEvent;
 import com.stars.modules.role.event.RoleLevelUpEvent;
-import com.stars.modules.shop.ShopManager;
 import com.stars.services.family.main.prodata.FamilyLevelVo;
 import com.stars.services.summary.Summary;
 import com.stars.util.MapUtil;
@@ -48,7 +44,6 @@ public class FamilyModuleFactory extends AbstractModuleFactory<FamilyModule> {
         GmManager.reg("familyskill", new FamilySkillGmHandler());
         GmManager.reg("familyemail", new FamilyEmailGmHandler());
 
-        ShopManager.registerHandle(ShopManager.SHOPTYPE_FAMILY, FamilyShopExtCondHandle.class);
 
         Summary.regComponentClass("family", FamilySummaryComponentImpl.class);
 
@@ -72,8 +67,6 @@ public class FamilyModuleFactory extends AbstractModuleFactory<FamilyModule> {
         eventDispatcher.reg(FamilyRemoveApplyEvent.class, new FamilyRemoveApplyListener((FamilyModule) module));
         eventDispatcher.reg(FamilyContributionEvent.class, new FamilyContributionListener((FamilyModule) module));
         eventDispatcher.reg(FamilyChangeRedPacketEvent.class, new FamilyChangeRedPacketListener((FamilyModule) module));
-        eventDispatcher.reg(LeaveOrKickOutFamilyEvent.class, new FamilyRemoveApplyListener((FamilyModule) module));
-        eventDispatcher.reg(ChangeJobEvent.class, listener);
         eventDispatcher.reg(RoleRenameEvent.class, listener);
     }
 

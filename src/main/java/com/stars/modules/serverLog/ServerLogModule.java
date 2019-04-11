@@ -1,8 +1,5 @@
 package com.stars.modules.serverLog;
 
-import com.stars.AccountRow;
-import com.stars.core.attr.Attribute;
-import com.stars.core.attr.FormularUtils;
 import com.stars.core.event.EventDispatcher;
 import com.stars.core.gmpacket.giftpackage.GiftLogEvent;
 import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
@@ -10,46 +7,14 @@ import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
 import com.stars.modules.MConst;
-import com.stars.modules.baby.BabyModule;
-import com.stars.modules.book.BookModule;
-import com.stars.modules.buddy.BuddyModule;
-import com.stars.modules.camp.CampModule;
-import com.stars.modules.camp.usrdata.RoleCampPo;
-import com.stars.modules.chargepreference.ChargePrefManager;
-import com.stars.modules.chargepreference.prodata.ChargePrefVo;
 import com.stars.modules.daily.DailyManager;
 import com.stars.modules.daily.event.DailyFuntionEvent;
 import com.stars.modules.daily.prodata.DailyBallStageVo;
 import com.stars.modules.data.DataManager;
-import com.stars.modules.deityweapon.DeityWeaponManager;
-import com.stars.modules.deityweapon.DeityWeaponModule;
-import com.stars.modules.deityweapon.userdata.RoleDeityWeapon;
 import com.stars.modules.demologin.userdata.LoginInfo;
 import com.stars.modules.email.event.EmailLogEvent;
-import com.stars.modules.fashion.FashionModule;
-import com.stars.modules.fashion.userdata.RoleFashion;
-import com.stars.modules.fashioncard.FashionCardModule;
-import com.stars.modules.gem.GemConstant;
-import com.stars.modules.gem.GemModule;
-import com.stars.modules.gem.prodata.GemLevelVo;
-import com.stars.modules.guest.GuestManager;
-import com.stars.modules.guest.GuestModule;
-import com.stars.modules.guest.userdata.RoleGuest;
-import com.stars.modules.newequipment.NewEquipmentManager;
-import com.stars.modules.newequipment.NewEquipmentModule;
-import com.stars.modules.newequipment.prodata.TokenSkillVo;
-import com.stars.modules.newequipment.userdata.RoleEquipment;
-import com.stars.modules.newserversign.NewServerSignModule;
-import com.stars.modules.onlinereward.OnlineRewardModule;
-import com.stars.modules.push.PushManager;
 import com.stars.modules.push.event.PushActivedEvent;
 import com.stars.modules.push.event.PushInfo;
-import com.stars.modules.push.prodata.PushVo;
-import com.stars.modules.ride.RideManager;
-import com.stars.modules.ride.RideModule;
-import com.stars.modules.ride.prodata.RideInfoVo;
-import com.stars.modules.ride.prodata.RideLevelVo;
-import com.stars.modules.ride.userdata.RoleRidePo;
 import com.stars.modules.role.RoleManager;
 import com.stars.modules.role.RoleModule;
 import com.stars.modules.role.event.FightScoreChangeEvent;
@@ -57,20 +22,8 @@ import com.stars.modules.role.event.RoleLevelUpEvent;
 import com.stars.modules.role.summary.RoleSummaryComponent;
 import com.stars.modules.scene.SceneManager;
 import com.stars.modules.scene.SceneModule;
-import com.stars.modules.sevendaygoal.SevenDayGoalModule;
-import com.stars.modules.skill.SkillModule;
-import com.stars.modules.skill.userdata.RoleSkill;
-import com.stars.modules.skyrank.SkyRankManager;
-import com.stars.modules.skyrank.prodata.SkyRankGradVo;
-import com.stars.modules.skyrank.userdata.SimpleRolePo;
-import com.stars.modules.title.TitleModule;
-import com.stars.modules.tool.ToolManager;
-import com.stars.modules.tool.productdata.ItemVo;
-import com.stars.modules.tool.userdata.RoleTokenEquipmentHolePo;
-import com.stars.modules.trump.TrumpModule;
 import com.stars.modules.vip.event.VipLevelupEvent;
 import com.stars.multiserver.MultiServerHelper;
-import com.stars.multiserver.camp.usrdata.AllServerCampPo;
 import com.stars.services.ServiceHelper;
 import com.stars.services.chat.ChatMessage;
 import com.stars.services.family.main.userdata.FamilyLogData;
@@ -82,9 +35,10 @@ import com.stars.util.ServerLogConst;
 import com.stars.util.StringUtil;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Iterator;
+import java.util.Map;
 
-import static com.stars.modules.ride.RideManager.getRideLvById;
+
 
 public class ServerLogModule extends AbstractModule {
     //基本信息,调用getBaseInfo()初始化
@@ -1718,162 +1672,20 @@ public class ServerLogModule extends AbstractModule {
      * 装备运营静态日志
      */
     private void equipmentLog(byte status) {
-        NewEquipmentModule newEquipmentModule = module(MConst.NewEquipment);
-        if (newEquipmentModule == null) return;
-        StringBuffer codeBuff = new StringBuffer();
-        codeBuff.append("equip_part@equip_code:");
-
-        StringBuffer levelBuff = new StringBuffer();
-        levelBuff.append("equip_part@equip_lv:");
-
-        StringBuffer qualiyBuff = new StringBuffer();
-        qualiyBuff.append("equip_part@equip_quality:");
-
-        StringBuffer strenghBuff = new StringBuffer();
-        strenghBuff.append("equip_part@equip_streng:");
-
-        StringBuffer starBuff = new StringBuffer();
-        starBuff.append("equip_part@equip_star:");
-
-        StringBuffer washBuff = new StringBuffer();
-        washBuff.append("equip_part@equip_number:");
-
-        RoleEquipment roleEquipment;
-        ItemVo itemVo;
-        for (byte part = 1, len = (byte) newEquipmentModule.getRoleEquipMap().size(); part <= len; part++) {
-            roleEquipment = newEquipmentModule.getRoleEquipByType(part);
-
-            codeBuff.append(part).append("@");
-            levelBuff.append(part).append("@");
-            qualiyBuff.append(part).append("@");
-            strenghBuff.append(part).append("@");
-            starBuff.append(part).append("@");
-            washBuff.append(part).append("@");
-
-            if (roleEquipment == null) {
-                codeBuff.append("0");
-                levelBuff.append("0");
-                qualiyBuff.append("0");
-                strenghBuff.append("0");
-                starBuff.append("0");
-                washBuff.append("0");
-            } else {
-                codeBuff.append(roleEquipment.getEquipId());
-                levelBuff.append(roleEquipment.getEquipLevel());
-                strenghBuff.append(roleEquipment.getStrengthLevel());
-                starBuff.append(roleEquipment.getStarLevel());
-                washBuff.append(roleEquipment.getExtraAttrMap() == null ? 0 : roleEquipment.getExtraAttrMap().size());
-
-                itemVo = ToolManager.getItemVo(roleEquipment.getEquipId());
-                qualiyBuff.append(itemVo == null ? 0 : itemVo.getColor());
-            }
-
-            if (part != len) {
-                codeBuff.append("&");
-                levelBuff.append("&");
-                qualiyBuff.append("&");
-                strenghBuff.append("&");
-                starBuff.append("&");
-                washBuff.append("&");
-            } else {
-                codeBuff.append("#");
-                levelBuff.append("#");
-                qualiyBuff.append("#");
-                strenghBuff.append("#");
-                starBuff.append("#");
-                washBuff.append("#");
-            }
-        }
-        StringBuffer sb = new StringBuffer();
-        sb.append(codeBuff.toString()).append(levelBuff.toString()).append(qualiyBuff.toString())
-                .append(strenghBuff.toString()).append(starBuff.toString()).append(washBuff.toString());
-        static_4_Log(ThemeType.STATIC_EQUIP.getThemeId(), status, sb.toString());
     }
 
     /**
      * 坐骑运营静态日志
      */
     private void rideLog(byte status) {
-        RideModule rideModule = module(MConst.Ride);
-        if (rideModule == null || rideModule.getRidePoMap() == null) return;
-        StringBuffer sb = new StringBuffer();
-        sb.append("ride_code@awaken:");
-        int curCode = 0;
-        Map<Integer, RoleRidePo> roleRidePoMap = rideModule.getRidePoMap();
-        RoleRidePo roleRidePo;
-        for (RideInfoVo rideInfoVo : RideManager.rideInfoVoMap.values()) {
-            sb.append(rideInfoVo.getRideId()).append("@");
-            if (roleRidePoMap == null) {
-                sb.append("0&");
-            } else {
-                roleRidePo = roleRidePoMap.get(rideInfoVo.getRideId());
-                if (roleRidePo == null) {
-                    sb.append("0&");
-                } else {
-                    sb.append(roleRidePo.getOwned()).append("&");
-                    if (roleRidePo.isActive()) {
-                        curCode = roleRidePo.getRideId();
-                    }
-                }
-            }
-        }
-        sb.deleteCharAt(sb.length() - 1);
-        sb.append("#now_ride:").append(curCode).append("#");
-        RoleModule roleModule = module(MConst.Role);
-        if (roleModule == null) {
-            sb.append("ride_lv:0#ride_stagelevel:0");
-        } else {
-            int roleRideLvId = roleModule.getRideLevelId();
-            RideLevelVo currLevelVo = getRideLvById(roleRideLvId);
-            if (currLevelVo == null) {
-                sb.append("ride_lv:0#ride_stagelevel:0");
-            } else {
-                sb.append("ride_lv:").append(currLevelVo.getLevel()).append("#");
-                sb.append("ride_stagelevel:").append(currLevelVo.getStagelevel());
-            }
-        }
-        sb.append("#");
-        sb.append("ride_code@awake_level:");
-        Map<Integer, Integer> awakeLevelMap = new HashMap<>();
-        for (RoleRidePo po : roleRidePoMap.values()) {
-            awakeLevelMap.put(po.getRideId(), po.getAwakeLevel());
-        }
-        sb.append(StringUtil.makeString(awakeLevelMap, '@', '&')).append("#");
-        static_4_Log(ThemeType.STATIC_RIDE.getThemeId(), status, sb.toString());
+
     }
 
     /**
      * 神兵运营静态日志
      */
     private void deityWeaponLog(byte status) {
-        DeityWeaponModule deityWeaponModule = module(MConst.Deity);
-        if (deityWeaponModule == null) return;
-        RoleDeityWeapon roleDeityWeapon;
-        StringBuffer activeBuff = new StringBuffer();
-        activeBuff.append("deityweapon_code@awaken:");
-        StringBuffer levelBuff = new StringBuffer();
-        levelBuff.append("deityweapon_code@level:");
-        byte totalType = (byte) DeityWeaponManager.getDeityWeaponLevelVoMap().keySet().size();
-        for (byte type = 1; type <= totalType; type++) {
-            roleDeityWeapon = deityWeaponModule.getRoleDeityWeaponByType(type);
-            activeBuff.append(type).append("@");
-            if (roleDeityWeapon == null) {
-                activeBuff.append("0");
-                levelBuff.append("0");
-            } else {
-                activeBuff.append(roleDeityWeapon.isExpired() ? "0" : "1");
-                levelBuff.append(roleDeityWeapon.isExpired() ? "0" : roleDeityWeapon.getLevel());
-            }
-            if (type < totalType) {
-                activeBuff.append("&");
-                levelBuff.append("&");
-            } else {
-                activeBuff.append("#");
-            }
-        }
-        StringBuffer sb = new StringBuffer();
-        sb.append(activeBuff.toString()).append(levelBuff.toString());
-        static_4_Log(ThemeType.STATIC_DEITY.getThemeId(), status, sb.toString());
+
     }
 
     private String getEquipLogNameByType(byte type) {
@@ -1898,143 +1710,40 @@ public class ServerLogModule extends AbstractModule {
      * 宝石运营静态日志
      */
     private void gemStoneLog(byte status) {
-        GemModule gemModule = module(MConst.GEM);
-        if (gemModule == null) return;
 
-        StringBuffer sb = new StringBuffer();
-        List<GemLevelVo> list;
-        int j;
-        for (byte i = 1, len = GemConstant.EQUIPMENT_MAX_COUNT; i <= len; i++) {
-            sb.append(getEquipLogNameByType(i)).append(":");
-            list = gemModule.getEquipmentGemList(i);
-            if (list == null) {
-                sb.append("0@0@0@0@0@0#");
-            } else {
-                j = 0;
-                for (GemLevelVo vo : list) {
-                    sb.append(vo.getItemId()).append("@");
-                    j++;
-                }
-                while (j < 6) {        //补0
-                    j++;
-                    sb.append("0@");
-                }
-                if (sb.length() > 0) {
-                    sb.deleteCharAt(sb.length() - 1);
-                    sb.append("#");
-                }
-            }
-        }
-        static_4_Log(ThemeType.STATIC_GEM.getThemeId(), status, sb.toString());
     }
 
     /**
      * 门客运营静态日志
      */
     private void guestLog(byte status) {
-        GuestModule guestModule = module(MConst.Guest);
-        if (guestModule == null || StringUtil.isEmpty(guestModule.getGuestMap())) return;
 
-        StringBuffer sb = new StringBuffer();
-        sb.append("guest_code@level:");
-        boolean flag = false;
-        Map<Integer, RoleGuest> map = guestModule.getGuestMap();
-        RoleGuest roleGuest;
-        for (int guestId : GuestManager.getAllGuestId()) {
-            sb.append(guestId).append("@");
-            if (map == null) {
-                sb.append(0).append("&");
-            } else {
-                roleGuest = map.get(guestId);
-                if (roleGuest == null) {
-                    sb.append(0).append("&");
-                } else {
-                    sb.append(roleGuest.getLevel()).append("&");
-                }
-            }
-        }
-        sb.deleteCharAt(sb.length() - 1);
-        static_4_Log(ThemeType.STATIC_GUEST.getThemeId(), status, sb.toString());
     }
 
     /**
      * 技能运营静态日志
      */
     private void skillLog(byte status) {
-        SkillModule skillModule = module(MConst.Skill);
-        if (skillModule == null || skillModule.getRoleSkill() == null ||
-                skillModule.getRoleSkill().getSkillLevelMap() == null) return;
-        StringBuffer sb = new StringBuffer();
-
-        //技能等级：
-        sb.append("skill_code@level:");
-        boolean flag = false;
-        RoleSkill roleSkill = skillModule.getRoleSkill();
-        for (Map.Entry<Integer, Integer> entry : roleSkill.getSkillLevelMap().entrySet()) {
-            sb.append(entry.getKey()).append("@").append(entry.getValue()).append("&");
-            flag = true;
-        }
-        if (flag) {
-            sb.deleteCharAt(sb.length() - 1);
-            sb.append("#");
-        } else {
-            sb.append("0@0#");
-        }
-
-        //使用技能位置：
-        sb.append("skill_hole@code:");
-        if (roleSkill.getUseSkillMap() == null) {
-            sb.append("0@0&1@0&2@0&3@0&4@0&5@0&6@0");
-        } else {
-            Integer skillId;
-            for (byte pos = 0; pos <= 6; pos++) {
-                sb.append(pos).append("@");
-                skillId = roleSkill.getUseSkillMap().get(pos);
-                sb.append(skillId == null ? 0 : skillId);
-                if (pos < 6) {
-                    sb.append("&");
-                }
-            }
-        }
-        static_4_Log(ThemeType.STATIC_SKILL.getThemeId(), status, sb.toString());
     }
 
     /**
      * 在线奖励运营静态日志
      */
     private void onlineRewardLog(byte status) {
-        OnlineRewardModule onlineRewardModule = module(MConst.OnlineReward);
-        if (onlineRewardModule == null) return;
-
-        String logString = onlineRewardModule.getLoginLogoutLogString();
-
-        static_4_Log(ThemeType.STATIC_ONLINE_AWARD.getThemeId(), status, logString);
     }
 
     /**
      * 七日目标运营静态日志
      */
     private void sevenDayGoalLog(byte status) {
-        SevenDayGoalModule sevenDayGoalModule = module(MConst.SevenDayGoal);
-        if (sevenDayGoalModule == null) return;
 
-        String logString = sevenDayGoalModule.getLoginLogoutLogString();
-        if (logString.equals("")) return;
-
-        static_4_Log(ThemeType.STATIC_SEVEN_DAY_GOAL.getThemeId(), status, logString);
     }
 
     /**
      * 新服签到运营静态日志
      */
     private void newServerSignLog(byte status) {
-        NewServerSignModule newServerSignModule = module(MConst.NewServerSign);
-        if (newServerSignModule == null) return;
 
-        String logString = newServerSignModule.getLoginLogoutLogString();
-        if (logString.equals("")) return;
-
-        static_4_Log(ThemeType.STATIC_NEW_SERVER_SIGN.getThemeId(), status, logString);
     }
 
     /**
@@ -2100,23 +1809,12 @@ public class ServerLogModule extends AbstractModule {
 
     private String makeFsFashionStr(Map<String, Integer> fightScoreMap) {
         StringBuilder sb = new StringBuilder();
-        sb.append("fashion:").append(getFightScore(fightScoreMap, "fashion")).append("#"); // 时装
-        BabyModule babyModule = module(MConst.Baby);
-        Attribute attribute = babyModule.calBabyFashionAttr();
-        int fightScore = FormularUtils.calFightScore(attribute);
-        sb.append("baby_fashion:").append(fightScore).append("#"); // 时装
+
         return sb.toString();
     }
 
     private String makeFsBabyStr() {
-        BabyModule babyModule = module(MConst.Baby);
-        int power = babyModule.getRoleBaby().getPower();
-        Attribute attribute = babyModule.calBabyFashionAttr();
-        int fightScore = FormularUtils.calFightScore(attribute);
-        StringBuilder sb = new StringBuilder("baby:");
-        sb.append(power - fightScore);
-        sb.append("#");
-        return sb.toString();
+        return null;
     }
 
     /**
@@ -2141,48 +1839,39 @@ public class ServerLogModule extends AbstractModule {
     }
 
     private String makeFsEquipmentStr() {
-        NewEquipmentModule module = module(MConst.NewEquipment);
-        return module.makeFsStr();
+        return null;
     }
 
     private String makeFsTitleStr() {
-        TitleModule module = module(MConst.Title);
-        return module.makeFsStr();
+        return null;
     }
 
     private String makeFsGemStr() {
-        GemModule module = module(MConst.GEM);
-        return module.makeFsStr();
+        return null;
     }
 
     private String makeFsBuddyStr() {
-        BuddyModule module = module(MConst.Buddy);
-        return module.makeFsStr();
+        return null;
     }
 
     private String makeFsRideStr() {
-        RideModule module = module(MConst.Ride);
-        return module.makeFsStr();
+        return null;
     }
 
     private String makeFsTrumpStr() {
-        TrumpModule trumpModule = module(MConst.Trump);
-        return trumpModule.makeFsStr();
+        return null;
     }
 
     private String makeFsGuestStr() {
-        GuestModule module = module(MConst.Guest);
-        return module.makeFsStr();
+        return null;
     }
 
     private String makeFsBookStr() {
-        BookModule module = module(MConst.Book);
-        return module.makeFsStr();
+        return null;
     }
 
     private String makeFsCampStr() {
-        CampModule campModule = module(MConst.Camp);
-        return campModule.makeFsStr();
+        return null;
     }
 
     public void Log_shop_buy(int shopType, Map<Integer, Integer> addItemList, Map<Integer, Integer> subItemList) {
@@ -2506,11 +2195,7 @@ public class ServerLogModule extends AbstractModule {
      * 称号
      */
     public void log_title(byte status) {
-        TitleModule titleModule = (TitleModule) module(MConst.Title);
-        String fightInfo = titleModule.log_title_fight();
-        static_4_Log(438, status, fightInfo);
-        String stateInfo = titleModule.log_title_state();
-        static_4_Log(ThemeType.STATIC_TITLE.getThemeId(), status, stateInfo);
+
     }
 
 
@@ -2554,27 +2239,7 @@ public class ServerLogModule extends AbstractModule {
      * @param pushInfoMap
      */
     public void logPrecisionPush(Map<Integer, PushInfo> pushInfoMap) {
-        Iterator<PushInfo> iterator = pushInfoMap.values().iterator();
-        while (iterator.hasNext()) {
-            PushInfo pushInfo = iterator.next();
-            PushVo pushVo = PushManager.getPushVo(pushInfo.getPushId());
-            ChargePrefVo chargePrefVo = ChargePrefManager.getPrefVoByPushId(pushInfo.getPushId());
-            if (chargePrefVo != null) {
-                StringBuffer sb = new StringBuffer();
-                String goods = chargePrefVo.getGoods().replace('+', '@').replace(',', '&');
-                String[] date = pushVo.getDate().split("\\|");
-                sb.append("item@num:").append(goods).append("#").append("activite_time:").append(date[0]).append("#").append("disactivite_time:").append(date[1]);
-                LogBean logBean = new LogBean();
-                logBean.setThemeId("precision");
-                logBean.setOperateId("precision_push");
-                logBean.setObjectBatch(String.valueOf(pushVo.getGroup()));
-                logBean.setObject(String.valueOf(pushVo.getPushId()));
-                logBean.setInfo(sb.toString());
-                dynamic4Log(logBean);
-            } else {
-//                LogUtil.info("chargePrefVo为空，pushId为：" + pushInfo.getPushId());
-            }
-        }
+
     }
 
     /**
@@ -2583,19 +2248,7 @@ public class ServerLogModule extends AbstractModule {
      * @param pushId
      */
     public void logPrecisionPushFinish(int pushId) {
-        PushVo pushVo = PushManager.getPushVo(pushId);
-        ChargePrefVo chargePrefVo = ChargePrefManager.getPrefVoByPushId(pushId);
-        StringBuffer sb = new StringBuffer();
-        String goods = chargePrefVo.getGoods().replace('+', '@').replace(',', '&');
-        String[] date = pushVo.getDate().split("\\|");
-        sb.append("item@num:").append(goods).append("#").append("activite_time:").append(date[0]).append("#").append("disactivite_time:").append(date[1]);
-        LogBean logBean = new LogBean();
-        logBean.setThemeId("precision");
-        logBean.setOperateId("precision_finish");
-        logBean.setObjectBatch(String.valueOf(pushVo.getGroup()));
-        logBean.setObject(String.valueOf(pushVo.getPushId()));
-        logBean.setInfo(sb.toString());
-        dynamic4Log(logBean);
+
     }
 
     /**
@@ -2701,149 +2354,21 @@ public class ServerLogModule extends AbstractModule {
      * 天梯段位   玩家上下线
      */
     public void log_skyRank(byte status) {
-        RoleModule roleModule = module(MConst.Role);
-        String log_id = "grading@lv:";
-        StringBuffer logInfo = new StringBuffer();
-        int skyScore = ServiceHelper.skyRankLocalService().getSkyScore(roleModule.getRoleRow().getRoleId(),
-                roleModule.getRoleRow().getName(), roleModule.getFightScore());
-        SkyRankGradVo skyRankGradVo = SkyRankManager.getManager().getSkyRankGradVoByScore(skyScore);
-        Map<Integer, int[]> skyRankGradStageMap = SkyRankManager.getManager().getSkyRankGradStageMap();
-        int[] info = skyRankGradStageMap.get(skyRankGradVo.getSkyRankGradId());
-        if (info[1] == -1) {
-            SkyRankGradVo lowSkyRankGradVo = SkyRankManager.getManager().getSkyRankGradVoByScore(skyRankGradVo.getReqscore() - 1);
-            logInfo.append(log_id).append(info[0]).append("@").append(skyScore - lowSkyRankGradVo.getReqscore());
-        } else {
-            logInfo.append(log_id).append(info[0]).append("@").append(info[1]);
-        }
-        static_4_Log(ThemeType.STATIC_SKYRANK.getThemeId(), status, logInfo.toString());
+
     }
 
     /**
      * 天梯段位   玩家上下线
      */
     public void log_tokenEquipment(byte status) {
-        NewEquipmentModule newEquipmentModule = (NewEquipmentModule) module(MConst.NewEquipment);
-        StringBuffer sb1 = new StringBuffer(); //装备符文等级日志
-        Map<Byte, RoleEquipment> roleEquipmentMap = newEquipmentModule.getRoleEquipMap();
-        for (RoleEquipment roleEquipment : roleEquipmentMap.values()) {
-            if (!NewEquipmentManager.isTokenEquipment(roleEquipment.getEquipId())) //非符文装备不打印
-                continue;
-            sb1.append(roleEquipment.getEquipId()).append("@");
-            if (StringUtil.isNotEmpty(roleEquipment.getRoleTokenHoleInfoMap())) {
-                RoleTokenEquipmentHolePo holePo = roleEquipment.getRoleTokenHoleInfoMap().get((byte) 1); //当前只有一个符文孔
-                sb1.append(holePo.getTokenId()).append("@").append(holePo.getTokenLevel()).append("&");
-            } else {
-                sb1.append("0@0&");
-            }
-        }
-        if (!StringUtil.isEmpty(sb1.toString())) {
-            sb1.deleteCharAt(sb1.lastIndexOf("&"));
-        } else {
-            sb1.append("0@0@0");
-        }
 
-        StringBuffer sb2 = new StringBuffer();
-        Map<Byte, TokenSkillVo> activeSkillMap = newEquipmentModule.getActiveTokenSkillMap();
-        Iterator iter = activeSkillMap.entrySet().iterator();
-        while (iter.hasNext()) {
-            Map.Entry<Byte, TokenSkillVo> entry = (Map.Entry<Byte, TokenSkillVo>) iter.next();
-            sb2.append(roleEquipmentMap.get(entry.getKey()).getEquipId()).append("@").append(entry.getValue().getTokenSkillId()).append("&");
-        }
-        if (!StringUtil.isEmpty(sb2.toString())) {
-            sb2.deleteCharAt(sb2.lastIndexOf("&"));
-        } else {
-            sb2.append("0@0");
-        }
-
-        String logStr = "equipment_part@rune@lv:" + sb1.toString() + "#" + "equipment@rune_skill:" + sb2.toString();
-        static_4_Log(ThemeType.STATIC_TOKEN_EQUIPMENT.getThemeId(), status, logStr);
     }
 
     /**
      * 时装  玩家上下线
      */
     public void log_fashion(byte status) {
-        StringBuilder sb = new StringBuilder();
-        /**
-         * 角色时装
-         */
-        StringBuilder roleFashionBuilder = new StringBuilder();
-        FashionModule fashionModule = module(MConst.Fashion);
-        Map<Integer, RoleFashion> roleFashionMap = fashionModule.getRoleFashionMap();
-        int roleIndex = 0;
-        roleFashionBuilder.append("fashion_code@time:");
-        for (RoleFashion roleFashion : roleFashionMap.values()) {
-            if (roleIndex != 0) {
-                roleFashionBuilder.append("&");
-            }
-            roleFashionBuilder.append(roleFashion.getFashionId()).append("@");
 
-            if (roleFashion.isForever()) {
-                roleFashionBuilder.append(999);
-            } else if (roleFashion.isExpired()) {
-                roleFashionBuilder.append(0);
-            } else {
-                long expiredTime = roleFashion.getExpiredTime();
-                int daysBetweenTwoDates = DateUtil.getDaysBetweenTwoDates(new Date(), new Date(expiredTime));
-                roleFashionBuilder.append(daysBetweenTwoDates);
-            }
-            roleIndex++;
-        }
-        /**
-         * 宝宝时装
-         */
-        StringBuilder babyFashionBuilder = new StringBuilder();
-        BabyModule babyModule = module(MConst.Baby);
-        Set<Integer> ownFashionIdSet = babyModule.getRoleBaby().getOwnFashionIdSet();
-        babyFashionBuilder.append("baby_fashion@time:");
-        int babyIndex = 0;
-        for (Integer fashionId : ownFashionIdSet) {
-            if (babyIndex != 0) {
-                babyFashionBuilder.append("&");
-            }
-            babyFashionBuilder.append(fashionId).append("@").append(999);
-            babyIndex++;
-        }
-        sb.append(roleFashionBuilder);
-        sb.append("#");
-        sb.append(babyFashionBuilder);
-        sb.append("#");
-        FashionCardModule cardModule = module(MConst.FashionCard);
-        sb.append(cardModule.getFashionState());
-        static_4_Log(ThemeType.STATIC_FASHION_LOG.getThemeId(), status, sb.toString());
-    }
-
-    /**
-     * 天梯段位   离线玩家处理
-     */
-    public static void log_skyRank_offline(AccountRow account, SimpleRolePo rolePo, String info) {
-        StringBuffer sBuff = new StringBuffer();
-        String channel = account.getChannel();
-        sBuff.append("static_4")
-                .append("|").append(MultiServerHelper.getServerId())
-                .append("|").append(DateUtil.formatDateTime(System.currentTimeMillis()))
-                .append("|").append(ThemeType.STATIC_SKYRANK.getThemeId())
-                .append("|").append(MultiServerHelper.getServerId())
-                .append("|").append(channel != null ? channel.split("@")[0] : "0" + "_" + account.getName().split("#")[0])
-                .append("|").append(account.getName().split("#")[0])
-                .append("|").append(rolePo.getRoleid())
-                .append("|").append(channel != null ? channel.split("@")[1] : "0")
-                .append("|").append(channel != null ? channel.split("@")[1] : "0")
-                .append("|").append(account.getPalform())
-                .append("|").append("")//(account.getFirstLoginTimestamp())
-                .append("|").append(DateUtil.formatDateTime(rolePo.getCreatetime()))
-                .append("|").append("")//("version")
-                .append("|").append(account.getVipLevel())
-                .append("|").append(rolePo.getLevel())
-                .append("|").append("")//("fightvalue")
-                .append("|").append(rolePo.getJobid())
-                .append("|").append("")
-                .append("|").append(1)
-                .append("|").append("")
-                .append("|").append(info)
-                .append("|").append("")//广告短链id
-        ;
-        ServerLogConst.static_4.info(sBuff.toString());
     }
 
     /**
@@ -3128,56 +2653,6 @@ public class ServerLogModule extends AbstractModule {
                 .append("|").append(qq)//qq
         ;
         ServerLogConst.vipInfo.info(sBuff.toString());
-    }
-
-    /**
-     * type：1：活动，2：任务
-     *
-     * @param type
-     * @param id
-     */
-    public void log_camp_activty_mission(int type, int id, Map<Integer, Integer> reward) {
-        CampModule campModule = module(MConst.Camp);
-        RoleCampPo roleCamp = campModule.getRoleCamp();
-        AllServerCampPo allServerCampPo = ServiceHelper.campLocalMainService().getAllServerCampByCampType(roleCamp.getCampType());
-        LogBean logBean = new LogBean();
-        logBean.setThemeId("491");
-        logBean.setStatType(roleCamp.getCampType() + "");
-        StringBuilder award = new StringBuilder();
-        int index = 1;
-        for (Map.Entry<Integer, Integer> entry : reward.entrySet()) {
-            award.append(entry.getKey()).append("@").append(entry.getValue());
-            if (index != reward.size()) {
-                award.append("&");
-            }
-            index++;
-        }
-        switch (type) {
-            case 1: {
-                logBean.setOperateId("campactivity");
-            }
-            break;
-            case 2: {
-                logBean.setOperateId("campmission");
-            }
-            break;
-        }
-        StringBuilder info = new StringBuilder();
-        switch (type) {
-            case 1: {
-                info.append("officer@campactivity_id:").append(roleCamp.getCommonOfficerId() + "@" + id).append("#");
-            }
-            break;
-            case 2: {
-                info.append("officer@campmission_id:").append(roleCamp.getCommonOfficerId() + "@" + id).append("#");
-            }
-            break;
-        }
-        info.append("reward@number:").append(award).append("#");
-        info.append("kingdom_level:").append(allServerCampPo.getLevel()).append("#");
-
-        logBean.setInfo(info.toString());
-        dynamic4Log(logBean);
     }
 
     /**

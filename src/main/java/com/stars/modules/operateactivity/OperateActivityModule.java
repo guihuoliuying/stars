@@ -95,21 +95,21 @@ public class OperateActivityModule extends AbstractModule {
             }
             byte isShowLabel = 0;
             int showId = -1;
-            if (opActivityModule != null && (!moduleName.equals(MConst.CountDown))) {  //倒计时有两条数据，需要特殊处理
-                showId = opActivityModule.getCurShowActivityId();
-                isShowLabel = opActivityModule.getIsShowLabel();
-            } else {
-                if (moduleName.equals(MConst.OnlyClientShow) || moduleName.equals(MConst.CountDown)) {//表示并没有对应的服务端活动模块，只下发活动数据即可
-                    showId = OperateActivityManager.getCurActivityId(opType);
-                    OperateActVo operateActVo = OperateActivityManager.getOperateActVo(showId);
-                    if (operateActVo != null) {
-                        boolean show = isShow(operateActVo.getRoleLimitMap()) && isOpenChannel(operateActVo.getChannel());
-                        if (!show) {
-                            showId = -1;
-                        }
-                    }
-                }
-            }
+//            if (opActivityModule != null && (!moduleName.equals(MConst.CountDown))) {  //倒计时有两条数据，需要特殊处理
+//                showId = opActivityModule.getCurShowActivityId();
+//                isShowLabel = opActivityModule.getIsShowLabel();
+//            } else {
+//                if (moduleName.equals(MConst.OnlyClientShow) || moduleName.equals(MConst.CountDown)) {//表示并没有对应的服务端活动模块，只下发活动数据即可
+//                    showId = OperateActivityManager.getCurActivityId(opType);
+//                    OperateActVo operateActVo = OperateActivityManager.getOperateActVo(showId);
+//                    if (operateActVo != null) {
+//                        boolean show = isShow(operateActVo.getRoleLimitMap()) && isOpenChannel(operateActVo.getChannel());
+//                        if (!show) {
+//                            showId = -1;
+//                        }
+//                    }
+//                }
+//            }
             if (showId != -1) {
                 activityIdsMap.put(opType, showId);
                 isShowLabelMap.put(opType, isShowLabel);

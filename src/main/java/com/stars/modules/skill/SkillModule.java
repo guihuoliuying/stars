@@ -3,20 +3,15 @@ package com.stars.modules.skill;
 import com.stars.core.attr.Attr;
 import com.stars.core.attr.Attribute;
 import com.stars.core.attr.FormularUtils;
+import com.stars.core.db.DBUtil;
 import com.stars.core.event.EventDispatcher;
 import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
 import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
-import com.stars.core.db.DBUtil;
 import com.stars.modules.MConst;
-import com.stars.modules.book.BookModule;
 import com.stars.modules.data.DataManager;
 import com.stars.modules.dungeon.DungeonModule;
-import com.stars.modules.fashioncard.FashionCardModule;
-import com.stars.modules.newequipment.NewEquipmentManager;
-import com.stars.modules.newequipment.NewEquipmentModule;
-import com.stars.modules.newequipment.prodata.TokenSkillVo;
 import com.stars.modules.redpoint.RedPointConst;
 import com.stars.modules.role.RoleManager;
 import com.stars.modules.role.RoleModule;
@@ -37,7 +32,6 @@ import com.stars.modules.skill.prodata.SkillvupVo;
 import com.stars.modules.skill.summary.SkillSummaryComponentImpl;
 import com.stars.modules.skill.userdata.RoleSkill;
 import com.stars.modules.tool.ToolModule;
-import com.stars.modules.trump.TrumpModule;
 import com.stars.services.summary.SummaryComponent;
 import com.stars.util.LogUtil;
 import com.stars.util.StringUtil;
@@ -226,8 +220,6 @@ public class SkillModule extends AbstractModule {
         ClientRoleSkills clientRoleSkill = new ClientRoleSkills();
         clientRoleSkill.setSkillMap(map);
         clientRoleSkill.setRoleAttack(roleAttack);
-        FashionCardModule cardModule = module(MConst.FashionCard);
-        clientRoleSkill.setSkillCDMap(cardModule.getSkill_cd_Map());
         send(clientRoleSkill);
     }
 
@@ -262,10 +254,7 @@ public class SkillModule extends AbstractModule {
         }
 
         if (svv.getReqbook() != 0) {
-            BookModule bookModule = (BookModule) moduleMap().get(MConst.Book);
-            if (!bookModule.isBookActive(svv.getReqbook())) {
-                return;
-            }
+
         }
 
         if (isTokenSkill(svv.getSkillId()))
@@ -287,10 +276,6 @@ public class SkillModule extends AbstractModule {
         List<Integer> skillList = job.getPSkillList();
         for (Integer skillId : skillList) {
             autoLevelUp(skillId, rm);
-        }
-        Map<Integer, TokenSkillVo> tokenSkillVoMap = NewEquipmentManager.getTokenSkillVoMap();
-        for (Integer skillId : tokenSkillVoMap.keySet()) {
-            updateTokenPassSkillLv(skillId, rm, true);
         }
         //主动技能
         List<Integer> skills = RoleManager.getResourceById(job.getModelres()).getSkillList();
@@ -367,10 +352,6 @@ public class SkillModule extends AbstractModule {
             }
         }
         if (svv.getReqbook() != 0) {
-            BookModule bookModule = (BookModule) moduleMap().get(MConst.Book);
-            if (!bookModule.isBookActive(svv.getReqbook())) {
-                return null;
-            }
         }
         if (isTokenSkill(svv.getSkillId())) {
             return null;
@@ -588,8 +569,6 @@ public class SkillModule extends AbstractModule {
         skillFlush.setNextReqLv(nextReqLv);
         skillFlush.setNextVoMap(nextVoMap);
         skillFlush.setRoleAttack(roleAttack);
-        FashionCardModule cardModule = module(MConst.FashionCard);
-        skillFlush.setSkillCDMap(cardModule.getSkill_cd_Map());
         send(skillFlush);
     }
 
@@ -1032,8 +1011,7 @@ public class SkillModule extends AbstractModule {
      * 获取法宝被动技能数值
      */
     public Map<Integer, String> getTrumpPassSkillAttr() {
-        TrumpModule tm = (TrumpModule) module(MConst.Trump);
-        return tm.getTrumpSkillDamage();
+        return null;
     }
 
     /**
@@ -1060,24 +1038,11 @@ public class SkillModule extends AbstractModule {
     }
 
     private boolean isTrumpSkill(int skillId) {
-        TrumpModule module = (TrumpModule) moduleMap().get(MConst.Trump);
-        Set<Integer> set = module.getSkillIdList();
-        if (set != null) {
-            for (int s : set) {
-                if (skillId == s) {
-                    return true;
-                }
-            }
-        }
         return false;
     }
 
     private boolean isTokenSkill(int skillId) {
-        TokenSkillVo tokenSkillVo = NewEquipmentManager.getTokenSkillVoBySkillId(skillId);
-        if (tokenSkillVo == null) //不是符文被动技能
-            return false;
-        else
-            return true;
+        return true;
     }
 
     /**
@@ -1131,11 +1096,6 @@ public class SkillModule extends AbstractModule {
                 }
             }
             if (svv.getReqbook() != 0) {
-                BookModule bookModule = (BookModule) moduleMap().get(MConst.Book);
-                if (!bookModule.isBookActive(svv.getReqbook())) {
-                    itemMark = false;
-                    break;
-                }
             }
             if (isTokenSkill(svv.getSkillId())) {
                 itemMark = false;
@@ -1175,52 +1135,6 @@ public class SkillModule extends AbstractModule {
         return totalLv;
     }
 
-    /**
-     * 检查符文被动技能的激活和失效
-     *
-     * @param skillId
-     * @param rm
-     */
-    public void updateTokenPassSkillLv(int skillId, Module rm, boolean needSend) {
-
-        if (!isTokenSkill(skillId)) //不是符文技能
-            return;
-        NewEquipmentModule newEquipmentModule = this.module(MConst.NewEquipment);
-        Map<Byte, TokenSkillVo> activeTokenSkillVoMap = newEquipmentModule.getActiveTokenSkillMap();
-        boolean isActiveFlag = false; //是否激活状态
-        Iterator iter = activeTokenSkillVoMap.entrySet().iterator();
-        while (iter.hasNext()) { //遍历激活的符文技能
-            Map.Entry<Byte, TokenSkillVo> entry = (Map.Entry<Byte, TokenSkillVo>) iter.next();
-            TokenSkillVo activeTokenSkillVo = (TokenSkillVo) entry.getValue();
-            if (activeTokenSkillVo.getTokenSkillId() != skillId)
-                continue;
-            int newLevel = newEquipmentModule.getRoleEquipMap().get(entry.getKey()).getTokenSKillLevel(); //获得最新的符文技能等级
-            if (roleSkill.getSkillLv(entry.getValue().getTokenSkillId()) < newLevel) {
-                roleSkill.getSkillLevelMap().put(skillId, newLevel);
-                this.context().update(roleSkill);
-            }
-            isActiveFlag = true;  //可以激活的才会true
-        }
-
-        if ((!isActiveFlag) && roleSkill.getSkillLv(skillId) != 0) {  //删除失效技能
-            roleSkill.getSkillLevelMap().remove(skillId);
-            this.context().update(roleSkill);
-            updatePassEffect(true);
-            updateSkillFightScore(needSend);
-            updateRoleSkill();
-        }
-        if (isActiveFlag) {
-            SkillvupVo svv = SkillManager.getSkillvupVo(skillId, roleSkill.getSkillLv(skillId));
-            if (svv.getSkillType() == SkillConstant.LVUP_SKILLTYPE_PASS) {
-                updatePassEffect(true);
-            }
-        }
-        updateSkillFightScore(needSend);
-        updateSkillSummary();
-        updateRoleSkill();
-
-    }
-
     public RoleSkill getRoleSkill() {
         return roleSkill;
     }
@@ -1238,10 +1152,6 @@ public class SkillModule extends AbstractModule {
             Integer skillId = entry.getKey();
             int level = entry.getValue();
             Integer position = SkillManager.skillPostionMap.get(skillId);
-            if (NewEquipmentManager.getTokenSkillVoBySkillId(skillId) != null) {//符文技能没有位置
-                newSkillLevelMap.put(skillId, level);
-                continue;
-            }
             if (SkillManager.getSkillvupVo(skillId, level).getSkillType() == SkillConstant.TRUMP_SKILLTYPE_PASS) {//法宝技能直接放
                 newSkillLevelMap.put(skillId, level);
                 continue;
@@ -1275,8 +1185,6 @@ public class SkillModule extends AbstractModule {
          */
         Set<Integer> pendingSkillSet = roleSkill.getPendingSkillSet();
         for (Integer pendingSkillId : pendingSkillSet) {
-            if (NewEquipmentManager.getTokenSkillVoBySkillId(pendingSkillId) != null) //符文技能没有位置
-                continue;
             if (SkillManager.getSkillvupVo(pendingSkillId, 1).getSkillType() == SkillConstant.TRUMP_SKILLTYPE_PASS) {//法宝技能直接放
                 newPendingSkillSet.add(pendingSkillId);
                 continue;

@@ -1,7 +1,5 @@
 package com.stars.multiserver.fight.handler.impl;
 
-import com.stars.modules.fightingmaster.packet.ServerFightReady;
-import com.stars.multiserver.fight.FightRPC;
 import com.stars.multiserver.fight.data.LuaFrameData;
 import com.stars.multiserver.fight.handler.FightHandler;
 import com.stars.multiserver.fight.message.AddNewfighterToFightActor;
@@ -51,7 +49,6 @@ public class TPGFightHandler extends FightHandler {
 
     @Override
     public void init(Object args) {
-        registerPassThroughPacketType(ServerFightReady.class);
     }
 
     @Override
@@ -87,18 +84,9 @@ public class TPGFightHandler extends FightHandler {
 
     @Override
     public void handleMessage(Object message) {
-        // 收到客户端加载完成包才把玩家数据加入战斗
-        if (message instanceof ServerFightReady) {
-            ServerFightReady serverFightReady = (ServerFightReady) message;
-            byte[] data = newFighters.get(serverFightReady.getRoleId());
-            if (data != null) {
-                actor.addServerOrder(data);
-            }
-        }
     }
 
     @Override
     public void handleLuaFrameData(long frameCount, LuaFrameData data, Object[] rawData) {
-        FightRPC.tpgLocalService().doFightLuaFram(fromServerId, fightId, data);
     }
 }

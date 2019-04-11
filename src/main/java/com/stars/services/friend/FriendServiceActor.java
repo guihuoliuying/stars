@@ -1,13 +1,14 @@
 package com.stars.services.friend;
 
 import com.google.common.cache.*;
-import com.stars.core.persist.DbRowDao;
-import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
-import com.stars.core.player.PlayerUtil;
 import com.stars.ExcutorKey;
-import com.stars.core.schedule.SchedulerManager;
+import com.stars.core.actor.invocation.ServiceActor;
 import com.stars.core.db.DBUtil;
 import com.stars.core.db.DbRow;
+import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
+import com.stars.core.persist.DbRowDao;
+import com.stars.core.player.PlayerUtil;
+import com.stars.core.schedule.SchedulerManager;
 import com.stars.modules.MConst;
 import com.stars.modules.data.DataManager;
 import com.stars.modules.demologin.packet.ClientText;
@@ -21,7 +22,6 @@ import com.stars.modules.friend.packet.ClientFriend;
 import com.stars.modules.friend.packet.ClientRecommendation;
 import com.stars.modules.role.event.FriendGetVigorEvent;
 import com.stars.modules.role.summary.RoleSummaryComponent;
-import com.stars.modules.serverLog.EventType;
 import com.stars.modules.serverLog.event.SpecialAccountEvent;
 import com.stars.modules.tool.ToolManager;
 import com.stars.modules.tool.func.impl.FriendFlowerFunc;
@@ -34,11 +34,12 @@ import com.stars.services.friend.memdata.RecommendationFriend;
 import com.stars.services.friend.summary.FriendFlowerSummaryComponent;
 import com.stars.services.friend.summary.FriendFlowerSummaryComponentImpl;
 import com.stars.services.friend.userdata.*;
-import com.stars.services.newredbag.AddToolByEvent;
 import com.stars.services.summary.Summary;
 import com.stars.services.summary.SummaryConst;
-import com.stars.util.*;
-import com.stars.core.actor.invocation.ServiceActor;
+import com.stars.util.I18n;
+import com.stars.util.LogUtil;
+import com.stars.util.StringUtil;
+import com.stars.util._HashMap;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -974,11 +975,7 @@ public class FriendServiceActor extends ServiceActor implements FriendService {
         dao.update(friendVigor);
 
         ServiceUtil.sendText(roleId, I18n.get("friend.vigor.sendSuccess"));
-
-        // 发送奖励给自己
-        AddToolByEvent addToolByEvent = new AddToolByEvent(EventType.SEND_VIGOR_AWARD);
-        addToolByEvent.toolMap().putAll(sendVigorAward);
-        ServiceHelper.roleService().notice(roleId, addToolByEvent);
+        ;
 
         // 通知好友改变领取体力状态
         ServiceHelper.friendService().innerNotifySendVigor(friendId, roleId);
@@ -1058,10 +1055,7 @@ public class FriendServiceActor extends ServiceActor implements FriendService {
         //刷新好友界面
         updateFriendList(roleId, updateMap, friendVigor);
         // 发送奖励给自己
-        AddToolByEvent addToolByEvent = new AddToolByEvent(EventType.SEND_VIGOR_AWARD);
-        addToolByEvent.toolMap().putAll(sendVigorAward);
-        MapUtil.multiply(addToolByEvent.toolMap(), sendNum);
-        ServiceHelper.roleService().notice(roleId, addToolByEvent);
+
         //赠送体力日志
         FriendLogEvent event = new FriendLogEvent(FriendLogEvent.PHYSICAL);
         event.setNum(sendNum);

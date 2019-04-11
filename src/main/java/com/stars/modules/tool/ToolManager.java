@@ -1,6 +1,5 @@
 package com.stars.modules.tool;
 
-import com.stars.modules.newequipment.NewEquipmentManager;
 import com.stars.modules.tool.func.ToolFunc;
 import com.stars.modules.tool.productdata.ItemVo;
 import com.stars.util.StringUtil;
@@ -177,7 +176,7 @@ public class ToolManager {
     }
 
     public static boolean isEquip(int itemId) {
-        return NewEquipmentManager.getEquipmentVo(itemId) != null;
+        return false;
     }
 
     public static boolean isResource(int itemId) {

@@ -2,8 +2,6 @@ package com.stars.modules.truename.packet;
 
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerPacket;
-import com.stars.modules.MConst;
-import com.stars.modules.truename.TrueNameModule;
 import com.stars.modules.truename.TrueNamePacketSet;
 import com.stars.network.server.buffer.NewByteBuffer;
 
@@ -17,8 +15,6 @@ public class ServerTrueName extends PlayerPacket {
 
 	@Override
 	public void execPacket(Player player) {
-		TrueNameModule module = module(MConst.TrueName);
-		module.saveMyInfo(this);
 	}
 
 	@Override

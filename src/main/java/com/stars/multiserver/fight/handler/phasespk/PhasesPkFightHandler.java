@@ -1,9 +1,8 @@
 package com.stars.multiserver.fight.handler.phasespk;
 
+import com.stars.core.actor.Actor;
 import com.stars.modules.chat.packet.ServerChatMessage;
-import com.stars.modules.fightingmaster.packet.ServerFightReady;
 import com.stars.modules.friend.packet.ServerBlacker;
-import com.stars.modules.pk.packet.ClientUpdatePlayer;
 import com.stars.modules.scene.ScenePacketSet;
 import com.stars.modules.scene.fightdata.FighterEntity;
 import com.stars.multiserver.fight.ClientOrders;
@@ -12,15 +11,12 @@ import com.stars.multiserver.fight.FightRPC;
 import com.stars.multiserver.fight.RoleId2ActorIdManager;
 import com.stars.multiserver.fight.handler.FightHandler;
 import com.stars.multiserver.fight.handler.FightHandlerFactory;
-import com.stars.multiserver.fight.message.AddMonsterMessage;
 import com.stars.multiserver.fight.message.AddNewfighterToFightActor;
 import com.stars.multiserver.fight.message.NoticeFightServerReady;
 import com.stars.multiserver.packet.NewFighterToFightActor;
-import com.stars.network.PacketUtil;
 import com.stars.network.server.packet.PacketManager;
 import com.stars.server.main.actor.ActorServer;
 import com.stars.util.LogUtil;
-import com.stars.core.actor.Actor;
 
 import java.util.*;
 
@@ -43,7 +39,6 @@ public abstract class PhasesPkFightHandler extends FightHandler {
 
     @Override
     public final void init(Object obj) {
-        registerPassThroughPacketType(ServerFightReady.class);
         setPhase(PhasesPkFightManager.PHASE_INITIAL); // 初始阶段
 
         this.arrivalFighterIdSet = new HashSet<>();
@@ -186,9 +181,7 @@ public abstract class PhasesPkFightHandler extends FightHandler {
         }
         o1.setFightersMap(fightIdMap);
         // data
-        ClientUpdatePlayer packet = new ClientUpdatePlayer();
-        packet.setNewFighter(entityList);
-        o1.setData(PacketUtil.packetToBytes(packet));
+
 
         AddNewfighterToFightActor o2 = new AddNewfighterToFightActor();
         o2.setServerId(fromServerId);
@@ -200,9 +193,6 @@ public abstract class PhasesPkFightHandler extends FightHandler {
         try {
             List<FighterEntity> list = new ArrayList<>();
             list.add(entity);
-            ClientUpdatePlayer packet = new ClientUpdatePlayer();
-            packet.setNewFighter(list);
-            actor.tell(new AddMonsterMessage(packet), Actor.noSender); // 包装成message防止客户端作弊
         } catch (Exception e) {
             LogUtil.error("add fight entry error", e);
         }
@@ -210,24 +200,6 @@ public abstract class PhasesPkFightHandler extends FightHandler {
 
     @Override
     public void handleMessage(Object message) {
-        if (message instanceof ServerFightReady) {
-            ServerFightReady packet = (ServerFightReady) message;
-            long roleId = packet.getRoleId();
-            if (arrivalFighterIdSet.contains(roleId)) {
-                readyFighterIdSet.add(roleId);
-                try {
-                    handleClientPreloadFinished(roleId);
-                } catch (Exception e) {
-                    LogUtil.error("", e);
-                }
-            }
-            if (readyFighterIdSet.size() >= numOfFighter) {
-                if (PhasesPkFightManager.removeClientPreparationPhase(fightId)) {
-                    finishClientPreparationPhase();
-                }
-            }
-            return;
-        }
 
         if (message instanceof ServerChatMessage) {
             ServerChatMessage msg = (ServerChatMessage) message;

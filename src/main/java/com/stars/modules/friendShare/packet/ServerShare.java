@@ -2,8 +2,6 @@ package com.stars.modules.friendShare.packet;
 
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerPacket;
-import com.stars.modules.MConst;
-import com.stars.modules.friendShare.ShareModule;
 import com.stars.modules.friendShare.SharePacketSet;
 import com.stars.network.server.buffer.NewByteBuffer;
 
@@ -20,18 +18,7 @@ public class ServerShare extends PlayerPacket {
 
     @Override
     public void execPacket(Player player) {
-        ShareModule shareModule = module(MConst.FriendShare);
-        switch (subtype) {
-            case REQ_VIEW:
-                shareModule.view();
-                break;
-            case REQ_SHARE:
-                shareModule.share();
-                break;
-            case REQ_AWARD:
-                shareModule.award();
-                break;
-        }
+
     }
 
     @Override

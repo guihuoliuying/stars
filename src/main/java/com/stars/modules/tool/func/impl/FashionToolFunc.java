@@ -1,9 +1,7 @@
 package com.stars.modules.tool.func.impl;
 
 import com.stars.core.module.Module;
-import com.stars.modules.MConst;
 import com.stars.modules.demologin.packet.ClientText;
-import com.stars.modules.fashion.FashionModule;
 import com.stars.modules.tool.func.ToolFunc;
 import com.stars.modules.tool.func.ToolFuncResult;
 import com.stars.modules.tool.productdata.ItemVo;
@@ -69,9 +67,6 @@ public class FashionToolFunc extends ToolFunc {
     @Override
     public Map<Integer, Integer> use(Map<String, Module> moduleMap, int count, Object... args) {
         if (count <= 0) return null;
-        FashionModule fashionModule = (FashionModule) moduleMap.get(MConst.Fashion);
-        int realAddHours = addUseHour*count;
-        fashionModule.activeFashion(fashionId, realAddHours, fashionItemId);
         return null;
     }
 

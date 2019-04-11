@@ -1,5 +1,6 @@
 package com.stars.modules.foreshow.summary;
 
+
 import com.stars.services.summary.SummaryComponent;
 
 /**

@@ -4,7 +4,6 @@ import com.stars.core.db.DBUtil;
 import com.stars.modules.demologin.userdata.AccountTransfer;
 import com.stars.server.main.gmpacket.GmPacketHandler;
 import com.stars.server.main.gmpacket.GmPacketResponse;
-import com.stars.services.ServiceHelper;
 import com.stars.util.LogUtil;
 
 import java.sql.SQLException;
@@ -32,7 +31,6 @@ public class AccountTransferBackGm extends GmPacketHandler {
                 response = new GmPacketResponse(GmPacketResponse.TIMEOUT, 0, resultToJson("查询账号转移信息失败"));
                 return null;
             }
-            ServiceHelper.accountTransferService().transferBack(accountTransfer);
 
         } catch (Exception e) {
             LogUtil.error("账号转移撤回失败:" + newAccount, e);

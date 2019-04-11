@@ -1,6 +1,5 @@
 package com.stars.modules.tool.handler;
 
-import com.stars.modules.newequipment.NewEquipmentModule;
 import com.stars.modules.tool.ToolManager;
 import com.stars.modules.tool.ToolModule;
 import com.stars.modules.tool.userdata.ExtraAttrVo;
@@ -20,15 +19,8 @@ public class EquipHandler implements ToolHandler {
 
     private ToolModule toolModule;
     private RoleToolTable toolTable;//增加道具的handler会关联道具背包
-    private NewEquipmentModule equipModule;//装备关联装备模块
 
     public EquipHandler() {
-    }
-
-    public EquipHandler(NewEquipmentModule equipModule,ToolModule toolModule, RoleToolTable toolTable) {
-        this.toolModule = toolModule;
-        this.toolTable = toolTable;
-        this.equipModule = equipModule;
     }
 
     @Override
@@ -51,7 +43,6 @@ public class EquipHandler implements ToolHandler {
             //equipModule.initNewAddEquipmentTool(newTool); 策划需求修改，不需要给符文装备初始化符文和技能了
             toolModule.initEquipBasicAttr(newTool);//初始化装备基础属性
             //初始化装备额外属性
-            equipModule.initEquipExtAttr(newTool);
             toolModule.initBasicInfo(newTool);
 
             toolTable.putRow(newTool);

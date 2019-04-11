@@ -2,7 +2,6 @@ package com.stars.modules.scene;
 
 import com.stars.core.module.Module;
 import com.stars.modules.MConst;
-import com.stars.modules.arroundPlayer.ArroundPlayerModule;
 import com.stars.modules.role.RoleModule;
 
 import java.util.Map;
@@ -37,8 +36,6 @@ public abstract class ArroundScene extends Scene{
 		roleModule.getRoleRow().setPositionStr(getPosition());
 		roleModule.updateSafeStageId(sceneId);
 		roleModule.updateArroundId(getArroundId(moduleMap));
-		ArroundPlayerModule am = (ArroundPlayerModule) moduleMap.get(MConst.ArroundPlayer);
-		am.setPosition(getPosition());
 	}
 
 	public abstract String getArroundId(Map<String, Module> moduleMap);

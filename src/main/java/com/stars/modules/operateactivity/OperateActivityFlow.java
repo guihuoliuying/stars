@@ -20,7 +20,6 @@ public class OperateActivityFlow extends ActivityFlow {
     		ServiceHelper.roleService().noticeAll(new OperateActivityFlowEvent(OperateActivityConstant.FLOW_STEP_NEW_DAY));
     		//ServiceHelper.operateActivityService().checkOpActivities(false);
 		}else if (step == OperateActivityConstant.FLOW_STEP_MINUTE) {
-			ServiceHelper.operateActivityService().checkOpActivities(false);
 		}
     }
 }

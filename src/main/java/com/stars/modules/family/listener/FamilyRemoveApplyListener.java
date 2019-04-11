@@ -4,7 +4,6 @@ import com.stars.core.event.Event;
 import com.stars.core.event.EventListener;
 import com.stars.modules.family.FamilyModule;
 import com.stars.modules.family.event.FamilyRemoveApplyEvent;
-import com.stars.modules.familyactivities.treasure.event.LeaveOrKickOutFamilyEvent;
 
 /**
  * Created by chenkeyu on 2016/11/30.
@@ -20,8 +19,6 @@ public class FamilyRemoveApplyListener implements EventListener {
     public void onEvent(Event event) {
         if (event instanceof FamilyRemoveApplyEvent) {
             module.removeApplyList(((FamilyRemoveApplyEvent) event).getApplyId());
-        } else if (event instanceof LeaveOrKickOutFamilyEvent) {
-            module.removeAllApply();
         }
     }
 }

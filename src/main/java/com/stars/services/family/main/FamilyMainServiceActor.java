@@ -1,15 +1,15 @@
 package com.stars.services.family.main;
 
 import com.google.common.cache.*;
-import com.stars.core.persist.DbRowDao;
-import com.stars.core.event.Event;
-import com.stars.core.player.Player;
-import com.stars.core.player.PlayerSystem;
-import com.stars.core.player.PlayerUtil;
 import com.stars.ExcutorKey;
-import com.stars.core.schedule.SchedulerManager;
+import com.stars.core.actor.invocation.InvocationFuture;
+import com.stars.core.actor.invocation.ServiceActor;
 import com.stars.core.db.DBUtil;
 import com.stars.core.db.DbRow;
+import com.stars.core.event.Event;
+import com.stars.core.persist.DbRowDao;
+import com.stars.core.player.PlayerUtil;
+import com.stars.core.schedule.SchedulerManager;
 import com.stars.modules.MConst;
 import com.stars.modules.data.DataManager;
 import com.stars.modules.demologin.packet.ClientText;
@@ -17,18 +17,12 @@ import com.stars.modules.drop.DropUtil;
 import com.stars.modules.family.FamilyManager;
 import com.stars.modules.family.event.*;
 import com.stars.modules.family.packet.ClientFamilyManagement;
-import com.stars.modules.familyactivities.treasure.event.LeaveOrKickOutFamilyEvent;
 import com.stars.modules.foreshow.ForeShowConst;
 import com.stars.modules.foreshow.summary.ForeShowSummaryComponent;
 import com.stars.modules.friend.event.FriendLogEvent;
-import com.stars.modules.newserverrank.NewServerRankConstant;
 import com.stars.modules.role.summary.RoleSummaryComponent;
 import com.stars.modules.scene.fightdata.FighterCreator;
 import com.stars.modules.scene.fightdata.FighterEntity;
-import com.stars.modules.serverLog.ServerLogModule;
-import com.stars.multiserver.MainRpcHelper;
-import com.stars.multiserver.familywar.FamilyWarConst;
-import com.stars.multiserver.familywar.FamilyWarUtil;
 import com.stars.network.server.packet.Packet;
 import com.stars.services.ServiceHelper;
 import com.stars.services.ServiceSystem;
@@ -40,19 +34,15 @@ import com.stars.services.family.main.memdata.FamilyPlaceholder;
 import com.stars.services.family.main.memdata.RecommendationFamily;
 import com.stars.services.family.main.prodata.FamilyLevelVo;
 import com.stars.services.family.main.userdata.FamilyApplicationPo;
-import com.stars.services.family.main.userdata.FamilyLogData;
 import com.stars.services.family.main.userdata.FamilyMemberPo;
 import com.stars.services.family.main.userdata.FamilyPo;
-import com.stars.services.rank.RankConstant;
-import com.stars.services.rank.userdata.AbstractRankPo;
-import com.stars.services.rank.userdata.FamilyRankPo;
-import com.stars.services.rank.userdata.FamilyTreasureRankPo;
 import com.stars.services.role.RoleNotification;
 import com.stars.services.summary.Summary;
-import com.stars.util.*;
+import com.stars.util.DirtyWords;
+import com.stars.util.I18n;
+import com.stars.util.LogUtil;
+import com.stars.util.StringUtil;
 import com.stars.util.actlock.ActSimpleLock;
-import com.stars.core.actor.invocation.InvocationFuture;
-import com.stars.core.actor.invocation.ServiceActor;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -230,7 +220,6 @@ public class FamilyMainServiceActor extends ServiceActor implements FamilyMainSe
         // 通知其他服务进行登录
         ServiceHelper.familyRedPacketService().online(familyId, roleId);
         ServiceHelper.familyEventService().online(familyId);
-        ServiceHelper.familyTreasureService().online(roleId, familyId);
 //        for (Long aLong : onlineDataMap.keySet()) {
 //            LogUtil.info("玩家:{} 上线--在线家族id:{}", roleId, aLong);
 //        }
@@ -405,12 +394,6 @@ public class FamilyMainServiceActor extends ServiceActor implements FamilyMainSe
         FamilyPo familyPo = data.getFamilyPo();
         familyPo.setName(newName);
         dao.update(familyPo);
-        FamilyRankPo rank = (FamilyRankPo) ServiceHelper.rankService().getRank(RankConstant.RANKID_FAMILYFIGHTSCORE, familyId);
-        rank.setName(newName);
-        dao.update(rank);
-        FamilyTreasureRankPo familyTreasureRankPo = (FamilyTreasureRankPo) ServiceHelper.rankService().getRank(RankConstant.RANKID_FAMILYTREASURE, familyId);
-        familyTreasureRankPo.setName(newName);
-        dao.update(familyTreasureRankPo);
     }
 
     @Override
@@ -594,10 +577,6 @@ public class FamilyMainServiceActor extends ServiceActor implements FamilyMainSe
             onlineDataMap.remove(auth.getFamilyId());
             offlineDataMap.put(familyId, data);
         }
-        ServiceHelper.roleService().notice(auth.getRoleId(), new LeaveOrKickOutFamilyEvent(true));
-        ServiceHelper.familyTreasureService().dissolve(familyId);
-        ServiceHelper.rankService().removeRank(RankConstant.RANKID_FAMILYFIGHTSCORE, auth.getFamilyId(), new FamilyRankPo(auth.getFamilyId()));
-        MainRpcHelper.familywarRankService().delete(FamilyWarUtil.getFamilyWarServerId(), auth.getFamilyId());
         LogUtil.info("家族|解散家族|roleId:{}|familyId:{}|familyName:{}",
                 auth.getRoleId(), auth.getFamilyId(), auth.getFamilyName());
         if (ServiceHelper.familyRoleService().compareAndSetFamilyId(auth.getRoleId(), auth.getFamilyId(), 0)) {
@@ -866,7 +845,6 @@ public class FamilyMainServiceActor extends ServiceActor implements FamilyMainSe
         if (memberPo.isOnline()) {
             ServiceHelper.roleService().notice(memberId, new RoleNotification(
                     new FamilyAuthUpdatedEvent(memberId, 0L, "", 0, FamilyPost.MASSES, auth.getFamilyId())));
-            ServiceHelper.roleService().notice(memberId, new LeaveOrKickOutFamilyEvent(canVerify));
             sendText(memberPo.getRoleId(), "family_tips_getoutother");
         }
         recalcForDelMember(data, memberPo);
@@ -884,7 +862,6 @@ public class FamilyMainServiceActor extends ServiceActor implements FamilyMainSe
         packet.setMemberId(memberPo.getRoleId());
         sendToAllMember(data, packet);
         FamilyLeaveEvent event = new FamilyLeaveEvent(auth.getFamilyId());
-        ServiceHelper.familyTaskService().leaveFamilyHandle(auth.getFamilyId(), memberId);
         ServiceHelper.roleService().notice(memberId, event);
         // 日志
         LogUtil.info("家族|提出家族|roleId:{}|familyId:{}|familyName:{}", memberId, familyPo.getFamilyId(), familyPo.getName());
@@ -936,7 +913,6 @@ public class FamilyMainServiceActor extends ServiceActor implements FamilyMainSe
         ServiceHelper.familyRoleService().multiplyAndSendContribution(auth.getRoleId(), contributionPenaltyRatio); // 贡献惩罚
         ServiceHelper.roleService().notice(auth.getRoleId(), new RoleNotification(
                 new FamilyAuthUpdatedEvent(auth.getRoleId(), 0L, "", 0, FamilyPost.MASSES, auth.getFamilyId())));
-        ServiceHelper.roleService().notice(auth.getRoleId(), new LeaveOrKickOutFamilyEvent(canVerify));
         sendText(auth.getRoleId(), "family_tips_getoutself");
         doDelMember(auth.getFamilyId(), auth.getRoleId());
         // 通知其他服务进行登录
@@ -1867,8 +1843,6 @@ public class FamilyMainServiceActor extends ServiceActor implements FamilyMainSe
         if (member.getPostId() == FamilyPost.MEMBER_ID) {
             postStr = "成员";
         }
-        ServiceHelper.emailService().sendToSingle(member.getRoleId(), NewServerRankConstant.TYPE_EMAIL_FAMILY_FIGHT_SCORE,
-                0L, "系统", itemMap, String.valueOf(rank), postStr);
     }
 
     private Map<Integer, Integer> getDropMap(Map<Byte, Integer> dropMap, byte post) {
@@ -1914,23 +1888,9 @@ public class FamilyMainServiceActor extends ServiceActor implements FamilyMainSe
     private void doAddMember(long familyId, FamilyMemberPo memberPo) {
         Summary summary = ServiceHelper.summaryService().getSummary(memberPo.getRoleId());
         FighterEntity entity = FighterCreator.createBySummary((byte) 1, summary).get(Long.toString(memberPo.getRoleId()));
-        if (FamilyWarConst.battleType == FamilyWarConst.W_TYPE_LOCAL) {
-            ServiceHelper.familyWarLocalService().addMember(familyId, memberPo, entity);
-        } else if (FamilyWarConst.battleType == FamilyWarConst.W_TYPE_QUALIFYING) {
-            MainRpcHelper.familyWarQualifyingService().addMember(FamilyWarUtil.getFamilyWarServerId(), familyId, memberPo, entity);
-        } else if (FamilyWarConst.battleType == FamilyWarConst.W_TYPE_REMOTE) {
-            MainRpcHelper.familyWarRemoteService().addMember(FamilyWarUtil.getFamilyWarServerId(), familyId, memberPo, entity);
-        }
     }
 
     private void doDelMember(long familyId, long roleId) {
-        if (FamilyWarConst.battleType == FamilyWarConst.W_TYPE_LOCAL) {
-            ServiceHelper.familyWarLocalService().delMember(familyId, roleId);
-        } else if (FamilyWarConst.battleType == FamilyWarConst.W_TYPE_QUALIFYING) {
-            MainRpcHelper.familyWarQualifyingService().delMember(FamilyWarUtil.getFamilyWarServerId(), familyId, roleId);
-        } else if (FamilyWarConst.battleType == FamilyWarConst.W_TYPE_REMOTE) {
-            MainRpcHelper.familyWarRemoteService().delMember(FamilyWarUtil.getFamilyWarServerId(), familyId, roleId);
-        }
     }
 
     private FamilyData getData(long familyId) {
@@ -2102,10 +2062,6 @@ public class FamilyMainServiceActor extends ServiceActor implements FamilyMainSe
         }
         familyPo.setTotalFightScore(tmpTotalFightScore);
 
-        ServiceHelper.rankService().updateRank(
-                RankConstant.RANK_TYPE_FAMILY, new FamilyRankPo(
-                        familyPo.getFamilyId(), familyPo.getName(), familyPo.getMasterName(),
-                        familyPo.getLevel(), familyPo.getTotalFightScore()));
     }
 
     private void recalcForNewMember(FamilyData data, FamilyMemberPo memberPo) {
@@ -2113,10 +2069,6 @@ public class FamilyMainServiceActor extends ServiceActor implements FamilyMainSe
         familyPo.setMemberCount(data.getMemberPoMap().size());
         familyPo.setTotalFightScore(familyPo.getTotalFightScore() + memberPo.getRoleFightScore());
 
-        ServiceHelper.rankService().updateRank(
-                RankConstant.RANK_TYPE_FAMILY, new FamilyRankPo(
-                        familyPo.getFamilyId(), familyPo.getName(), familyPo.getMasterName(),
-                        familyPo.getLevel(), familyPo.getTotalFightScore()));
     }
 
     private void recalcForDelMember(FamilyData data, FamilyMemberPo memberPo) {
@@ -2124,10 +2076,6 @@ public class FamilyMainServiceActor extends ServiceActor implements FamilyMainSe
         familyPo.setMemberCount(data.getMemberPoMap().size());
         familyPo.setTotalFightScore(familyPo.getTotalFightScore() - memberPo.getRoleFightScore());
 
-        ServiceHelper.rankService().updateRank(
-                RankConstant.RANK_TYPE_FAMILY, new FamilyRankPo(
-                        familyPo.getFamilyId(), familyPo.getName(), familyPo.getMasterName(),
-                        familyPo.getLevel(), familyPo.getTotalFightScore()));
     }
 
     private void inviteByMaster(long familyId, long inviterId, long inviteeId, FamilyData data, RoleSummaryComponent comp, String inviterName) { // 免资格，免审查
@@ -2244,104 +2192,7 @@ public class FamilyMainServiceActor extends ServiceActor implements FamilyMainSe
 
     @Override
     public void log_family() {
-        try {
-            Map<Long, FamilyPo> familyMap = DBUtil.queryMap(DBUtil.DB_USER, "familyid",
-                    FamilyPo.class, "select * from `family`");
-            Iterator<FamilyPo> iterator = familyMap.values().iterator();
 
-            Map<Long, FamilyMemberPo> memberPoMap = DBUtil.queryMap(DBUtil.DB_USER, "roleid",
-                    FamilyMemberPo.class, "select * from `familymember`");
-            Iterator<FamilyMemberPo> handleIterator = memberPoMap.values().iterator();
-            FamilyMemberPo memberPo = null;
-            Map<Long, List<FamilyMemberPo>> familyMemberMap = new HashMap<Long, List<FamilyMemberPo>>();
-            List<FamilyMemberPo> list = null;
-            for (; handleIterator.hasNext(); ) {
-                memberPo = handleIterator.next();
-                long familyId = memberPo.getFamilyId();
-                if (!familyMap.keySet().contains(familyId)) {
-                    continue;
-                }
-                list = familyMemberMap.get(familyId);
-                if (list == null) {
-                    list = new ArrayList<>();
-                    familyMemberMap.put(familyId, list);
-                }
-                list.add(memberPo);
-            }
-
-            FamilyPo familyPo = null;
-            int size = 0;
-            FamilyData familyData;
-            Map<Long, FamilyMemberPo> memberMap;
-            Calendar calendar = Calendar.getInstance();
-            int todayZeroTime = (int) (DateUtil.getZeroTime(calendar) / 1000);
-            for (; iterator.hasNext(); ) {
-                familyPo = iterator.next();
-                long familyId = familyPo.getFamilyId();
-                if (onlineDataMap.containsKey(familyId)) {
-                    familyData = onlineDataMap.get(familyId);
-                    memberMap = familyData.getMemberPoMap();
-                    list = new ArrayList<>(memberMap.values());
-                } else {
-                    list = familyMemberMap.get(familyId);
-                }
-                if (list == null) continue;
-                //排行数据
-                List<AbstractRankPo> rankingList = ServiceHelper.rankService().getRankingList(RankConstant.RANKID_FAMILYFIGHTSCORE);
-                Map<Long, Integer> rankMap = new HashMap<Long, Integer>();
-                int rankSize = rankingList.size();
-                int ranking = 0;
-                FamilyRankPo rankPo = null;
-                for (int i = 0; i < rankSize; i++) {
-                    rankPo = (FamilyRankPo) rankingList.get(i);
-                    ranking = i + 1;
-                    rankMap.put(rankPo.getFamilyId(), ranking);
-                }
-
-                int activeNum = 0;//活跃人数
-                long master = 0;
-                long roleId = 0;
-                Player player = null;
-                StringBuffer assistantStr = new StringBuffer();//副族长
-                StringBuffer elderStr = new StringBuffer();//元老
-                StringBuffer memberStr = new StringBuffer();//普通成员
-                size = list.size();
-                for (int i = 0; i < size; i++) {
-                    memberPo = list.get(i);
-                    roleId = memberPo.getRoleId();
-                    if (memberPo.getPostId() == FamilyPost.MASTER_ID) {
-                        master = roleId;
-                    } else if (memberPo.getPostId() == FamilyPost.ASSISTANT_ID) {
-                        if (assistantStr.length() == 0) {
-                            assistantStr.append(roleId);
-                        } else {
-                            assistantStr.append("@").append(roleId);
-                        }
-                    } else if (memberPo.getPostId() == FamilyPost.ELDER_ID) {
-                        if (elderStr.length() == 0) {
-                            elderStr.append(roleId);
-                        } else {
-                            elderStr.append("@").append(roleId);
-                        }
-                    } else if (memberPo.getPostId() == FamilyPost.MEMBER_ID) {
-                        if (memberStr.length() == 0) {
-                            memberStr.append(roleId);
-                        } else {
-                            memberStr.append("@").append(roleId);
-                        }
-                    }
-                    player = PlayerSystem.get(roleId);
-                    if (player != null || memberPo.getOfflineTimestamp() > todayZeroTime) {
-                        activeNum += 1;
-                    }
-                }
-                FamilyLogData data = new FamilyLogData(familyPo, master, assistantStr.toString(), elderStr.toString(),
-                        memberStr.toString(), activeNum, rankMap.get(familyId));
-                ServerLogModule.log_family(data);
-            }
-        } catch (SQLException e) {
-            LogUtil.error("log_family fail", e);
-        }
     }
 
 

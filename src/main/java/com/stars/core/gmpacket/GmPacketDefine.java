@@ -103,9 +103,7 @@ public class GmPacketDefine {
         GmPacketManager.regGmRequestHandler(GM_COMMAND, CommandGm.class);
         GmPacketManager.regGmRequestHandler(HOTUPDATE_COMMAND, HotUpdateCommGm.class);
         GmPacketManager.regGmRequestHandler(PUBLISH_OR_EDIT_GAMEBOARD, PublishOrEditGameboardGm.class);
-        GmPacketManager.regGmRequestHandler(QUERY_GAMEBOARD, QueryGamboardGm.class);
         GmPacketManager.regGmRequestHandler(PUBLISH_OR_EDIT_LOGINBOARD, PublishOrEditLoginGameboardGm.class);
-        GmPacketManager.regGmRequestHandler(QUERY_LOGINBOARD, QueryLoginGamboardGm.class);
         GmPacketManager.regGmRequestHandler(DEL_GAMBOARD, DelGameboardGm.class);
         GmPacketManager.regGmRequestHandler(QUERY_PLAYER_DETAIL, QueryPlayerDetailInfoGm.class);
         GmPacketManager.regGmRequestHandler(EMAIL_SEND, EmailSendGm.class);
@@ -138,7 +136,6 @@ public class GmPacketDefine {
         GmPacketManager.regGmRequestHandler(ALL_EMAIL_VIEW, AllEmailQueryGm.class);
         GmPacketManager.regGmRequestHandler(QUERY_PLAYER_BAG, QueryPlayerBag.class);
         GmPacketManager.regGmRequestHandler(DEL_PLAYER_BAG, DelPlayerBag.class);
-        GmPacketManager.regGmRequestHandler(QUERY_PLAYER_EQUIP, QueryPlayerEquip.class);
         GmPacketManager.regGmRequestHandler(QUERY_PLAYER_FRIEND, QueryPlayerFriend.class);
         GmPacketManager.regGmRequestHandler(QUERY_FAMILY_INFO, QueryFamilyInfo.class);
         GmPacketManager.regGmRequestHandler(QUERY_FAMILY_MENBER_INFO, QueryFamilyMemberInfo.class);

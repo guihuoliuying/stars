@@ -13,8 +13,6 @@ import com.stars.modules.friend.event.FriendAchieveEvent;
 import com.stars.modules.friend.event.FriendLogEvent;
 import com.stars.modules.friend.packet.ClientFriend;
 import com.stars.modules.name.event.RoleRenameEvent;
-import com.stars.modules.operateCheck.OperateCheckModule;
-import com.stars.modules.operateCheck.OperateConst;
 import com.stars.modules.redpoint.RedPointConst;
 import com.stars.modules.role.RoleModule;
 import com.stars.modules.role.userdata.Role;
@@ -168,7 +166,6 @@ public class FriendModule extends AbstractModule {
      * 赠送鲜花
      */
     public void sendFlower(long friendId, int itemId, int count) {
-        if (!OperateCheckModule.checkOperate(id(), OperateConst.SEND_FLOWER, OperateConst.FIVE_HUNDRED_MS)) return;
         ItemVo itemVo = ToolManager.getItemVo(itemId);
         if (itemVo == null) return;
         if (count <= 0 || count > 999) return;

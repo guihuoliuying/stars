@@ -4,7 +4,6 @@ import com.stars.core.event.Event;
 import com.stars.core.module.AbstractEventListener;
 import com.stars.core.module.Module;
 import com.stars.modules.MConst;
-import com.stars.modules.book.event.BookActiveEvent;
 import com.stars.modules.redpoint.RedPointConst;
 import com.stars.modules.role.event.RoleLevelUpEvent;
 import com.stars.modules.skill.SkillModule;
@@ -30,9 +29,6 @@ public class LevelUpSkillListener extends AbstractEventListener<Module> {
             skillModule.upAllRoleSkill();
             skillModule.signCalRedPoint(MConst.Skill, RedPointConst.SKILL_LVUP);
         } else if (event instanceof AddToolEvent) {
-            SkillModule skillModule = (SkillModule) this.module();
-            skillModule.signCalRedPoint(MConst.Skill, RedPointConst.SKILL_LVUP);
-        }else if (event instanceof BookActiveEvent) {
             SkillModule skillModule = (SkillModule) this.module();
             skillModule.signCalRedPoint(MConst.Skill, RedPointConst.SKILL_LVUP);
         }

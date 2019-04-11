@@ -1,13 +1,13 @@
 package com.stars.modules.foreshow;
 
+
+import com.stars.core.db.DBUtil;
 import com.stars.core.event.EventDispatcher;
 import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
 import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
-import com.stars.core.db.DBUtil;
 import com.stars.modules.MConst;
-import com.stars.modules.achievement.AchievementModule;
 import com.stars.modules.data.DataManager;
 import com.stars.modules.dungeon.DungeonManager;
 import com.stars.modules.dungeon.DungeonModule;
@@ -18,15 +18,7 @@ import com.stars.modules.foreshow.prodata.ForeShowVo;
 import com.stars.modules.foreshow.summary.ForeShowSummaryComponentImp;
 import com.stars.modules.foreshow.userdata.ForeShowStatePo;
 import com.stars.modules.foreshow.userdata.NextForeShowPo;
-import com.stars.modules.marry.MarryModule;
-import com.stars.modules.oldplayerback.OldPlayerBackModule;
-import com.stars.modules.popUp.PopUpModule;
-import com.stars.modules.ride.RideModule;
-import com.stars.modules.ride.userdata.RoleRidePo;
 import com.stars.modules.role.RoleModule;
-import com.stars.modules.task.TaskManager;
-import com.stars.modules.task.TaskModule;
-import com.stars.services.marry.userdata.Marry;
 import com.stars.services.summary.SummaryComponent;
 
 import java.util.*;
@@ -117,20 +109,12 @@ public class ForeShowModule extends AbstractModule {
      * @return
      */
     private boolean roleTask(int params) {
-        TaskModule taskModule = (TaskModule) moduleMap().get(MConst.Task);
-        List<Integer> list = taskModule.getDoneTask();
-        for (int taskid : list) {
-            if (taskid == params)
-                return true;
-        }
+
         return false;
     }
 
     private boolean roleAchievement(int params) {
-        AchievementModule module = (AchievementModule) moduleMap().get(MConst.Achievement);
-        if (module.isAchievementFinish(params)) {
-            return true;
-        }
+
         return false;
     }
 
@@ -155,10 +139,7 @@ public class ForeShowModule extends AbstractModule {
     }
 
     private boolean roleMarry(int params) {
-        MarryModule marryModule = (MarryModule) moduleMap().get(MConst.Marry);
-        if (marryModule.getMarry() != null && marryModule.getMarry().getState() == Marry.MARRIED && params == 1) {
-            return true;
-        }
+
         return false;
     }
 
@@ -202,8 +183,7 @@ public class ForeShowModule extends AbstractModule {
      * @return
      */
     private boolean roleOldPlayer(int params) {
-        OldPlayerBackModule oldPlayerBackModule = module(MConst.OldPlayerBack);
-        return oldPlayerBackModule.getState() == 1;
+        return false;
     }
 
     public void addItemList(int itemId) {
@@ -424,14 +404,6 @@ public class ForeShowModule extends AbstractModule {
         if (ForeShowManager.containSysName(open) && !bossOpenList0.contains(open)) {
             List<Integer> idList = ForeShowManager.getIdList(open);
             switch (open) {
-                case ForeShowConst.RIDE:
-                    RideModule ride = module(MConst.Ride);
-                    for (RoleRidePo ridePo : ride.getRidePoMap().values()) {
-                        if (ridePo.isOwned() && idList.contains(ridePo.getRideId())) {
-                            bossOpenList.add(open);
-                            bossOpenList0.add(open);
-                        }
-                    }
             }
         }
     }
@@ -509,10 +481,6 @@ public class ForeShowModule extends AbstractModule {
         }
         toClient(ClientForeShow.openUnShow);
         context().markUpdatedSummaryComponent(MConst.ForeShow);
-        PopUpModule popUpModule = module(MConst.PopUp);
-        if (popUpModule != null) {
-            popUpModule.checkAndPopUp(false, openList);
-        }
     }
 
     private List<String> containShowSystem() {
@@ -613,7 +581,6 @@ public class ForeShowModule extends AbstractModule {
                     break;
                 case 2:
                     int taskId = Integer.valueOf(limit[1]);
-                    param = DataManager.getGametext(TaskManager.getTaskById(taskId).getName());
                     break;
                 case 3:
                     StringBuilder builder = new StringBuilder();
@@ -654,7 +621,6 @@ public class ForeShowModule extends AbstractModule {
     public void getTaskText(int taskid) {
         ClientForeShow clientForeShow = new ClientForeShow(ClientForeShow.openText);
         clientForeShow.setFlag((byte) 2);
-        clientForeShow.setTaskName(TaskManager.getTaskById(taskid).getName());
         send(clientForeShow);
     }
 

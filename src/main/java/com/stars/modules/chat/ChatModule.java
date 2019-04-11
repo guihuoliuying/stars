@@ -1,14 +1,12 @@
 package com.stars.modules.chat;
 
+import com.stars.core.db.DBUtil;
 import com.stars.core.event.EventDispatcher;
 import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
 import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
-import com.stars.core.db.DBUtil;
 import com.stars.modules.MConst;
-import com.stars.modules.camp.CampModule;
-import com.stars.modules.camp.usrdata.RoleCampPo;
 import com.stars.modules.chat.packet.ClientChatMessage;
 import com.stars.modules.chat.packet.ClientRefuseChannel;
 import com.stars.modules.chat.prodata.ChatBanFreqRule;
@@ -17,12 +15,10 @@ import com.stars.modules.chat.usrdata.ChaterInfo;
 import com.stars.modules.demologin.LoginModule;
 import com.stars.modules.demologin.packet.ClientText;
 import com.stars.modules.family.FamilyModule;
-import com.stars.modules.marry.MarryModule;
 import com.stars.modules.redpoint.RedPointConst;
 import com.stars.modules.role.RoleModule;
 import com.stars.modules.serverLog.ServerLogModule;
 import com.stars.modules.serverLog.event.SpecialAccountEvent;
-import com.stars.modules.vip.VipModule;
 import com.stars.network.server.packet.Packet;
 import com.stars.services.ServiceHelper;
 import com.stars.services.chat.ChatManager;
@@ -103,18 +99,7 @@ public class ChatModule extends AbstractModule {
             checkChatRedPoint(redPointMap);
         }
         if (redPointIds.contains(RedPointConst.MARRY_CHAT)) {
-            MarryModule marryModule = module(MConst.Marry);
-            boolean b = false;
-            for (long id : chatList) {
-                if (marryModule.marriageWith(id)) {
-                    b = true;
-                }
-            }
-            if (b) {
-                redPointMap.put(RedPointConst.MARRY_CHAT, Boolean.TRUE.toString());
-            } else {
-                redPointMap.put(RedPointConst.MARRY_CHAT, null);
-            }
+            redPointMap.put(RedPointConst.MARRY_CHAT, Boolean.TRUE.toString());
         }
     }
 
@@ -242,29 +227,13 @@ public class ChatModule extends AbstractModule {
         if (rm.getRoleRow().getLevel() < 15) {
             return;
         }
-        VipModule vip = module(MConst.Vip);
-
-        if (vip.getVipLevel() <= 0 && rm.getRoleRow().getLevel() < 35) {
-            send(new ClientText("等级达到35级才能发送消息"));
-            return;
-        }
-        CampModule campModule = module(MConst.Camp);
-        RoleCampPo roleCamp = campModule.getRoleCamp();
         LoginModule loginModule = module(MConst.Login);
         cm.setSenderId(id());
         cm.setSenderName(rm.getRoleRow().getName());
         cm.setSenderJob((byte) rm.getRoleRow().getJobId());
         cm.setSenderLevel((short) rm.getLevel());
-        cm.setSenderVipLv(vip.getVipLevel());
         cm.setAccount(loginModule.getAccount());
-        if (cm.getChannel() == ChatManager.CHANNEL_RM_CAMP) {
-            if (roleCamp != null) {
-                cm.setCampType(roleCamp.getCampType());
-                cm.setCommonOfficerId(roleCamp.getCommonOfficerId());
-                cm.setRareOfficerId(roleCamp.getRareOfficerId());
-                cm.setDesignateOfficerId(roleCamp.getDesignateOfficerId());
-            }
-        }
+
         ServerLogModule log = module(MConst.ServerLog);
         log.log_chat(cm);    // 聊天日志
         //查看玩家是否处于静默禁言中，如果在，则只发送给自己
@@ -338,9 +307,6 @@ public class ChatModule extends AbstractModule {
                 continue;
             RoleModule role = (RoleModule) module(MConst.Role);
             if (role.getLevel() < chatBanVo.getMinLv() || role.getLevel() > chatBanVo.getMaxLv()) //等级段不对过滤
-                continue;
-            VipModule roleVip = (VipModule) module(MConst.Vip);
-            if (roleVip.getVipLevel() < chatBanVo.getMinVipLv() || roleVip.getVipLevel() > chatBanVo.getMaxVipLv()) //贵族等级段不对过滤
                 continue;
             return chatBanVo;
         }

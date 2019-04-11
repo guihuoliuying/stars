@@ -4,7 +4,6 @@ import com.stars.core.player.Player;
 import com.stars.core.player.PlayerPacket;
 import com.stars.modules.MConst;
 import com.stars.modules.friend.FriendPacketSet;
-import com.stars.modules.marry.summary.MarrySummaryComponent;
 import com.stars.modules.role.summary.RoleSummaryComponent;
 import com.stars.modules.tool.productdata.ItemVo;
 import com.stars.network.server.buffer.NewByteBuffer;
@@ -204,12 +203,6 @@ public class ClientFriend extends PlayerPacket {
         buff.writeInt(component.getRoleLevel());
         buff.writeInt(component.getFightScore());
         buff.writeInt(summary.getOfflineTimestamp()); // 当前时间和离线时间的差值
-        MarrySummaryComponent comp = (MarrySummaryComponent) summary.getComponent(SummaryConst.C_MARRY);
-        if(comp != null){
-            buff.writeByte(comp.getMarryState());
-        }else{
-            buff.writeByte((byte)0);
-        }
     }
 
     /* 粘包 */
@@ -241,12 +234,6 @@ public class ClientFriend extends PlayerPacket {
             buff.writeInt(component.getRoleLevel());
             buff.writeInt(component.getFightScore());
             buff.writeInt(summary.getOfflineTimestamp()); // 当前时间和离线时间的差值
-            MarrySummaryComponent comp = (MarrySummaryComponent) summary.getComponent(SummaryConst.C_MARRY);
-            if(comp != null){
-                buff.writeByte(comp.getMarryState());
-            }else{
-                buff.writeByte((byte)0);
-            }
         }
     }
 
@@ -270,13 +257,6 @@ public class ClientFriend extends PlayerPacket {
                     applicationPo.getApplicantId(), MConst.Role);
             buff.writeInt(component == null ? 0 : component.getFightScore()); // 战力
             buff.writeInt(applicationPo.getAppliedTimestamp()); // 申请时间戳
-            MarrySummaryComponent comp = (MarrySummaryComponent) ServiceHelper.summaryService().getSummaryComponent(
-                    applicationPo.getApplicantId(), SummaryConst.C_MARRY);
-            if(comp != null){
-                buff.writeByte(comp.getMarryState());
-            }else{
-                buff.writeByte((byte)0);
-            }
         }
     }
 
@@ -289,13 +269,6 @@ public class ClientFriend extends PlayerPacket {
                 applicationPo.getApplicantId(), MConst.Role);
         buff.writeInt(component == null ? 0 : component.getFightScore()); // 战力
         buff.writeInt(applicationPo.getAppliedTimestamp()); // 申请时间戳
-        MarrySummaryComponent comp = (MarrySummaryComponent) ServiceHelper.summaryService().getSummaryComponent(
-                applicationPo.getApplicantId(), SummaryConst.C_MARRY);
-        if(comp != null){
-            buff.writeByte(comp.getMarryState());
-        }else{
-            buff.writeByte((byte)0);
-        }
 
     }
 

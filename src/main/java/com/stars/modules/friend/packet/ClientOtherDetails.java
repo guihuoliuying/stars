@@ -3,33 +3,17 @@ package com.stars.modules.friend.packet;
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerPacket;
 import com.stars.modules.MConst;
-import com.stars.modules.buddy.BuddyManager;
-import com.stars.modules.buddy.prodata.BuddyinfoVo;
-import com.stars.modules.buddy.summary.BuddySummaryComponent;
-import com.stars.modules.buddy.summary.BuddySummaryVo;
-import com.stars.modules.deityweapon.summary.DeityWeaponSummaryComponent;
 import com.stars.modules.family.summary.FamilySummaryComponent;
-import com.stars.modules.fashion.summary.FashionSummaryComponent;
-import com.stars.modules.fashion.userdata.RoleFashion;
 import com.stars.modules.friend.FriendPacketSet;
-import com.stars.modules.newequipment.summary.NewEquipmentSummaryComponent;
-import com.stars.modules.newequipment.userdata.RoleEquipment;
 import com.stars.modules.role.summary.RoleSummaryComponent;
 import com.stars.modules.skill.SkillManager;
 import com.stars.modules.skill.prodata.SkillVo;
 import com.stars.modules.skill.summary.SkillSummaryComponent;
-import com.stars.modules.title.TitleManager;
-import com.stars.modules.title.prodata.TitleVo;
-import com.stars.modules.title.summary.TitleSummaryComponent;
 import com.stars.network.server.buffer.NewByteBuffer;
 import com.stars.services.summary.Summary;
 import com.stars.services.summary.SummaryConst;
-import com.stars.util.LogUtil;
-import com.stars.util.StringUtil;
 
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 
 /**
  * Created by zhaowenshuo on 2016/8/16.
@@ -120,53 +104,12 @@ public class ClientOtherDetails extends PlayerPacket {
 
     // 称号
     private void writeTitle(com.stars.network.server.buffer.NewByteBuffer buff, Summary summary) {
-        TitleSummaryComponent component = (TitleSummaryComponent) summary.getComponent("title");
-        Map<Byte, Integer> topFightScoreTitleMap = component.getTopFightScoreTitleMap();
-        Iterator<Entry<Byte, Integer>> iterator = topFightScoreTitleMap.entrySet().iterator();
-        Entry<Byte, Integer> checkEntry = null;
-        for (;iterator.hasNext();) {
-        	checkEntry = iterator.next();
-        	TitleVo vo = TitleManager.getTitleVo(checkEntry.getValue());
-        	if(vo==null){
-        		if(checkEntry.getValue()!=null){
-        			LogUtil.error("Title Missing:"+checkEntry.getValue());
-        		}
-        		iterator.remove();
-        	}
-        }
-        buff.writeByte((byte) topFightScoreTitleMap.size()); // 大小
-        for (Map.Entry<Byte, Integer> entry : topFightScoreTitleMap.entrySet()) {
-            TitleVo vo = TitleManager.getTitleVo(entry.getValue());
-            buff.writeByte(entry.getKey()); // 称号的类别
-            buff.writeInt(entry.getValue()); // 称号的id
-            buff.writeInt(vo.getFightPower()); // 称号战力
-        }
+
     }
 
     // 装备
     private void writeEquipment(com.stars.network.server.buffer.NewByteBuffer buff, Summary summary) {
 
-        //时装加到装备孔位8的处理
-        FashionSummaryComponent fashionComponent = (FashionSummaryComponent) summary.getComponent(MConst.Fashion);
-        RoleFashion roleFashion = null;
-        byte hasFashionData = (byte)0;
-        if (fashionComponent != null && fashionComponent.getRoleDressFashion() != null){
-            roleFashion = fashionComponent.getRoleDressFashion();
-            hasFashionData = (byte)1;
-        }
-
-        NewEquipmentSummaryComponent component = (NewEquipmentSummaryComponent) summary.getComponent(SummaryConst.C_NEW_EQUIPMENT);
-        if (component == null || StringUtil.isEmpty(component.getEquipmentMap())) {
-            buff.writeByte((byte) hasFashionData);
-        } else {
-            buff.writeByte((byte) (component.getEquipmentMap().size()+hasFashionData));
-            for (RoleEquipment equipment : component.getEquipmentMap().values()) {
-                equipment.writeToBuff(buff);
-            }
-        }
-        if (roleFashion != null) {
-            roleFashion.writeDressedFashionToBuff(buff);
-        }
     }
 
     private void writeFamily(com.stars.network.server.buffer.NewByteBuffer buff, Summary summary) {
@@ -177,22 +120,7 @@ public class ClientOtherDetails extends PlayerPacket {
     }
 
     private void writeBuddy(com.stars.network.server.buffer.NewByteBuffer buff, Summary summary) {
-        BuddySummaryComponent comp = (BuddySummaryComponent) summary.getComponent(SummaryConst.C_BUDDY);
-        Map<Integer, BuddySummaryVo> voMap = comp.getBuddySummaryVoMap();
-        buff.writeByte((byte) voMap.size());
-        BuddyinfoVo buddyinfoVo;
-        for (BuddySummaryVo vo : voMap.values()) {
-            buff.writeInt(vo.getBuddyId());
-            buff.writeInt(vo.getLevel());
-            buff.writeInt(vo.getStageLevel());
-            buff.writeInt(vo.getFightScore());
-            buff.writeByte(vo.getIsFight());
-            buff.writeInt(vo.getMonsterId());
 
-            buddyinfoVo = BuddyManager.getBuddyinfoVo(vo.getBuddyId());
-            buff.writeString(buddyinfoVo.getName());
-            buff.writeByte(buddyinfoVo.getQuality());
-        }
     }
 
     private void writeSkill(com.stars.network.server.buffer.NewByteBuffer buff, Summary summary) {
@@ -225,11 +153,5 @@ public class ClientOtherDetails extends PlayerPacket {
 
 
     private void writeDeityWeapon(NewByteBuffer buff, Summary summary) {
-        DeityWeaponSummaryComponent comp = (DeityWeaponSummaryComponent) summary.getComponent(MConst.Deity);
-        if (comp == null) {
-            buff.writeInt(0);
-        } else {
-            buff.writeInt(comp.getCurRoleDeityWeapoonId());
-        }
     }
 }

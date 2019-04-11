@@ -54,7 +54,7 @@ public class ClientForeShow extends PlayerPacket {
     }
 
     @Override
-    public void writeToBuffer(com.stars.network.server.buffer.NewByteBuffer buff) {
+    public void writeToBuffer(NewByteBuffer buff) {
         buff.writeByte(subtype);
         switch (subtype) {
             case foreOpenMap:
@@ -73,7 +73,7 @@ public class ClientForeShow extends PlayerPacket {
         }
     }
 
-    private void writeMap(com.stars.network.server.buffer.NewByteBuffer buff) {
+    private void writeMap(NewByteBuffer buff) {
         buff.writeInt(openUnShowMap.size());
         for (ForeShowStatePo foreShowStatePo : openUnShowMap.values()) {
             foreShowStatePo.writeToBuff(buff);

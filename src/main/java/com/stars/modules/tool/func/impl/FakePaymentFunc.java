@@ -10,9 +10,7 @@ import com.stars.modules.tool.func.ToolFunc;
 import com.stars.modules.tool.func.ToolFuncResult;
 import com.stars.modules.tool.productdata.ItemVo;
 import com.stars.modules.vip.VipManager;
-import com.stars.modules.vip.VipModule;
 import com.stars.modules.vip.prodata.ChargeVo;
-import com.stars.modules.vip.userdata.RoleVip;
 import com.stars.services.ServiceHelper;
 import com.stars.services.pay.PayExtent;
 import com.stars.services.pay.PayOrderInfo;
@@ -45,11 +43,6 @@ public class FakePaymentFunc extends ToolFunc {
     public ToolFuncResult check(Map<String, Module> moduleMap, int count, Object... args) {
         if (count <= 0) {
             return new ToolFuncResult(false, new ClientText("道具数量为零"));
-        }
-        VipModule vipModule = (VipModule) moduleMap.get(MConst.Vip);
-        RoleVip roleVip = vipModule.getRoleVip();
-        if (chargeId == 1 && roleVip.getMonthCardRest() > 0 && roleVip.getMonthCardRest() > VipManager.cardContinueDay) {
-            return new ToolFuncResult(false, new ClientText("剩余月卡"+VipManager.cardContinueDay+"天后才能使用"));
         }
 
         ToolFuncResult tr = super.useCondition(moduleMap, args);

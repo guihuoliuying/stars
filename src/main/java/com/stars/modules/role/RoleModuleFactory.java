@@ -1,22 +1,23 @@
 package com.stars.modules.role;
 
 import com.stars.core.annotation.DependOn;
+import com.stars.core.db.DBUtil;
 import com.stars.core.event.EventDispatcher;
 import com.stars.core.module.AbstractModuleFactory;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
-import com.stars.core.db.DBUtil;
 import com.stars.modules.MConst;
-import com.stars.modules.changejob.event.ChangeJobEvent;
 import com.stars.modules.data.DataManager;
 import com.stars.modules.gm.GmManager;
 import com.stars.modules.name.event.RoleRenameEvent;
-import com.stars.modules.newequipment.NewEquipmentConstant;
 import com.stars.modules.role.event.FriendGetVigorEvent;
 import com.stars.modules.role.event.ModifyRoleLevelEvent;
 import com.stars.modules.role.event.ReduceRoleResourceEvent;
 import com.stars.modules.role.gm.*;
-import com.stars.modules.role.listener.*;
+import com.stars.modules.role.listener.FriendGetVigorListener;
+import com.stars.modules.role.listener.ModifyRoleLevelListener;
+import com.stars.modules.role.listener.ReduceRoleResourceListener;
+import com.stars.modules.role.listener.RoleRenameListenner;
 import com.stars.modules.role.prodata.FightScoreRewardVo;
 import com.stars.modules.role.prodata.Grade;
 import com.stars.modules.role.prodata.Job;
@@ -86,7 +87,6 @@ public class RoleModuleFactory extends AbstractModuleFactory<RoleModule> {
         eventDispatcher.reg(FriendGetVigorEvent.class, new FriendGetVigorListener((RoleModule) module));
         eventDispatcher.reg(ReduceRoleResourceEvent.class, new ReduceRoleResourceListener((RoleModule) module));
         eventDispatcher.reg(ModifyRoleLevelEvent.class, new ModifyRoleLevelListener((RoleModule) module));
-        eventDispatcher.reg(ChangeJobEvent.class, new RoleChangeJobListenner((RoleModule) module));
         eventDispatcher.reg(RoleRenameEvent.class, new RoleRenameListenner((RoleModule) module));
     }
 
@@ -103,18 +103,6 @@ public class RoleModuleFactory extends AbstractModuleFactory<RoleModule> {
             jobId = tmpJob.getJobId();
             jobMap.put(jobId, tmpJob);
             bornEquipArr = tmpJob.getOriginequipment().split("\\|");
-            if (bornEquipArr.length < NewEquipmentConstant.EQUIPMENT_MAX_COUNT) {
-                throw new Exception("Job表配置的出生装备数据有问题: jobId=" + jobId);
-            }
-            for (byte k = 1; k <= NewEquipmentConstant.EQUIPMENT_MAX_COUNT; k++) {
-                if (bornEquipmentMap.containsKey(jobId) == false) {
-                    bornEquipmentMap.put(jobId, new HashMap<Byte, Integer>());
-                }
-                bornEquipmentMap.get(jobId).put(k, Integer.parseInt(bornEquipArr[k - 1]));
-            }
-            if (bornEquipArr.length < NewEquipmentConstant.EQUIPMENT_MAX_COUNT) {
-                throw new Exception("Job表配置的解锁装备数据有问题: jobId=" + jobId);
-            }
         }
         RoleManager.setJobDatas(jobMap);
         RoleManager.setBornEquipmentMap(bornEquipmentMap);

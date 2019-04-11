@@ -1,12 +1,12 @@
 package com.stars.modules.dungeon;
 
+import com.stars.core.db.DBUtil;
 import com.stars.core.event.Event;
 import com.stars.core.event.EventDispatcher;
 import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
 import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
-import com.stars.core.db.DBUtil;
 import com.stars.modules.MConst;
 import com.stars.modules.daily.DailyManager;
 import com.stars.modules.daily.event.DailyFuntionEvent;
@@ -34,8 +34,6 @@ import com.stars.modules.serverLog.ThemeType;
 import com.stars.modules.tool.ToolManager;
 import com.stars.modules.tool.ToolModule;
 import com.stars.modules.tool.packet.ClientAward;
-import com.stars.modules.vip.VipModule;
-import com.stars.modules.vip.prodata.VipinfoVo;
 import com.stars.services.summary.SummaryComponent;
 import com.stars.util.I18n;
 import com.stars.util.MapUtil;
@@ -552,16 +550,12 @@ public class DungeonModule extends AbstractModule {
         if (roleDungeon == null) {
             return false;
         }
-        VipModule vipModule = module(MConst.Vip);
         int calEnterCount = dungeonVo.getEnterCount();
-        VipinfoVo vipinfoVo = vipModule.getCurVipinfoVo();
         /**
          * 英雄关卡不要添加vip次数
          */
         if (!DungeonManager.isHeroStage(dungeonId)) {
-            if (vipinfoVo != null) {
-                calEnterCount = calEnterCount + vipinfoVo.getDungeonEnter();
-            }
+
         }
         return roleDungeon.getNumber() < calEnterCount;
     }
@@ -634,18 +628,13 @@ public class DungeonModule extends AbstractModule {
         List<Map<Integer, Integer>> rewardList = new LinkedList<>();
         Map<Integer, Integer> rewardPer;
         // vip增加进入次数
-        VipModule vipModule = module(MConst.Vip);
         int calEnterCount = dungeonVo.getEnterCount();
         Map<Integer, Integer> map;
         Map<Integer, Integer> totalMap = new HashMap<>();
-        VipinfoVo vipinfoVo = vipModule.getCurVipinfoVo();
         /**
          * 英雄关卡不要添加vip次数
          */
         if (!DungeonManager.isHeroStage(dungeonId)) {
-            if (vipinfoVo != null) {
-                calEnterCount = calEnterCount + vipinfoVo.getDungeonEnter();
-            }
         }
         for (byte i = 0; i < times; i++) {
             // 进入次数

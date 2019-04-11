@@ -8,10 +8,6 @@ import com.stars.services.fightServerManager.Conn2FightManagerServerCallBack;
 import com.stars.services.fightServerManager.FSManagerService;
 import com.stars.services.fightServerManager.FSManagerServiceActor;
 import com.stars.services.fightServerManager.FSRPCNetExceptionTask;
-import com.stars.services.fightingmaster.FightingMasterService;
-import com.stars.services.fightingmaster.FightingMasterServiceActor;
-import com.stars.services.skyrank.SkyRankLocalService;
-import com.stars.services.skyrank.SkyRankLocalServiceActor;
 
 /**
  * Created by zhouyaohui on 2016/11/1.
@@ -20,16 +16,12 @@ public class FightingMasterServiceManager extends ServiceManager {
 
     @Override
     public void initSelfServices() throws Throwable {
-        registerAndInit(SConst.fightingMasterService, newService(new FightingMasterServiceActor()));
         registerAndInit(SConst.FSManagerService, newService(new FSManagerServiceActor()));
-        registerAndInit(SConst.SkyRankLocalService, newService(new SkyRankLocalServiceActor()));
     }
 
     @Override
     public void initRpc() throws Throwable {
-        exportService(FightingMasterService.class, getService(SConst.fightingMasterService));
         exportService(FSManagerService.class, getService(SConst.FSManagerService));
-        exportService(SkyRankLocalService.class, getService(SConst.SkyRankLocalService));
         initRpcHelper(FightingMasterRPC.class);
         int commonId = com.stars.bootstrap.ServerManager.getServer().getConfig().getServerId();
         int managerServerId = Integer.parseInt(ServerManager.getServer().getConfig().getProps().

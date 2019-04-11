@@ -2,21 +2,14 @@ package com.stars.modules.tool;
 
 import com.stars.core.attr.Attribute;
 import com.stars.core.attr.FormularUtils;
+import com.stars.core.db.DBUtil;
 import com.stars.core.event.Event;
 import com.stars.core.event.EventDispatcher;
 import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
-import com.stars.core.db.DBUtil;
 import com.stars.modules.MConst;
 import com.stars.modules.data.DataManager;
-import com.stars.modules.deityweapon.DeityWeaponManager;
-import com.stars.modules.deityweapon.prodata.DeityWeaponVo;
-import com.stars.modules.newequipment.NewEquipmentManager;
-import com.stars.modules.newequipment.NewEquipmentModule;
-import com.stars.modules.newequipment.packet.ClientNewEquipment;
-import com.stars.modules.newequipment.prodata.EquipmentVo;
-import com.stars.modules.newequipment.userdata.RoleEquipment;
 import com.stars.modules.redpoint.RedPointConst;
 import com.stars.modules.role.RoleModule;
 import com.stars.modules.serverLog.EventType;
@@ -107,12 +100,6 @@ public class ToolModule extends AbstractModule {
         if (tool == null || !ToolManager.isEquip(tool.getItemId()))
             return;
         tool.setIsEquip((byte) 1);
-        EquipmentVo equipmentVo = NewEquipmentManager.getEquipmentVo(tool.getItemId());
-        tool.setEquipLevel(equipmentVo.getEquipLevel());
-        tool.setEquipType(equipmentVo.getType());
-        tool.setBasicAttr(equipmentVo.getAttributePacked());
-        tool.setBasicFighting(equipmentVo.getBasicFighting());
-        tool.setJobId(equipmentVo.getJob());
     }
 
     /**
@@ -974,8 +961,6 @@ public class ToolModule extends AbstractModule {
     private void initHandler() {
         handlers.put(ToolManager.RESOUCE_BAG, new ResouceHandler((RoleModule) module(MConst.Role)));
         handlers.put(ToolManager.ITEM_BAG, new ItemHandler(this, itemBag));
-        handlers.put(ToolManager.EQUIP_BAG,
-                new EquipHandler((NewEquipmentModule) module(MConst.NewEquipment), this, equipBag));
         handlers.put(ToolManager.FAMILY_CONTRIBUTION_BAG, new FamilyContributionToolHandler(id(), moduleMap()));
     }
 
@@ -1401,8 +1386,6 @@ public class ToolModule extends AbstractModule {
             }
         }
 
-        if (NewEquipmentManager.isTokenEquipment(itemId)) //符文装备不参与分解
-            return;
 
         if (!this.canAdd(resolveToolMap)) {
             warn("背包空间不足,无法分解");
@@ -1420,65 +1403,8 @@ public class ToolModule extends AbstractModule {
             com.stars.util.LogUtil.error("道具分解异常, roleId=" + id() + ", itemId=" + itemId + ", count=" + count, cause);
         }
 
-        // 分解结果展示界面
-        ClientNewEquipment client = new ClientNewEquipment(ClientNewEquipment.RESP_RESOLVE_EQUIP_RESULT);
-        client.setResolveMap(map);
-        send(client);
     }
 
-    /**
-     * 一键分解对应品质的装备(一键分解暂时只对装备有效)
-     */
-    public void resolveEquipByOneKey(Byte resolveQuality) {
-        if (StringUtil.isEmpty(equipBag) || resolveQuality == 0) {
-            warn("没有可分解的装备");
-            return;
-        }
-        // 待分解装备列表
-        List<RoleToolRow> deleteList = new ArrayList<>();
-        Map<Integer, Integer> resolveMap = new HashMap<>();
-        ItemVo itemVo;
-        NewEquipmentModule equip = module(MConst.NewEquipment);
-        for (RoleToolRow toolRow : equipBag.getToolMap().values()) {
-            if (toolRow == null)
-                continue;
-            itemVo = ToolManager.getItemVo(toolRow.getItemId());
-            if (itemVo == null || StringUtil.isEmpty(itemVo.getResolveMap()) || resolveQuality < itemVo.getColor())
-                continue;
-            byte mark = equip.calEquipMark(toolRow, MConst.Tool);
-            if (mark != ClientNewEquipment.MARK_TYPE_HIGHQUALITY && mark != ClientNewEquipment.MARK_TYPE_WASH
-                    && mark != ClientNewEquipment.MARK_TYPE_NONE)
-                continue;
-            if (NewEquipmentManager.isTokenEquipment(toolRow.getItemId())) //符文装备不参与一键分解
-                continue;
-            deleteList.add(toolRow);
-            com.stars.util.MapUtil.add(resolveMap, itemVo.getResolveMap());
-        }
-        if (StringUtil.isEmpty(deleteList)) {
-            warn("没有可分解的装备");
-            return;
-        }
-        HashMap<Integer, Integer> logDeleteMap = new HashMap<Integer, Integer>();
-        int logToolCount = 0;
-        for (RoleToolRow toolRow : deleteList) {
-            logToolCount = toolRow.getCount();
-            equipBag.delete(toolRow.getToolId(), toolRow.getCount());// 删除装备
-            Integer tmpNum = logDeleteMap.get(toolRow.getItemId());
-            if (null != tmpNum) {
-                logDeleteMap.put(toolRow.getItemId(), (logToolCount + tmpNum));
-            } else {
-                logDeleteMap.put(toolRow.getItemId(), logToolCount);
-            }
-        }
-        ServerLogModule log = (ServerLogModule) module(MConst.ServerLog);
-        log.Log_core_item(null, logDeleteMap, EventType.RESOLVETOOL.getCode());
-        Map<Integer, Integer> map = addAndSend(resolveMap, EventType.RESOLVETOOL.getCode());// 增加物品并刷新客户端,背包不足直接发邮件
-
-        // 分解结果展示界面
-        ClientNewEquipment client = new ClientNewEquipment(ClientNewEquipment.RESP_RESOLVE_EQUIP_RESULT);
-        client.setResolveMap(map);
-        send(client);
-    }
 
     /**
      * 更新道具信息
@@ -1506,75 +1432,8 @@ public class ToolModule extends AbstractModule {
         return 0;
     }
 
-    /**
-     * 背包内是否存在更好的额外属性
-     */
-    public boolean hasBetterExtAttrInBag(RoleEquipment roleEquipment) {
-        RoleModule roleModule = module(MConst.Role);
-        Byte maxNum = Byte.parseByte(DataManager.getCommConfig("equip_extattrnum_max"));
-        int size = roleEquipment.getExtraAttrMap() == null ? 0 : roleEquipment.getExtraAttrMap().size();
-        boolean hasEmpty = maxNum > size;
-        int minFighting = roleEquipment.getMinExtAttrFighting();
-        if (equipBag != null && StringUtil.isNotEmpty(equipBag.getToolMap())) {
-            for (RoleToolRow toolRow : equipBag.getToolMap().values()) {
-                if (toolRow.getEquipType() != roleEquipment.getType())
-                    continue;
-                if (StringUtil.isEmpty(toolRow.getExtraAttrMap()))
-                    continue;// 没有额外属性
-                EquipmentVo equipmentVo = NewEquipmentManager.getEquipmentVo(toolRow.getItemId());
-                if (equipmentVo != null && roleModule.getLevel() < equipmentVo.getEquipLevel())
-                    continue;
-                if (NewEquipmentManager.isTokenEquipment(equipmentVo.getEquipId())
-                        && (StringUtil.isNotEmpty(toolRow.getRoleTokenHoleInfoMap()) || toolRow.getTokenSkillId() != 0)) //符文装备而且有符文或符文技能的不能洗练
-                    continue;
-                if (roleEquipment.getBasicFighting() < toolRow.getBasicFighting())
-                    continue;// 可穿戴的不能洗练
-                if (hasEmpty)
-                    return true;// 有空位
 
-                // 存在更高战力的额外属性
-                if (toolRow.getMaxExtraAttrFighting() > minFighting)
-                    return true;
-            }
-        }
-        return false;
-    }
 
-    /**
-     * 背包内是否存在可转移的装备
-     */
-    public boolean hasCanTransferEquipInBag(RoleEquipment roleEquipment) {
-        if (equipBag != null && StringUtil.isNotEmpty(equipBag.getToolMap())) {
-            for (RoleToolRow toolRow : equipBag.getToolMap().values()) {
-                if (toolRow.getEquipType() != roleEquipment.getType())
-                    continue;
-                if (toolRow.getBasicFighting() <= roleEquipment.getBasicFighting())
-                    continue;// 基础战力低于身上装备
-                if (toolRow.getExtraAttrFighting() < roleEquipment.getExtraAttrFighting())
-                    return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * 背包内是否存在更好的装备
-     */
-    public boolean hasBetterEquipInBag(RoleEquipment roleEquipment) {
-        RoleModule roleModule = module(MConst.Role);
-        if (equipBag != null && StringUtil.isNotEmpty(equipBag.getToolMap())) {
-            for (RoleToolRow toolRow : equipBag.getToolMap().values()) {
-                EquipmentVo equipmentVo = NewEquipmentManager.getEquipmentVo(toolRow.getItemId());
-                if (equipmentVo != null && roleModule.getLevel() < equipmentVo.getEquipLevel())
-                    continue;
-                if (toolRow.getEquipType() != roleEquipment.getType())
-                    continue;
-                if (toolRow.getBasicFighting() > roleEquipment.getBasicFighting())
-                    return true;
-            }
-        }
-        return false;
-    }
 
     public HashSet<RoleToolRow> getNeedToMarkSet() {
         if (equipBag == null || equipBag.getNeedToMark() == null)
@@ -1695,11 +1554,6 @@ public class ToolModule extends AbstractModule {
             int itemId = roleToolRow.getItemId();
             ItemVo itemVo = ToolManager.getItemVo(itemId);
             if (itemVo.getType() == ToolManager.TYPE_EQUIPMENT) {
-                EquipmentVo newJobEquipmentVo = NewEquipmentManager.getNewJobEquipmentVo(newJobId, itemId);
-                if (newJobEquipmentVo != null) {
-                    roleToolRow.setItemId(newJobEquipmentVo.getEquipId());
-                    context().update(roleToolRow);
-                }
             }
         }
 /**
@@ -1707,12 +1561,7 @@ public class ToolModule extends AbstractModule {
  */
         for (Map.Entry<Long, RoleToolRow> entry : itemBag.getToolMap().entrySet()) {
             RoleToolRow roleToolRow = entry.getValue();
-            DeityWeaponVo deityWeaponVo = DeityWeaponManager.getDeityWeaponVoByItemId(roleToolRow.getItemId());
-            if (deityWeaponVo != null) {
-                DeityWeaponVo newDeityWeaponVo = DeityWeaponManager.getDeityWeaponVo(newJobId, deityWeaponVo.getType());
-                roleToolRow.setItemId(newDeityWeaponVo.getItemId());
-                context().update(roleToolRow);
-            }
+
         }
     }
 

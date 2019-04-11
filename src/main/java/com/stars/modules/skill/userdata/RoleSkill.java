@@ -3,7 +3,6 @@ package com.stars.modules.skill.userdata;
 import com.stars.core.db.DBUtil;
 import com.stars.core.db.DbRow;
 import com.stars.core.db.SqlUtil;
-import com.stars.modules.newequipment.NewEquipmentManager;
 import com.stars.modules.skill.SkillConstant;
 import com.stars.modules.skill.SkillManager;
 import com.stars.modules.skill.prodata.SkillvupVo;
@@ -185,8 +184,7 @@ public class RoleSkill extends DbRow {
         for (Entry<Integer, Integer> entry : set) {
             skillvo = SkillManager.getSkillvupVo(entry.getKey(), entry.getValue());
             //此处判断已佩戴或符文或法宝的被动技能才生效，应该从skilltype去区分，现逻辑有点乱
-            if ((!useSkills.containsValue(skillvo.getSkillId())
-                    && NewEquipmentManager.getTokenSkillVoBySkillId(skillvo.getSkillId()) == null)
+            if ((!useSkills.containsValue(skillvo.getSkillId()))
                     && skillvo.getSkillType() != SkillConstant.TRUMP_SKILLTYPE_PASS
                     && skillvo.getSkillType() != SkillConstant.FASHIONCARD_SKILLTYPE_PASS) continue;
             if (skillvo.getSkillType() == SkillConstant.LVUP_SKILLTYPE_PASS ||
@@ -211,7 +209,6 @@ public class RoleSkill extends DbRow {
             skillvo = SkillManager.getSkillvupVo(entry.getKey(), entry.getValue());
             //此处判断已佩戴或符文或法宝的被动技能才生效，应该从skilltype去区分，现逻辑有点乱
             if ((!useSkills.containsValue(skillvo.getSkillId()))  //不在使用，而且不是符文技能
-                    && NewEquipmentManager.getTokenSkillVoBySkillId(skillvo.getSkillId()) == null
                     && skillvo.getSkillType() != SkillConstant.TRUMP_SKILLTYPE_PASS
                     && skillvo.getSkillType() != SkillConstant.FASHIONCARD_SKILLTYPE_PASS)
                 continue;

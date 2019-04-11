@@ -3,7 +3,6 @@ package com.stars.core.gmpacket;
 import com.stars.core.SystemRecordMap;
 import com.stars.server.main.gmpacket.GmPacketHandler;
 import com.stars.server.main.gmpacket.GmPacketResponse;
-import com.stars.services.ServiceHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +20,6 @@ public class SetServerOpenTImeGM extends GmPacketHandler{
 		resultList.add(parseYMD(time));
 		GmPacketResponse response = new GmPacketResponse(GmPacketResponse.SUC, 1, resultToJson(resultList));
 		//等级加速条件更新处理（开服时间修改）
-		ServiceHelper.levelSpeedUpService().conditionReset();
 		return response.toString();
 	}
 

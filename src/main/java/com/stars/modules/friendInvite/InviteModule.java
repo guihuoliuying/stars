@@ -1,11 +1,11 @@
 package com.stars.modules.friendInvite;
 
 import com.stars.AccountRow;
+import com.stars.core.db.DBUtil;
 import com.stars.core.event.EventDispatcher;
 import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
-import com.stars.core.db.DBUtil;
 import com.stars.modules.MConst;
 import com.stars.modules.data.DataManager;
 import com.stars.modules.demologin.LoginModule;
@@ -84,8 +84,8 @@ public class InviteModule extends AbstractModule implements OpActivityModule {
             initRoleBeInvitePo();
         }
         // 红点
-        signCalRedPoint(MConst.FriendInvite, RedPointConst.FRIEND_INVITE);
-        signCalRedPoint(MConst.FriendInvite, RedPointConst.FRIEND_BE_INVITE);
+//        signCalRedPoint(MConst.FriendInvite, RedPointConst.FRIEND_INVITE);
+//        signCalRedPoint(MConst.FriendInvite, RedPointConst.FRIEND_BE_INVITE);
     }
 
     @Override
@@ -203,7 +203,7 @@ public class InviteModule extends AbstractModule implements OpActivityModule {
                 toolModule.sendPacket(clientAward);
                 if (roleInvitePo.getInviteCount() == roleInvitePo.getFetchCount()) {
                     // 红点
-                    signCalRedPoint(MConst.FriendInvite, RedPointConst.FRIEND_INVITE);
+//                    signCalRedPoint(MConst.FriendInvite, RedPointConst.FRIEND_INVITE);
                 }
                 warn("剩余可领取奖励份数：" + (roleInvitePo.getInviteCount() - roleInvitePo.getFetchCount()));
                 logModule.logInvite(id(), roleInvitePo.getFetchCount(), toolMap);
@@ -225,7 +225,7 @@ public class InviteModule extends AbstractModule implements OpActivityModule {
                 toolModule.sendPacket(clientAward);
                 if (roleInvitePo.getInviteCount() == roleInvitePo.getFetchCount()) {
                     // 红点
-                    signCalRedPoint(MConst.FriendInvite, RedPointConst.FRIEND_INVITE);
+//                    signCalRedPoint(MConst.FriendInvite, RedPointConst.FRIEND_INVITE);
                 }
                 warn("剩余可领取奖励份数：" + (roleInvitePo.getInviteCount() - roleInvitePo.getFetchCount()));
                 logModule.logInvite(id(), roleInvitePo.getFetchCount(), toolMap);
@@ -264,7 +264,7 @@ public class InviteModule extends AbstractModule implements OpActivityModule {
                 clientAward.setType((byte) 0);
                 toolModule.sendPacket(clientAward);
                 // 红点
-                signCalRedPoint(MConst.FriendInvite, RedPointConst.FRIEND_BE_INVITE);
+//                signCalRedPoint(MConst.FriendInvite, RedPointConst.FRIEND_BE_INVITE);
             }
         }
     }
@@ -360,8 +360,8 @@ public class InviteModule extends AbstractModule implements OpActivityModule {
             warn("绑定邀请码成功");
 
             // 红点
-            signCalRedPoint(MConst.FriendInvite, RedPointConst.FRIEND_INVITE);
-            signCalRedPoint(MConst.FriendInvite, RedPointConst.FRIEND_BE_INVITE);
+//            signCalRedPoint(MConst.FriendInvite, RedPointConst.FRIEND_INVITE);
+//            signCalRedPoint(MConst.FriendInvite, RedPointConst.FRIEND_BE_INVITE);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -383,8 +383,8 @@ public class InviteModule extends AbstractModule implements OpActivityModule {
             send(clientInvite);
 
             // 红点
-            signCalRedPoint(MConst.FriendInvite, RedPointConst.FRIEND_INVITE);
-            signCalRedPoint(MConst.FriendInvite, RedPointConst.FRIEND_BE_INVITE);
+//            signCalRedPoint(MConst.FriendInvite, RedPointConst.FRIEND_INVITE);
+//            signCalRedPoint(MConst.FriendInvite, RedPointConst.FRIEND_BE_INVITE);
         }
     }
 

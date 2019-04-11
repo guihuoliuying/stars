@@ -1,17 +1,18 @@
 package com.stars.modules.demologin.packet;
 
 import com.stars.AccountRow;
+import com.stars.core.actor.Actor;
+import com.stars.core.db.DBUtil;
+import com.stars.core.db.SqlUtil;
 import com.stars.core.event.EventDispatcher;
 import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
 import com.stars.core.module.Module;
 import com.stars.core.module.ModuleContext;
 import com.stars.core.module.ModuleManager;
+import com.stars.core.persist.SaveDBManager;
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerSystem;
 import com.stars.core.redpoint.RedPoints;
-import com.stars.core.persist.SaveDBManager;
-import com.stars.core.db.DBUtil;
-import com.stars.core.db.SqlUtil;
 import com.stars.modules.MConst;
 import com.stars.modules.data.DataManager;
 import com.stars.modules.demologin.LoginConstant;
@@ -30,7 +31,6 @@ import com.stars.util.DateUtil;
 import com.stars.util.DirtyWords;
 import com.stars.util.LogUtil;
 import com.stars.util.StringUtil;
-import com.stars.core.actor.Actor;
 
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
@@ -264,7 +264,6 @@ public class ServerRoleOp extends Packet {
                 addToSpecialAccount(accountRow.getName(), roleId);
                 com.stars.util.LogUtil.info("创角|成功|account:{}|roleId:{}", account, roleId);
                 //通知银汉广告服务
-                ServiceHelper.advertInfService().addToSendMap(roleId, accountRow.getLoginInfo());
                 return;
             } else {
                 com.stars.util.LogUtil.info("创角|失败:获取锁失败|account:{}", account);

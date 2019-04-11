@@ -1,9 +1,9 @@
 package com.stars.startup;
 
 import com.stars.bootstrap.SchedulerHelper;
-import com.stars.core.schedule.SchedulerManager;
+import com.stars.core.actor.ActorSystem;
 import com.stars.core.db.DBUtil;
-import com.stars.modules.daregod.DareGodModuleFactory;
+import com.stars.core.schedule.SchedulerManager;
 import com.stars.modules.data.DataModuleFactory;
 import com.stars.modules.drop.DropModuleFactory;
 import com.stars.multiserver.MultiServerHelper;
@@ -14,7 +14,6 @@ import com.stars.server.Business;
 import com.stars.server.main.actor.ActorServer;
 import com.stars.services.ServiceHelper;
 import com.stars.services.ServiceSystem;
-import com.stars.core.actor.ActorSystem;
 
 
 public class RMChatServerStartup implements Business {
@@ -41,7 +40,6 @@ public class RMChatServerStartup implements Business {
     private void loadProductData() throws Exception {
         new DataModuleFactory().loadProductData();
         new DropModuleFactory().loadProductData();
-        new DareGodModuleFactory().loadProductData();
     }
 
     @Override

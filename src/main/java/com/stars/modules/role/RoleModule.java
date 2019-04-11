@@ -4,29 +4,20 @@ import com.stars.AccountRow;
 import com.stars.core.attr.Attr;
 import com.stars.core.attr.Attribute;
 import com.stars.core.attr.FormularUtils;
+import com.stars.core.db.DBUtil;
 import com.stars.core.event.EventDispatcher;
 import com.stars.core.gmpacket.BlockAccountGm;
 import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
 import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
-import com.stars.core.db.DBUtil;
 import com.stars.modules.MConst;
-import com.stars.modules.baby.BabyManager;
-import com.stars.modules.camp.CampModule;
-import com.stars.modules.camp.event.AddProsperousEvent;
-import com.stars.modules.camp.event.AddReputationEvent;
-import com.stars.modules.camp.usrdata.RoleCampPo;
 import com.stars.modules.demologin.LoginModule;
 import com.stars.modules.demologin.packet.ClientReconnect;
 import com.stars.modules.demologin.packet.ClientText;
 import com.stars.modules.demologin.userdata.AccountRole;
 import com.stars.modules.demologin.userdata.BlockAccount;
-import com.stars.modules.familyactivities.bonfire.FamilyBonfireModule;
-import com.stars.modules.levelSpeedUp.LevelSpeedUpModule;
 import com.stars.modules.name.event.RoleRenameEvent;
-import com.stars.modules.operateCheck.OperateCheckModule;
-import com.stars.modules.operateCheck.OperateConst;
 import com.stars.modules.redpoint.RedPointConst;
 import com.stars.modules.role.event.*;
 import com.stars.modules.role.packet.ClientFighScoreReward;
@@ -35,7 +26,6 @@ import com.stars.modules.role.packet.ClientRole;
 import com.stars.modules.role.packet.ClientRoleResource;
 import com.stars.modules.role.prodata.FightScoreRewardVo;
 import com.stars.modules.role.prodata.Grade;
-import com.stars.modules.role.summary.RoleSummaryComponentImpl;
 import com.stars.modules.role.userdata.Role;
 import com.stars.modules.scene.ArroundScene;
 import com.stars.modules.scene.SceneManager;
@@ -45,14 +35,9 @@ import com.stars.modules.serverLog.EventType;
 import com.stars.modules.serverLog.ServerLogModule;
 import com.stars.modules.tool.ToolManager;
 import com.stars.modules.tool.ToolModule;
-import com.stars.modules.vip.VipModule;
-import com.stars.modules.vip.prodata.VipinfoVo;
-import com.stars.modules.welfareaccount.event.VirtualMoneyChangeEvent;
-import com.stars.services.ServiceHelper;
 import com.stars.services.summary.SummaryComponent;
 import com.stars.util.DateUtil;
 import com.stars.util.I18n;
-import com.stars.util.LogUtil;
 import com.stars.util.StringUtil;
 
 import java.sql.SQLException;
@@ -109,13 +94,10 @@ public class RoleModule extends AbstractModule {
     @Override
     public void onSyncData() {
         com.stars.util.LogUtil.info("登录下发用户基础数据,role={}", id());
-        VipModule vipModule = module(MConst.Vip);
-        LevelSpeedUpModule levelSpeedUpModule = module(MConst.LevelSpeedUp);
-        CampModule campModule = module(MConst.Camp);
+
         ClientRole clientRole = new ClientRole(ClientRole.SEND_ROLE, role);
-        clientRole.setVipLevel(vipModule.getVipLevel());
-        clientRole.setLevelSpeedUpAddtion(levelSpeedUpModule.getLevelSpeedUpAddition());
-        clientRole.setRoleCampPo(campModule.getRoleCamp());
+
+
         send(clientRole);
         /* 发送体力购买次数 */
         ClientRoleResource clientVigor = new ClientRoleResource(ClientRoleResource.VIGOR_BUY);
@@ -160,13 +142,7 @@ public class RoleModule extends AbstractModule {
     public void onUpateSummary(Map<String, SummaryComponent> componentMap) {
         LoginModule loginModule = module(MConst.Login);
         int channnel = loginModule.getChannnel();
-        CampModule campModule = module(MConst.Camp);
-        int campType = campModule.getCampType();
-        if (!SpecialAccountManager.isSpecialAccount(id())) {
-            componentMap.put(MConst.Role, new RoleSummaryComponentImpl(
-                    id(), role.getName(), role.getLevel(), role.getJobId(), role.getFightScore(), role.getVigor(), role.getTitleId(), role.getCreateTime(), channnel,
-                    role.getTotalAttr(), role.getFightScoreMap(), campType));
-        }
+
     }
 
 
@@ -204,18 +180,6 @@ public class RoleModule extends AbstractModule {
      */
     public void addExp(int addValue) {
         int levelBefore = role.getLevel();
-        //等级加速
-        LevelSpeedUpModule lsuModule = module(MConst.LevelSpeedUp);
-        int levelSpeedUpAddition = lsuModule.getLevelSpeedUpAddition();
-        int extAddExp = addValue * levelSpeedUpAddition / 100;
-        if (extAddExp > 0) {
-            try {
-                send(new ClientText(I18n.get("level.speedup.tips", extAddExp)));
-            } catch (Exception e) {
-                com.stars.util.LogUtil.error("Send extAddExp fail", e);
-            }
-        }
-        addValue = addValue + extAddExp;
 
         role.addExp(addValue);
         context().update(role);
@@ -235,10 +199,6 @@ public class RoleModule extends AbstractModule {
             ServerLogModule log = (ServerLogModule) module(MConst.ServerLog);
             log.Log_core_action(getRoleRow().getLevel(), levelBefore, lastFightScore);
 
-            FamilyBonfireModule familyBonfireModule = module(MConst.FamilyActBonfire);
-            if (familyBonfireModule != null) {
-                familyBonfireModule.updateLevel(getRoleRow().getLevel());
-            }
         }
     }
 
@@ -272,16 +232,6 @@ public class RoleModule extends AbstractModule {
         }
 
         role.addResource(resourceId, count);
-        if (resourceId == ToolManager.VIRTUAL_MONEY) {
-            eventDispatcher().fire(new VirtualMoneyChangeEvent());
-        } else if (resourceId == ToolManager.VIGOR) {
-            /* 更新体力常用/摘要数据 */
-            updateRoleSummaryComp();
-        } else if (resourceId == ToolManager.REPUTATION) {
-            eventDispatcher().fire(new AddReputationEvent(count));
-        } else if (resourceId == ToolManager.PROSPEROUS) {
-            eventDispatcher().fire(new AddProsperousEvent(count));
-        }
         context().update(role);
         //打印日志
         ServerLogModule log = module(MConst.ServerLog);
@@ -318,7 +268,6 @@ public class RoleModule extends AbstractModule {
      * 初始化安全区角色出生地
      */
     public void initSafeStage() {
-        ServiceHelper.arroundPlayerService().removeArroundPlayer(getJoinSceneStr(), id());
         role.setSafeStageId(SceneManager.initSafeStageId);
         SafeinfoVo infoVo = SceneManager.getSafeVo(SceneManager.initSafeStageId);
         role.setPositionStr(infoVo.getCharPosition());
@@ -438,7 +387,6 @@ public class RoleModule extends AbstractModule {
         if (SpecialAccountManager.isSpecialAccount(id())) {
             return;
         }
-        ServiceHelper.arroundPlayerService().updateCurTitleId(getJoinSceneStr(), id(), titleId);
     }
 
     public void sendRoleAttr() {
@@ -486,25 +434,10 @@ public class RoleModule extends AbstractModule {
 
     private boolean checkAndRecoverBabyEnergy() {
         int tmpEnergy = role.getBabyEnergy();
-        if (tmpEnergy >= BabyManager.MAX_ENERGY) {
-            isLastTimeBabyEnergyMax = true;
-            return false;
-        }
         if (isLastTimeBabyEnergyMax) {
             role.setBabyEnergyRecTimestamp(System.currentTimeMillis());
             isLastTimeBabyEnergyMax = false;
             return false;
-        }
-        if (role.getBabyEnergyRecTimestamp() <= 0L || tmpEnergy < 0) {
-            tmpEnergy = BabyManager.MAX_ENERGY;
-        } else {
-            long delta = System.currentTimeMillis() - role.getBabyEnergyRecTimestamp();
-            int times = (int) (delta / (BabyManager.INTERVAL_ENERGY * 1000));
-            if (times <= 0) {
-                return false;
-            }
-            tmpEnergy += BabyManager.DELTA_ENERGY * times;
-            tmpEnergy = tmpEnergy > BabyManager.MAX_ENERGY ? BabyManager.MAX_ENERGY : tmpEnergy;
         }
         role.setBabyEnergy(tmpEnergy);
         role.setBabyEnergyRecTimestamp(System.currentTimeMillis());
@@ -581,92 +514,25 @@ public class RoleModule extends AbstractModule {
      * 购买体力
      */
     public void buyVigor() {
-        if (!OperateCheckModule.checkOperate(role.getRoleId(), OperateConst.BUY_VIGOUR, OperateConst.FIVE_HUNDRED_MS))
-            return;
-        int currentBuyCount = role.getVigorBuyCount();
-        int[] tuple = RoleManager.vigorPriceMap.get(currentBuyCount + 1);
-        VipModule vipModule = module(MConst.Vip);
-        VipinfoVo vipinfoVo = vipModule.getCurVipinfoVo();
-        if (currentBuyCount >= RoleManager.getBuyVigorLimit() + (vipinfoVo == null ? 0 : vipinfoVo.getBuyVigor())) {
-            warn("bag_vigor_maxtime"); // 已达最大次数
-            return;
-        }
-        int itemId = tuple[0];
-        int price = tuple[1];
-        int buyCount = tuple[2];
-        ToolModule toolModule = module(MConst.Tool);
-        long resource = toolModule.getCountByItemId(itemId);
-        if (resource < price) {
-            warn("bag_vigor_buy_nomoney", ToolManager.getItemVo(itemId).getName()); // 资源不够
-            return;
-        }
-        if (role.getVigor()  >= RoleManager.canSaveMaxVigor) {
-            warn("您的体力已经超出限制");
-            return;
-        }
-        com.stars.util.LogUtil.info("购买体力, roleId={}, currentBuyCount={}, price={}, buyCount={}", id(), currentBuyCount, price, buyCount);
-        role.setVigorBuyCount(currentBuyCount + 1); // 已购买次数加1
-//        role.addResource((byte) itemId, -price); // 扣减资源
-        toolModule.deleteAndSend(itemId, price, EventType.BUT_VIGOR.getCode());
-        toolModule.addAndSend(ToolManager.VIGOR, buyCount, EventType.BUT_VIGOR.getCode());
-//        role.addResource((byte) ToolManager.VIGOR, buyCount); // 增加体力
-        context().update(role);
-        // 同步数据，发送提示
-        send(new ClientRole(ClientRole.UPDATE_RESOURCE, role)); // 更新资源相关
-        ClientRoleResource clientVigor = new ClientRoleResource(ClientRoleResource.VIGOR_BUY);
-        clientVigor.setCurrentBuyCount(role.getVigorBuyCount());
-        send(clientVigor);
-        warn("bag_vigor_buy_getvigor", Integer.toString(buyCount));
+
     }
 
     /**
      * 单次购买金币
      */
     public void buyMoneyOnce() {
-        if (!OperateCheckModule.checkOperate(role.getRoleId(), OperateConst.BUY_GOLD, OperateConst.FIVE_HUNDRED_MS))
-            return;
-        int[] temp = buyMoney();
-        byte status = (byte) temp[0];// 购买是否成功
-        int gainCount = temp[1];// 购买获得数量
-        if (status != -1) {
-            sendUpdateBuyMoney(status, gainCount);
-        }
+
     }
 
     /**
      * 批量购买金币
      */
     public void buyMoneyMulti() {
-        if (!OperateCheckModule.checkOperate(role.getRoleId(), OperateConst.BUY_GOLD_MULTI, OperateConst.FIVE_HUNDRED_MS))
-            return;
-        byte result = -1;
-        int totalGainCount = 0;
-        for (int i = 0; i < RoleManager.BUY_MONEY_MULTI; i++) {
-            int[] temp = buyMoney();
-            byte status = (byte) temp[0];// 购买是否成功
-            int gainCount = temp[1];// 购买获得数量
-            if (status == -1)
-                break;
-            totalGainCount = totalGainCount + gainCount;
-            result = 0;
-            if (result != 1 && status == 1) {
-                result = status;
-            }
-        }
-        sendUpdateBuyMoney(result, totalGainCount);
+
     }
 
     public void sendUpdateBuyMoney(byte result, int... params) {
-        ClientRoleResource clientRoleResource = new ClientRoleResource(ClientRoleResource.MONEY_BUY);
-        clientRoleResource.setUsedFreeBuyMoneyCount(role.getFreeBuyMoneyCount());
-        VipModule vipModule = module(MConst.Vip);
-        clientRoleResource.setUsedPayBuyMoneyCount(role.getPayBuyMoneyCount());
-        clientRoleResource.setIsDouble(result);
-        if (params.length > 0) {
-            int gainCount = params[0];
-            clientRoleResource.setBuyMoneyGainCount(gainCount);
-        }
-        send(clientRoleResource);
+
     }
 
     /**
@@ -687,29 +553,7 @@ public class RoleModule extends AbstractModule {
             role.setFreeBuyMoneyCount((byte) (role.getFreeBuyMoneyCount() + 1));
             context().update(role);
         } else {// 付费购买
-            VipModule vipModule = module(MConst.Vip);
-            VipinfoVo vipinfoVo = vipModule.getCurVipinfoVo();
-            int payBuyLimit = gradeVo.getPayCount() + (vipinfoVo == null ? 0 : vipinfoVo.getBuyMoney());
-            // 超过购买限制
-            if (role.getPayBuyMoneyCount() >= payBuyLimit) {
-                return new int[]{-1, 0};
-            }
-            // 消耗不足
-            if (!toolModule.deleteAndSend(gradeVo.getBuyMoneyCost(), EventType.BUYTOOL.getCode())) {
-                return new int[]{-1, 0};
-            }
-            int random = new Random().nextInt(1000) + 1;
-            // 奖励翻倍
-            if (random <= gradeVo.getOdds()) {
-                isDouble = true;
-                for (Map.Entry<Integer, Integer> entry : gradeVo.getBuyMoneyAward().entrySet()) {
-                    int calCount = (int) Math.ceil(entry.getValue() * gradeVo.getBuyMoneyMulti() / 1000.0);
-                    awardMap.put(entry.getKey(), calCount);
-                }
-            }
-            toolModule.addAndSend(awardMap, EventType.BUYTOOL.getCode());
-            role.setPayBuyMoneyCount((byte) (role.getPayBuyMoneyCount() + 1));
-            context().update(role);
+
         }
         return new int[]{(isDouble ? 1 : 0), awardMap.get(ToolManager.MONEY)};
     }
@@ -940,28 +784,7 @@ public class RoleModule extends AbstractModule {
      * 角色重命名触发
      */
     public void onRoleRename(RoleRenameEvent roleRenameEvent) {
-        RoleModule roleModule = module(MConst.Role);
-        LoginModule loginModule = module(MConst.Login);
-        CampModule campModule = module(MConst.Camp);
-        RoleCampPo roleCamp = campModule.getRoleCamp();
-        String newName = roleRenameEvent.getNewName();
-        getRoleRow().setName(newName);
-        context().update(getRoleRow());
-        ClientRole clientRole = new ClientRole(ClientRole.UPDATE_BASE, getRoleRow());
-        clientRole.setRoleCampPo(roleCamp);
-        send(clientRole);
-        try {
-            AccountRow accountRow = loginModule.getAccountRow();
-            List<AccountRole> relativeRoleList = accountRow.getRelativeRoleList();
-            for (AccountRole accountRole : relativeRoleList) {
-                if (accountRole.getRoleId().equals(roleModule.id() + "")) {
-                    accountRole.roleName = newName;
-                }
-            }
-            updateRoleSummaryComp();
-        } catch (SQLException e) {
-            LogUtil.error(e.getMessage(), e);
-        }
+
     }
 
     public int getBabyStage() {

@@ -3,18 +3,15 @@ package com.stars.core.hotupdate;
 import com.stars.AccountRow;
 import com.stars.bootstrap.BootstrapConfig;
 import com.stars.bootstrap.ServerManager;
-import com.stars.core.gmpacket.CommandGm;
 import com.stars.core.db.DBUtil;
 import com.stars.core.db.SqlUtil;
-import com.stars.modules.collectphone.CollectPhoneUtil;
+import com.stars.core.gmpacket.CommandGm;
 import com.stars.modules.demologin.LoginModuleHelper;
 import com.stars.modules.demologin.userdata.AccountRole;
 import com.stars.modules.demologin.userdata.LoginRow;
 import com.stars.modules.gm.gmhandler.AccessControlGmHandler;
 import com.stars.modules.role.userdata.Role;
 import com.stars.multiserver.MainRpcHelper;
-import com.stars.multiserver.MultiServerHelper;
-import com.stars.services.ServiceHelper;
 import com.stars.util.JsonUtil;
 import com.stars.util.LogUtil;
 import com.stars.util.ServerLogConst;
@@ -215,26 +212,11 @@ public class CommManager implements CommManagerInterface, HotUpdateInterface {
         boolean flag = true;
         try {
             BootstrapConfig config = ServerManager.getServer().getConfig();
-            MainRpcHelper.fightingMasterService().reloadProduct(MultiServerHelper.getFightingMasterServer());
         } catch (Exception e) {
             ServerLogConst.exception.info(e.getMessage(), e);
             flag = false;
         }
         return flag ? "巅峰对决服重载成功" : "巅峰对决服重载失败";
-    }
-
-    public static String reloadLootTreasure(List<String> paramterList) {
-        // 夺宝服
-        boolean flag = true;
-        BootstrapConfig config = ServerManager.getServer().getConfig();
-        Properties loottreasure = config.getProps().get("loottreasure");
-        try {
-            MainRpcHelper.rmltService().reloadProduct(Integer.parseInt(loottreasure.getProperty("serverId")));
-        } catch (Exception e) {
-            ServerLogConst.exception.info(e.getMessage(), e);
-            flag = false;
-        }
-        return flag ? "夺宝服重载成功" : "夺宝服重载失败";
     }
 
     public static String bindRole(List<String> paramterList) {
@@ -343,47 +325,6 @@ public class CommManager implements CommManagerInterface, HotUpdateInterface {
         return result;
     }
 
-    /**
-     * 添加禁止渠道列表
-     *
-     * @param paramterList
-     * @return
-     */
-    public static String addForbidChannel4CollectPhone(List<String> paramterList) {
-        String result = "操作成功";
-        try {
-            Set<Integer> channelIds = new HashSet<>();
-            for (int index = 1; index < paramterList.size(); index++) {
-                channelIds.add(Integer.parseInt(paramterList.get(index)));
-            }
-            CollectPhoneUtil.addForbidCollectPhoneChannels(channelIds);
-        } catch (Exception e) {
-            result = "操作失败,发生异常:" + e.getMessage();
-            LogUtil.error("添加收集号码渠道设定错误", e);
-        }
-        return result;
-    }
-
-    /**
-     * 删除禁止渠道列表
-     *
-     * @param paramterList
-     * @return
-     */
-    public static String delForbidChannel4CollectPhone(List<String> paramterList) {
-        String result = "操作成功";
-        try {
-            Set<Integer> channelIds = new HashSet<>();
-            for (int index = 1; index < paramterList.size(); index++) {
-                channelIds.add(Integer.parseInt(paramterList.get(index)));
-            }
-            CollectPhoneUtil.delForbidCollectPhoneChannels(channelIds);
-        } catch (Exception e) {
-            result = "操作失败,发生异常:" + e.getMessage();
-            LogUtil.error("删除收集号码渠道设定错误", e);
-        }
-        return result;
-    }
 
     /**
      * 删除禁止渠道列表
@@ -413,20 +354,4 @@ public class CommManager implements CommManagerInterface, HotUpdateInterface {
         return result;
     }
 
-    /**
-     * 活动重置（备用）
-     * @param paramterList
-     * @return
-     */
-    public static String actLoopReset(List<String> paramterList) {
-        String result = "";
-        try {
-            ServiceHelper.actLoopResetService().resetAndLoop();
-            result = "操作成功";
-        } catch (Exception e) {
-            LogUtil.error("活动循环重置失败:"+e.getMessage(),e);
-            result = "操作失败,发生异常:" + e.getMessage();
-        }
-        return result;
-    }
 }

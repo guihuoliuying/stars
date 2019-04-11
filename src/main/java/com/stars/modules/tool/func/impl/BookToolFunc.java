@@ -1,8 +1,6 @@
 package com.stars.modules.tool.func.impl;
 
 import com.stars.core.module.Module;
-import com.stars.modules.MConst;
-import com.stars.modules.book.BookModule;
 import com.stars.modules.demologin.packet.ClientText;
 import com.stars.modules.tool.func.ToolFunc;
 import com.stars.modules.tool.func.ToolFuncResult;
@@ -57,16 +55,12 @@ public class BookToolFunc extends ToolFunc {
     @Override
     public int canAutoUse(Map<String, Module> moduleMap, int count) {
         if (count <= 0) return 0;
-        BookModule bookModule = (BookModule) moduleMap.get(MConst.Book);
-        int num = bookModule.canAddBookNum(bookId,count);
-        return num;
+        return 0;
     }
 
     @Override
     public Map<Integer,Integer> use(Map<String, Module> moduleMap, int count, Object... args) {
         if (count <= 0) return null;
-        BookModule bookModule = (BookModule) moduleMap.get(MConst.Book);
-        bookModule.addBookNum(bookId,count);
         return null;
     }
 }

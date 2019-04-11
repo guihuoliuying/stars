@@ -2,8 +2,6 @@ package com.stars.modules.customerService.packet;
 
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerPacket;
-import com.stars.modules.MConst;
-import com.stars.modules.customerService.CustomerServiceModule;
 import com.stars.modules.customerService.CustomerServicePacketSet;
 import com.stars.network.server.buffer.NewByteBuffer;
 
@@ -14,9 +12,8 @@ public class ServerCustomerService extends PlayerPacket {
 
 	@Override
 	public void execPacket(Player player) {
-		CustomerServiceModule module = module(MConst.CustomerService);
-		module.savePlayerInfo(cellphone, qq);
-	}
+
+    }
 	
 	@Override
 	public void readFromBuffer(NewByteBuffer buff) {

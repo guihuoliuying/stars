@@ -3,15 +3,14 @@ package com.stars.modules.family;
 import com.stars.core.SystemRecordMap;
 import com.stars.core.attr.Attribute;
 import com.stars.core.attr.FormularUtils;
+import com.stars.core.db.DBUtil;
 import com.stars.core.event.Event;
 import com.stars.core.event.EventDispatcher;
 import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
 import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
-import com.stars.core.db.DBUtil;
 import com.stars.modules.MConst;
-import com.stars.modules.changejob.event.ChangeJobEvent;
 import com.stars.modules.data.DataManager;
 import com.stars.modules.family.event.FamilyAuthAchieveEvent;
 import com.stars.modules.family.event.FamilyAuthUpdatedEvent;
@@ -22,8 +21,6 @@ import com.stars.modules.family.prodata.FamilySkillVo;
 import com.stars.modules.family.submodules.entry.FamilyActEntryFilter;
 import com.stars.modules.family.summary.FamilySummaryComponentImpl;
 import com.stars.modules.family.userdata.RoleFamilyPo;
-import com.stars.modules.familyactivities.bonfire.FamilyBonfireModule;
-import com.stars.modules.familyactivities.treasure.FamilyTreasureModule;
 import com.stars.modules.foreshow.ForeShowConst;
 import com.stars.modules.foreshow.ForeShowModule;
 import com.stars.modules.name.event.RoleRenameEvent;
@@ -49,9 +46,6 @@ import com.stars.services.family.event.FamilyEvent;
 import com.stars.services.family.main.FamilyMainServiceActor;
 import com.stars.services.family.main.memdata.RecommendationFamily;
 import com.stars.services.family.main.prodata.FamilyLevelVo;
-import com.stars.services.rank.RankConstant;
-import com.stars.services.rank.userdata.FamilyRankPo;
-import com.stars.services.rank.userdata.FamilyTreasureRankPo;
 import com.stars.util.DirtyWords;
 import com.stars.util.I18n;
 import com.stars.util.LogUtil;
@@ -169,8 +163,6 @@ public class FamilyModule extends AbstractModule {
     private void doFamilyTreasure(long familyId) {
         if (familyId == 0) {
             com.stars.util.LogUtil.info("离线状态下被踢出家族，清理家族探宝伤害");
-            FamilyTreasureModule familyTreasureModule = module(MConst.FamilyActTreasure);
-            familyTreasureModule.doChangeFamily();
         }
     }
 
@@ -277,8 +269,6 @@ public class FamilyModule extends AbstractModule {
             handleFamilyLockUpdatedEvent((FamilyLockUpdatedEvent) event);
         } else if (event instanceof FamilyLogEvent) {
             handleFamilyLogEvent((FamilyLogEvent) event);
-        } else if (event instanceof ChangeJobEvent) {
-            handleRoleChangeJob((ChangeJobEvent) event);
         } else if (event instanceof RoleRenameEvent) {
             onRoleRename((RoleRenameEvent) event);
         }
@@ -290,34 +280,9 @@ public class FamilyModule extends AbstractModule {
      * @param roleRenameEvent
      */
     private void onRoleRename(RoleRenameEvent roleRenameEvent) {
-        String newName = roleRenameEvent.getNewName();
-        auth.setRoleName(newName);
-        if (auth.getPost().getId() == FamilyPost.MASTER_ID) {
-            ServiceHelper.familyMainService().updateFalimyMasterName(auth.getFamilyId(), newName);
-            FamilyRankPo rank = (FamilyRankPo) ServiceHelper.rankService().getRank(RankConstant.RANKID_FAMILYFIGHTSCORE, auth.getFamilyId());
-            rank.setMasterName(newName);
-            context().update(rank);
-            FamilyTreasureRankPo familyTreasureRankPo = (FamilyTreasureRankPo) ServiceHelper.rankService().getRank(RankConstant.RANKID_FAMILYTREASURE, auth.getFamilyId());
-            familyTreasureRankPo.setMasterName(newName);
-            context().update(familyTreasureRankPo);
-        }
-        if (auth.getFamilyId() > 0) {
-            ServiceHelper.familyMainService().updateMemberName(auth.getFamilyId(), id(), newName);
-        }
-        updateFamilySummary();
     }
 
-    /**
-     * 角色转职触发
-     *
-     * @param event
-     */
-    private void handleRoleChangeJob(ChangeJobEvent event) {
-        if (auth != null && auth.getFamilyId() > 0) {
-            ServiceHelper.familyMainService().updateMemberJob(
-                    auth.getFamilyId(), auth.getRoleId(), event.getNewJobId());
-        }
-    }
+
 
     private void handleFamilyLogEvent(FamilyLogEvent event) {
         ServerLogModule logger = module(MConst.ServerLog);
@@ -353,7 +318,6 @@ public class FamilyModule extends AbstractModule {
         recalcFamilySkillFightScore(event.getType() != FamilyAuthUpdatedEvent.TYPE_LOGIN); // 重新计算属性和战力
         SceneModule sceneModule = module(MConst.Scene);
         RoleModule roleModule = module(MConst.Role);
-        FamilyBonfireModule bonfire = module(MConst.FamilyActBonfire);
         if (sceneModule.getScene() != null && sceneModule.getScene().getSceneType() == SceneManager.SCENETYPE_FAMIL) {
             /**在家族场景中*/
             if (event.getFamilyId() == 0) {

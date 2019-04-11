@@ -1,7 +1,6 @@
 package com.stars.multiserver.fightingmaster;
 
 import com.stars.multiserver.MultiServerHelper;
-import com.stars.services.ServiceHelper;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.quartz.Job;
@@ -27,7 +26,6 @@ public class FightingMasterRankJob implements Job{
             calendar.setTimeInMillis(System.currentTimeMillis());
             int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
             if (dayOfWeek == Calendar.WEDNESDAY) {
-                ServiceHelper.fightingMasterService().rankAward();
             }
         } catch (Throwable t) {
             logger.error("斗神殿发奖JOB异常", t);

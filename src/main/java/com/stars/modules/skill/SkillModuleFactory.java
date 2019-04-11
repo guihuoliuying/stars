@@ -1,18 +1,17 @@
 package com.stars.modules.skill;
 
+import com.stars.core.db.DBUtil;
 import com.stars.core.event.EventDispatcher;
 import com.stars.core.module.AbstractModuleFactory;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
-import com.stars.core.db.DBUtil;
-import com.stars.modules.book.event.BookActiveEvent;
-import com.stars.modules.changejob.event.ChangeJobEvent;
 import com.stars.modules.gm.GmManager;
-import com.stars.modules.newequipment.event.TokenLevelChangeEvent;
 import com.stars.modules.role.event.RoleLevelUpEvent;
 import com.stars.modules.scene.event.PassStageEvent;
 import com.stars.modules.skill.gm.upRoleSkilllvGmHandler;
-import com.stars.modules.skill.listener.*;
+import com.stars.modules.skill.listener.LevelUpSkillListener;
+import com.stars.modules.skill.listener.PassDungeonListener;
+import com.stars.modules.skill.listener.UseToolListener;
 import com.stars.modules.skill.prodata.SkillPosition;
 import com.stars.modules.skill.prodata.SkillVo;
 import com.stars.modules.skill.prodata.SkillvupVo;
@@ -48,9 +47,6 @@ public class SkillModuleFactory extends AbstractModuleFactory<SkillModule> {
         eventDispatcher.reg(RoleLevelUpEvent.class, listener);
         eventDispatcher.reg(UseToolEvent.class, new UseToolListener((SkillModule) module));
         eventDispatcher.reg(PassStageEvent.class, new PassDungeonListener((SkillModule) module));
-        eventDispatcher.reg(BookActiveEvent.class, listener);
-        eventDispatcher.reg(ChangeJobEvent.class, new SkillChangeJobListenner((SkillModule) module));
-        eventDispatcher.reg(TokenLevelChangeEvent.class,new TokenLevelChangeListener((SkillModule) module));
     }
 
     @Override

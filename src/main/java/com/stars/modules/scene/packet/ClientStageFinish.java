@@ -2,7 +2,6 @@ package com.stars.modules.scene.packet;
 
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerPacket;
-import com.stars.modules.escort.EscortConstant;
 import com.stars.modules.scene.SceneManager;
 import com.stars.modules.scene.ScenePacketSet;
 import com.stars.network.server.buffer.NewByteBuffer;
@@ -127,12 +126,6 @@ public class ClientStageFinish extends PlayerPacket {
                 break;
             case SceneManager.SCENETYPE_ESCORT_FIGHT:
                 buff.writeByte(doubleAward);
-                if (status == EscortConstant.RESULT_ESCORT_FAIL) {
-                    buff.writeByte(losePercent);
-                } else if (status == EscortConstant.RESULT_ESCORT_FINISH) {
-                    buff.writeByte(robTimes);
-                    buff.writeByte(losePercent);
-                }
                 break;
             case SceneManager.SCENETYPE_TPG:
                 buff.writeByte((byte) (isScoreStep ? 1 : 0));// 1=积分赛/0=非积分赛

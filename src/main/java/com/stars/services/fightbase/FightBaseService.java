@@ -1,12 +1,11 @@
 package com.stars.services.fightbase;
 
-import com.stars.modules.pk.packet.ServerOrder;
-import com.stars.modules.scene.fightdata.FighterEntity;
-import com.stars.modules.scene.packet.clientEnterFight.ClientEnterFight;
-import com.stars.services.Service;
 import com.stars.core.actor.invocation.ActorService;
 import com.stars.core.actor.invocation.annotation.AsyncInvocation;
 import com.stars.core.actor.invocation.annotation.Dispatch;
+import com.stars.modules.scene.fightdata.FighterEntity;
+import com.stars.modules.scene.packet.clientEnterFight.ClientEnterFight;
+import com.stars.services.Service;
 
 import java.util.List;
 
@@ -55,10 +54,6 @@ public interface FightBaseService extends Service, ActorService {
         // fightId
     void addServerOrder(int fightServerId, short handlerType, int fromServerId, String fightId, byte[] data);
 
-    @AsyncInvocation
-    @Dispatch(index = 3)
-        // fightId
-    void addServerOrder(int fightServerId, short handlerType, int fromServerId, String fightId, ServerOrder order);
 
     @AsyncInvocation
     @Dispatch(index = 3)

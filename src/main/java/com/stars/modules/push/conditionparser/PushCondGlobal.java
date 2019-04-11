@@ -2,29 +2,10 @@ package com.stars.modules.push.conditionparser;
 
 import com.stars.core.module.Module;
 import com.stars.modules.push.conditionparser.node.dataset.PushCondDataSet;
-import com.stars.modules.push.conditionparser.node.dataset.impl.achievement.PcdsAchievementActivedSet;
 import com.stars.modules.push.conditionparser.node.dataset.impl.activedjob.PcdsActivedJobSet;
-import com.stars.modules.push.conditionparser.node.dataset.impl.baby.PcdsBabyFashionSet;
-import com.stars.modules.push.conditionparser.node.dataset.impl.book.PcdsBookSet;
-import com.stars.modules.push.conditionparser.node.dataset.impl.buddy.PcdsBuddySet;
-import com.stars.modules.push.conditionparser.node.dataset.impl.chargepref.PcdsChargePrefSet;
-import com.stars.modules.push.conditionparser.node.dataset.impl.deity.PcdsDeityWeaponSet;
 import com.stars.modules.push.conditionparser.node.dataset.impl.dungeonpassed.PcdsDungeonPassedSet;
-import com.stars.modules.push.conditionparser.node.dataset.impl.equip.PcdsEquipSet;
-import com.stars.modules.push.conditionparser.node.dataset.impl.equipoff.PcdsEquipOffSet;
-import com.stars.modules.push.conditionparser.node.dataset.impl.equipon.PcdsEquipOnSet;
-import com.stars.modules.push.conditionparser.node.dataset.impl.equipslot.PcdsEquipSlotSet;
-import com.stars.modules.push.conditionparser.node.dataset.impl.fashion.PcdsFashionSet;
-import com.stars.modules.push.conditionparser.node.dataset.impl.fashioncard.PcdsFashionCardSet;
-import com.stars.modules.push.conditionparser.node.dataset.impl.gem.PcdsGemSet;
-import com.stars.modules.push.conditionparser.node.dataset.impl.guest.PcdsGuestSet;
-import com.stars.modules.push.conditionparser.node.dataset.impl.guestfeeling.PcdsGuestFeelingSet;
 import com.stars.modules.push.conditionparser.node.dataset.impl.offlineHour.PcdsOfflineSet;
-import com.stars.modules.push.conditionparser.node.dataset.impl.ride.PcdsRideSet;
-import com.stars.modules.push.conditionparser.node.dataset.impl.soul.PcdsSoulGodSet;
-import com.stars.modules.push.conditionparser.node.dataset.impl.task.PcdsTaskDoneSet;
 import com.stars.modules.push.conditionparser.node.dataset.impl.tool.PcdsToolSet;
-import com.stars.modules.push.conditionparser.node.dataset.impl.trump.PcdsTrumpSet;
 import com.stars.modules.push.conditionparser.node.func.PushCondFunc;
 import com.stars.modules.push.conditionparser.node.func.impl.datetime.PcfNow;
 import com.stars.modules.push.conditionparser.node.func.impl.datetime.PcfToHour;
@@ -38,7 +19,6 @@ import com.stars.modules.push.conditionparser.node.func.impl.open.PcfIsOpen;
 import com.stars.modules.push.conditionparser.node.value.PushCondValue;
 import com.stars.modules.push.conditionparser.node.value.impl.*;
 import com.stars.modules.push.conditionparser.node.value.impl.fight.*;
-import com.stars.modules.push.conditionparser.node.value.impl.loginactivity.PcvLoginActivityComeBack;
 import com.stars.util.LogUtil;
 
 import java.util.HashMap;
@@ -72,7 +52,6 @@ public class PushCondGlobal {
 
         /* 单值 */
         valueMap.put("level", new PcvLevel()); // 等级
-        valueMap.put("vip", new PcvVip()); // vip
         valueMap.put("fight", new PcvFight()); // 战力
         valueMap.put("gold", new PcvGold()); // 元宝
         valueMap.put("money", new PcvMoney()); // 金币
@@ -81,53 +60,23 @@ public class PushCondGlobal {
         valueMap.put("serverdays", new PcvServerDays()); // 开服的第几天
         valueMap.put("channel", new PcvChannel()); // 渠道号
         valueMap.put("serverid", new PcvServerId()); // 服务id
-        valueMap.put("ridelv", new PcvRideLv()); // 坐骑当前等级
-        valueMap.put("ridestage", new PcvRideStage()); // 坐骑阶段
         valueMap.put("jobid", new PcvJobId()); // 职业id
-        valueMap.put("vipcustomer", new PcvVipCustomer()); // 是否填写过vip信息
-        valueMap.put("ismarried", new PcvIsMarried()); // 是否结婚
         valueMap.put("iswxbinded", new PcvIsWxBinded()); // 是否微信绑定
         valueMap.put("charge", new PcvCharge()); // 充值金额
-        valueMap.put("chargepref_chosenid", new PcvChargePrefChosenId()); // 充值特惠-选中id
-        valueMap.put("discountgift_id", new PcvDiscountGiftId()); // 充值豪礼-giftid
-        valueMap.put("discountgift_groupid", new PcvDiscountGiftGroupId()); // 充值豪礼-groupgiftid
-        valueMap.put("fight_buddy", new PcvFightBuddy()); // 战力-伙伴
         valueMap.put("fight_familyskill", new PcvFightFamilySkill()); // 战力-伙伴
         valueMap.put("fight_gem", new PcvFightGem()); // 战力-宝石
-        valueMap.put("fight_guest", new PcvFightGuest()); // 战力-门客
-        valueMap.put("fight_ride", new PcvFightRide()); // 战力-坐骑
         valueMap.put("fight_equip", new PcvFightEquip()); // 战力-装备
         valueMap.put("fight_level", new PcvFightLevel()); // 战力-等级
         valueMap.put("fight_skill", new PcvFightSkill()); // 战力-技能
         valueMap.put("fight_title", new PcvFightTitle()); // 战力-称号
-        valueMap.put("loginactivity_comeback", new PcvLoginActivityComeBack()); // 登陆活动-老友归来
         valueMap.put("babystage", new PcvBabyStage()); //宝宝阶段
         valueMap.put("babylv", new PcvBabyLv()); //宝宝等级
 
         /* 集合 */
         regDataSet("bag", PcdsToolSet.class); // 背包
-        regDataSet("equip", PcdsEquipSet.class); // 装备
-        regDataSet("equip_on", PcdsEquipOnSet.class); // 装备（身上）
-        regDataSet("equip_off", PcdsEquipOffSet.class); // 装备（背包）
-        regDataSet("equiphole", PcdsEquipSlotSet.class); // 装备槽
-        regDataSet("ride", PcdsRideSet.class); // 坐骑
-        regDataSet("buddy", PcdsBuddySet.class); // 伙伴
-        regDataSet("deity", PcdsDeityWeaponSet.class); // 神兵
-        regDataSet("gem", PcdsGemSet.class); // 宝石
-        regDataSet("guest", PcdsGuestSet.class); // 门客
-        regDataSet("guestfeel", PcdsGuestFeelingSet.class); // 门客情缘
-        regDataSet("book", PcdsBookSet.class); // 典籍
         regDataSet("activedjob", PcdsActivedJobSet.class); // 已激活的职业
-        regDataSet("chargepref", PcdsChargePrefSet.class); // 充值特惠集合
         regDataSet("dungeon_passed", PcdsDungeonPassedSet.class); // 通关关卡集合
-        regDataSet("task_done", PcdsTaskDoneSet.class); // 完成任务集合
-        regDataSet("achievement_actived", PcdsAchievementActivedSet.class); // 激活成就集合
         regDataSet("loginid", PcdsOfflineSet.class); // 账号下各角色数据集合
-        regDataSet("trump", PcdsTrumpSet.class); // 法宝
-        regDataSet("fashion", PcdsFashionSet.class); //时装
-        regDataSet("babyfashion", PcdsBabyFashionSet.class);
-        regDataSet("fashioncard", PcdsFashionCardSet.class);
-        regDataSet("soulgod", PcdsSoulGodSet.class);//元神
     }
 
     private static void regDataSet(String name, Class<? extends PushCondDataSet> clazz) {

@@ -1,8 +1,8 @@
 package com.stars.services.fightbase;
 
 import com.stars.bootstrap.ServerManager;
-import com.stars.modules.pk.packet.ClientUpdatePlayer;
-import com.stars.modules.pk.packet.ServerOrder;
+import com.stars.core.actor.Actor;
+import com.stars.core.actor.invocation.ServiceActor;
 import com.stars.modules.scene.fightdata.FighterEntity;
 import com.stars.modules.scene.packet.clientEnterFight.ClientEnterFight;
 import com.stars.multiserver.fight.ClientOrders;
@@ -11,18 +11,18 @@ import com.stars.multiserver.fight.FightActorFactory;
 import com.stars.multiserver.fight.RoleId2ActorIdManager;
 import com.stars.multiserver.fight.handler.FightHandler;
 import com.stars.multiserver.fight.handler.FightHandlerFactory;
-import com.stars.multiserver.fight.message.*;
+import com.stars.multiserver.fight.message.AddNewfighterToFightActor;
+import com.stars.multiserver.fight.message.NoticeFightServerAddServerOrder;
+import com.stars.multiserver.fight.message.NoticeFightServerReady;
+import com.stars.multiserver.fight.message.RemoveFromFightActor;
 import com.stars.multiserver.packet.NewFighterToFightActor;
 import com.stars.multiserver.packet.StopFightActor;
-import com.stars.network.PacketUtil;
 import com.stars.network.server.buffer.NewByteBuffer;
 import com.stars.network.server.packet.Packet;
 import com.stars.server.main.actor.ActorServer;
 import com.stars.services.ServiceSystem;
 import com.stars.startup.FightStartup;
 import com.stars.util.LogUtil;
-import com.stars.core.actor.Actor;
-import com.stars.core.actor.invocation.ServiceActor;
 import io.netty.buffer.Unpooled;
 
 import java.util.*;
@@ -280,13 +280,6 @@ public class FightBaseServiceActor extends ServiceActor implements FightBaseServ
         }
 
         try {
-            Actor actor = ActorServer.getActorSystem().getActor(fightId);
-            ClientUpdatePlayer packet = new ClientUpdatePlayer();
-            for (FighterEntity entity : entityList) {
-                LogUtil.info("camp:{}|id:{},entity:{}", entity.getCamp(), entity.getUniqueId(), entity.getAttribute());
-            }
-            packet.setNewFighter(entityList);
-            actor.tell(new AddMonsterMessage(packet), Actor.noSender); // 包装成message防止客户端作弊
         } catch (Exception e) {
             LogUtil.error("add fight entry error", e);
         }
@@ -363,9 +356,6 @@ public class FightBaseServiceActor extends ServiceActor implements FightBaseServ
         o1.setFightersMap(fighterIdOlMap);
         LogUtil.info("AddNewfighterToFightActor|fighterIdOlMap:{}",fighterIdOlMap);
         // data
-        ClientUpdatePlayer packet = new ClientUpdatePlayer();
-        packet.setNewFighter(entityList);
-        o1.setData(packetToBytes(packet));
 
         AddNewfighterToFightActor o2 = new AddNewfighterToFightActor();
         o2.setServerId(fromServerId);
@@ -383,15 +373,6 @@ public class FightBaseServiceActor extends ServiceActor implements FightBaseServ
         }
     }
 
-    @Override
-    public void addServerOrder(int fightServerId, short handlerType, int fromServerId, String fightId, ServerOrder order) {
-        ClientUpdatePlayer packet = new ClientUpdatePlayer();
-        packet.addOrder(order);
-        Actor actor = ActorServer.getActorSystem().getActor(fightId);
-        if (actor != null) {
-            actor.tell(new NoticeFightServerAddServerOrder(fightId, fromServerId, PacketUtil.packetToBytes(packet)), Actor.noSender);
-        }
-    }
 
     @Override
     public void reloadProduct(int serverId) {

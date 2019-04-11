@@ -4,7 +4,6 @@ import com.stars.core.event.EventDispatcher;
 import com.stars.core.module.AbstractModuleFactory;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
-import com.stars.modules.changejob.event.ChangeJobEvent;
 import com.stars.modules.data.DataManager;
 import com.stars.modules.friend.event.*;
 import com.stars.modules.friend.gm.FriendGetRecomGmHandler;
@@ -56,7 +55,6 @@ public class FriendModuleFactory extends AbstractModuleFactory<FriendModule> {
         eventDispatcher.reg(FriendCanReceiveVigorEvent.class,new FriendCanReceiveVigorListener((FriendModule) module));
         eventDispatcher.reg(FriendReceiveFlowerEvent.class,new FriendReceiveListener((FriendModule) module));
         eventDispatcher.reg(FriendLogEvent.class, new FriendLogListener((FriendModule) module));
-        eventDispatcher.reg(ChangeJobEvent.class, new FriendChangeJobListenner((FriendModule) module));
         eventDispatcher.reg(RoleRenameEvent.class, new RoleChangeListenner((FriendModule) module));
     }
 

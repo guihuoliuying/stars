@@ -1,16 +1,13 @@
 package com.stars.multiserver.fight.handler;
 
 import com.google.gson.Gson;
-import com.stars.modules.pk.packet.ClientPVPData;
 import com.stars.modules.scene.fightdata.FighterEntity;
 import com.stars.multiserver.MultiServerHelper;
 import com.stars.multiserver.fight.FightActor;
 import com.stars.multiserver.fight.RoleId2ActorIdManager;
 import com.stars.multiserver.fight.data.LuaFrameData;
-import com.stars.multiserver.fight.data.LuaFrameOrder;
 import com.stars.multiserver.fight.message.AddNewfighterToFightActor;
 import com.stars.multiserver.packet.NewFighterToFightActor;
-import com.stars.network.server.packet.PacketManager;
 import com.stars.network.server.session.SessionManager;
 import com.stars.server.main.actor.ActorServer;
 import com.stars.util.LogUtil;
@@ -161,89 +158,10 @@ public abstract class FightHandler {
     }
 
     public final void handleLuaFrameData0(long frameCount, Object[] rawData) {
-        frameCount++;
-        LuaFrameData data = gson.fromJson(rawData[0].toString(), LuaFrameData.class);
-        LuaFrameOrder frameOrder = gson.fromJson("" + rawData[1], LuaFrameOrder.class);
-        HashMap<Long, ClientPVPData> packList = new HashMap<Long, ClientPVPData>();
-        // 发送服务端指令
-        if (frameOrder.getOrder() != null && frameOrder.getOrder().length > 0) {
-            byte[] commonOrder = frameOrder.getOrder();
-            for (Long fighterId : fighterIdSet) {
-                handleAddFighterPack(packList, fighterId, commonOrder);
-            }
-        }
-        // 发送特殊指令
-        if (frameOrder.getSpecificorder() != null) {
-            Map<String, byte[]> specificOrder = frameOrder.getSpecificorder();
-            long fighterId;
-            for (Map.Entry<String, byte[]> entry : specificOrder.entrySet()) {
-                fighterId = Long.parseLong(entry.getKey());
-                byte[] order = entry.getValue();
-                handleAddFighterPack(packList, fighterId, order);
-            }
-        }
-        //
-        if (frameOrder.getMultiorder() != null && frameOrder.getMultiorder().size() > 0) {
-            long fighterId;
-            for (LuaFrameOrder.MultiOrder order : frameOrder.getMultiorder()) {
-                byte[] orderdata = order.getPack();
-                for (String id : order.getIdlist()) {
-                    fighterId = Long.parseLong(id);
-                    handleAddFighterPack(packList, fighterId, orderdata);
-                }
-            }
-        }
-        handleSendDataPack(packList);
-        if (frameOrder.getLog() != null && frameOrder.getLog().size() > 0) {
-            for (String log : frameOrder.getLog()) {
-                LogUtil.info("ServerLua:" + log);
-            }
-        }
-        // 处理死亡
-        if (data.getDead() != null && data.getDead().size() > 0) {
-            handleDead(frameCount, data.getDead());
-        }
-        // 处理伤害
-        if (data.getDamage() != null && data.getDamage().size() > 0) {
-            handleDamage(frameCount, data.getDamage());
-        }
-        // 处理超时
-        if (data.getFighttimeout()) {
-            handleTimeOut(frameCount, data.getHpInfo());
-        }
-        // 处理特殊结果
-        handleLuaFrameData(frameCount, data, rawData);
-    }
-
-    public void handleNoticeFighterAddSuceess(int serverId, long roleId) {
 
     }
 
-    private void handleAddFighterPack(HashMap<Long, ClientPVPData> packlist, long fighterId, byte[] order) {
-        if (fighterIdSet == null || !fighterIdSet.contains(fighterId)
-                || !SessionManager.getSessionMap().containsKey(fighterId)) {
-            return;
-        }
-        ClientPVPData data = packlist.get(fighterId);
-        if (data == null) {
-            data = new ClientPVPData();
-            data.setServerOrder(order);
-        } else {
-            data.addServerOrder(order);
-        }
-        packlist.put(fighterId, data);
-    }
 
-    private void handleSendDataPack(HashMap<Long, ClientPVPData> packlist) {
-        if (packlist == null || packlist.size() == 0) {
-            return;
-        }
-        for (Map.Entry<Long, ClientPVPData> set : packlist.entrySet()) {
-            if (SessionManager.getSessionMap().containsKey(set.getKey())) {
-                PacketManager.send(set.getKey(), set.getValue());
-            }
-        }
-    }
 
     public void handNewFighter(AddNewfighterToFightActor aNewfighterToFightActor) {
 

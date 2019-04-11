@@ -2,8 +2,6 @@ package com.stars.modules.friendInvite.packet;
 
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerPacket;
-import com.stars.modules.MConst;
-import com.stars.modules.friendInvite.InviteModule;
 import com.stars.modules.friendInvite.InvitePacketSet;
 import com.stars.network.server.buffer.NewByteBuffer;
 
@@ -23,21 +21,7 @@ public class ServerInvite extends PlayerPacket {
 
     @Override
     public void execPacket(Player player) {
-        InviteModule inviteModule = module(MConst.FriendInvite);
-        switch (subtype) {
-            case REQ_VIEW:
-                inviteModule.view();
-                break;
-            case REQ_BIND:
-                inviteModule.bindInviteCode(inviteCode);
-                break;
-            case REQ_AWARD:
-                inviteModule.award();
-                break;
-            case REQ_AWARD_BE:
-                inviteModule.awardBe();
-                break;
-        }
+
     }
 
     @Override

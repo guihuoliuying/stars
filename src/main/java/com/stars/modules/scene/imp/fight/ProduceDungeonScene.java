@@ -3,15 +3,12 @@ package com.stars.modules.scene.imp.fight;
 import com.stars.core.module.Module;
 import com.stars.core.player.PlayerPacket;
 import com.stars.modules.MConst;
-import com.stars.modules.achievement.event.JoinActivityEvent;
 import com.stars.modules.daily.DailyModule;
 import com.stars.modules.daily.event.DailyFuntionEvent;
 import com.stars.modules.drop.DropModule;
 import com.stars.modules.dungeon.DungeonManager;
 import com.stars.modules.dungeon.DungeonModule;
 import com.stars.modules.dungeon.prodata.ProduceDungeonVo;
-import com.stars.modules.quwudu.QuwuduManager;
-import com.stars.modules.quwudu.QuwuduModule;
 import com.stars.modules.role.RoleModule;
 import com.stars.modules.scene.SceneManager;
 import com.stars.modules.scene.SceneModule;
@@ -58,17 +55,6 @@ public class ProduceDungeonScene extends DungeonScene {
             dungeonModule.warn("战斗场景配置错误stageId=" + produceDungeonVo.getStageId());
             return false;
         }
-        if (type == QuwuduManager.dungeonType) {//驱五毒次数不走日常
-            QuwuduModule quwuduModule = (QuwuduModule) moduleMap.get(MConst.Quwudu);
-            if (!quwuduModule.canEnterScene()) {
-                return false;
-            }
-        } else {
-            DailyModule dailyModule = (DailyModule) moduleMap.get(MConst.Daily);
-            if (dailyModule.getDailyRemain((short) produceDungeonVo.getDailyId()) <= 0) {
-                return false;
-            }
-        }
         this.produceDungeonType = type;
         this.produceDungeonId = produceDungeonVo.getProduceDungeonId();
         this.stageId = stageinfoVo.getStageId();
@@ -83,9 +69,6 @@ public class ProduceDungeonScene extends DungeonScene {
         requestSendClientEnterFight(moduleMap, enterProduceDungeon, SceneManager.getStageVo(stageId));
         StageinfoVo stageVo = SceneManager.getStageVo(stageId);
         enterProduceDungeon.setLimitTime(stageVo.getVictoryConMap().get(SceneManager.VICTORY_CONDITION_TIME));
-        if (this.produceDungeonType == QuwuduManager.dungeonType) {
-            enterProduceDungeon.setShowProgressBar(0);
-        }
         SceneModule sceneModule = (SceneModule) moduleMap.get(MConst.Scene);
         // 先发剧情播放记录
         sceneModule.sendPlayedDrama(this, stageId);
@@ -93,7 +76,6 @@ public class ProduceDungeonScene extends DungeonScene {
         ProduceDungeonVo produceDungeonVo = DungeonManager.getProduceDungeonVo(produceDungeonType, produceDungeonId);
         // 抛出每日活动事件
         sceneModule.dispatchEvent(new DailyFuntionEvent((short) produceDungeonVo.getDailyId(produceDungeonType), 1));
-        sceneModule.dispatchEvent(new JoinActivityEvent(getAchievementId()));
         // 开始日志
         ServerLogModule logModule = (ServerLogModule) moduleMap.get(MConst.ServerLog);
         ThemeType themeType = getLogThemeType();
@@ -273,14 +255,6 @@ public class ProduceDungeonScene extends DungeonScene {
 
     private short getAchievementId() {
         short achievementId = 0;
-        switch (produceDungeonType) {
-            case SceneManager.PRODUCE_ROLEEXP:
-                achievementId = JoinActivityEvent.PRODUCEDUNGEON_EXP;
-                break;
-            case SceneManager.PRODUCE_STRENGTHEN_STONE:
-                achievementId = JoinActivityEvent.PRODUCEDUNGEON_STRENGTHEN_STONE;
-                break;
-        }
         return achievementId;
     }
 

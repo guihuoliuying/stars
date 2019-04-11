@@ -1,6 +1,7 @@
 package com.stars.cronjob;
 
 import com.stars.AccountRow;
+import com.stars.core.actor.AbstractActor;
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerSystem;
 import com.stars.modules.demologin.LoginModuleHelper;
@@ -11,7 +12,6 @@ import com.stars.services.ServiceHelper;
 import com.stars.startup.MainStartup;
 import com.stars.util.LogUtil;
 import com.stars.util.ServerLogConst;
-import com.stars.core.actor.AbstractActor;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -69,19 +69,8 @@ public class TenMinuteJob implements Job{
     public static void printServiceState() {
         try {
 		/* 打印状态 */
-            ServiceHelper.teamDungeonService().printState();
             ServiceHelper.summaryService().printState();
-            ServiceHelper.operateActivityService().printState();
-            ServiceHelper.newOfflinePvpService().printState();
-            ServiceHelper.marryService().printState();
             ServiceHelper.chatService().printState();
-            ServiceHelper.baseTeamService().printState();
-            ServiceHelper.advertInfService().printState();
-			ServiceHelper.familyWarLocalService().printState();
-            ServiceHelper.eliteDungeonService().printState();
-            ServiceHelper.sevenDayGoalService().printState();
-            ServiceHelper.newServerFightScoreService().printState();
-            ServiceHelper.actLoopResetService().printState();
         } catch (Throwable cause) {
             LogUtil.error("printServiceState异常", cause);
         }

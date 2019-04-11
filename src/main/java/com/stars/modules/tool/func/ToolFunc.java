@@ -8,7 +8,6 @@ import com.stars.modules.role.RoleModule;
 import com.stars.modules.tool.ToolManager;
 import com.stars.modules.tool.ToolModule;
 import com.stars.modules.tool.productdata.ItemVo;
-import com.stars.modules.vip.VipModule;
 import com.stars.util.DateUtil;
 import com.stars.util.StringUtil;
 
@@ -94,15 +93,8 @@ public abstract class ToolFunc {
 				}
 				break;
 			case 3://VIP等级限制
-				VipModule roleVip = (VipModule)moduleMap.get(MConst.Vip);
-				int vipLevel = roleVip.getVipLevel();
-				if(vipLevel < Integer.parseInt(entry.getValue())){
-					if (this.useFailedNotice != null) {
-						return new ToolFuncResult(false, new ClientText(useFailedNotice));
-					}
-					return new ToolFuncResult(false, new ClientText("item_viplvllimit",entry.getValue()));
-				}
-				break;
+
+                break;
 			case 4://限时道具
 				long bornTime = (long)args[0];
 				long timeLimit = Long.parseLong(entry.getValue());

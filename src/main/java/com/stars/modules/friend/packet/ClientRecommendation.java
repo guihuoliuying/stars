@@ -3,11 +3,8 @@ package com.stars.modules.friend.packet;
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerPacket;
 import com.stars.modules.friend.FriendPacketSet;
-import com.stars.modules.marry.summary.MarrySummaryComponent;
 import com.stars.network.server.buffer.NewByteBuffer;
-import com.stars.services.ServiceHelper;
 import com.stars.services.friend.memdata.RecommendationFriend;
-import com.stars.services.summary.SummaryConst;
 
 import java.util.Map;
 
@@ -51,13 +48,6 @@ public class ClientRecommendation extends PlayerPacket {
             buff.writeInt(recommendation.getLevel()); // 玩家等级
             buff.writeInt(recommendation.getFightScore()); // 玩家战力
             buff.writeInt(recommendation.getOfflineTimestamp()); // 玩家离线时间
-            MarrySummaryComponent comp = (MarrySummaryComponent) ServiceHelper.summaryService().getSummaryComponent(
-                    recommendation.getRoleId(), SummaryConst.C_MARRY);
-            if(comp != null){
-                buff.writeByte(comp.getMarryState());
-            }else{
-                buff.writeByte((byte)0);
-            }
         }
     }
 

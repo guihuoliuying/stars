@@ -1,9 +1,9 @@
 package com.stars.modules.tool.func.impl;
 
 import com.stars.AccountRow;
-import com.stars.core.module.Module;
 import com.stars.core.db.DBUtil;
 import com.stars.core.db.SqlUtil;
+import com.stars.core.module.Module;
 import com.stars.modules.MConst;
 import com.stars.modules.demologin.LoginModule;
 import com.stars.modules.role.RoleModule;
@@ -12,9 +12,7 @@ import com.stars.modules.tool.func.ToolFunc;
 import com.stars.modules.tool.func.ToolFuncResult;
 import com.stars.modules.tool.productdata.ItemVo;
 import com.stars.modules.vip.VipManager;
-import com.stars.modules.vip.VipModule;
 import com.stars.modules.vip.event.VipLevelupEvent;
-import com.stars.modules.vip.packet.ClientVipData;
 import com.stars.modules.vip.prodata.VipinfoVo;
 import com.stars.services.ServiceHelper;
 import com.stars.util.LogUtil;
@@ -59,7 +57,6 @@ public class VipExpToolFunc extends ToolFunc {
     public Map<Integer, Integer> use(Map<String, Module> moduleMap, int count, Object... args) {
         LoginModule loginModule = (LoginModule) moduleMap.get(MConst.Login);
         RoleModule roleModule = (RoleModule) moduleMap.get(MConst.Role);
-        VipModule vipModule = (VipModule) moduleMap.get(MConst.Vip);
         try {
             AccountRow account = loginModule.getAccountRow();
             int addExp = exp * count;
@@ -93,7 +90,6 @@ public class VipExpToolFunc extends ToolFunc {
                                 }
                             }
                         }
-                        vipModule.sendUpdateVipData(ClientVipData.SEND_UPDATE_DATA);
                         //入库
                         DBUtil.execSql(DBUtil.DB_USER, SqlUtil.getUpdateSql(DBUtil.DB_USER, account, "account", "name='" + account.getName() + "'"));
                     } catch (Exception e) {

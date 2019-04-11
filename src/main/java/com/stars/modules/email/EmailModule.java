@@ -6,14 +6,11 @@ import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
 import com.stars.modules.MConst;
-import com.stars.modules.data.DataManager;
 import com.stars.modules.demologin.LoginModule;
 import com.stars.modules.email.event.EmailRedPointEvent;
 import com.stars.modules.email.packet.ClientEmail;
 import com.stars.modules.email.packet.ServerEmail;
 import com.stars.modules.email.pojodata.EmailConditionArgs;
-import com.stars.modules.newequipment.NewEquipmentManager;
-import com.stars.modules.newequipment.prodata.EquipmentVo;
 import com.stars.modules.redpoint.RedPointConst;
 import com.stars.modules.role.RoleModule;
 import com.stars.modules.role.userdata.Role;
@@ -142,19 +139,6 @@ public class EmailModule extends AbstractModule {
         for (Map.Entry<Integer, Integer> entry : toolMap.entrySet()) {
             Integer itemid = entry.getKey();
             ItemVo itemVo = ToolManager.getItemVo(itemid);
-            if (itemVo.getType() == 7) {
-                EquipmentVo equipmentVo = NewEquipmentManager.getEquipmentVo(itemid);
-                if (equipmentVo.getJob() != roleModule.getRoleRow().getJobId()) {
-                    EquipmentVo newJobEquipmentVo = NewEquipmentManager.getNewJobEquipmentVo(roleModule.getRoleRow().getJobId(), itemid);
-                    if (newJobEquipmentVo != null) {
-                        newToolMap.put(newJobEquipmentVo.getEquipId(), entry.getValue());
-                    }else {
-                        newToolMap.put(entry.getKey(), entry.getValue());
-                    }
-                    warn(DataManager.getGametext("changeschool_tips_equipchange"));
-                    continue;
-                }
-            }
             newToolMap.put(entry.getKey(), entry.getValue());
         }
         return newToolMap;

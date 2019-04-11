@@ -1,9 +1,6 @@
 package com.stars.modules.tool.func.impl;
 
 import com.stars.core.module.Module;
-import com.stars.modules.MConst;
-import com.stars.modules.buddy.BuddyModule;
-import com.stars.modules.demologin.packet.ClientText;
 import com.stars.modules.tool.func.ToolFunc;
 import com.stars.modules.tool.func.ToolFuncResult;
 import com.stars.modules.tool.productdata.ItemVo;
@@ -42,16 +39,8 @@ public class BuddyExpBoxFunc extends ToolFunc {
         } else {
             buddyId = Integer.parseInt((String) args[0]);
         }
-        BuddyModule buddyModule = (BuddyModule) moduleMap.get(MConst.Buddy);
-        if (!buddyModule.canAddExp(buddyId)) {
-            tr = new ToolFuncResult(false, new ClientText(getUseFailedNotice()));
-        } else {
-            tr = super.useCondition(moduleMap, args);
-        }
-        if (tr == null) {
-            tr = new ToolFuncResult(true, null);
-        }
-        return tr;
+
+        return null;
     }
 
     @Override
@@ -61,9 +50,6 @@ public class BuddyExpBoxFunc extends ToolFunc {
          * 2.使用道具增加,需要传入伙伴Id
          */
         int buddyId = Integer.parseInt((String) args[0]);
-        BuddyModule buddyModule = (BuddyModule) moduleMap.get(MConst.Buddy);
-        buddyModule.addExp(buddyId, addNum * count);
-        buddyModule.warn(getUseNotice());
         return null;
     }
 }

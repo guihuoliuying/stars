@@ -33,7 +33,6 @@ public class GmModuleFactory extends AbstractModuleFactory<GmModule> {
         GmManager.reg("rankemail", new NewServerRankGmHandler());
         GmManager.reg("pc", new PcGmHandler());
         GmManager.reg("ac", new AccessControlGmHandler());
-        GmManager.reg("fight", new FightServerGmHandler());
 
 
         // 专项测试

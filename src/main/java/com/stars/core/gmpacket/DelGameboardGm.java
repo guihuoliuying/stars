@@ -1,8 +1,6 @@
 package com.stars.core.gmpacket;
 
-import com.stars.core.module.ModuleManager;
 import com.stars.core.db.DBUtil;
-import com.stars.modules.MConst;
 import com.stars.server.main.gmpacket.GmPacketHandler;
 import com.stars.server.main.gmpacket.GmPacketResponse;
 
@@ -18,7 +16,6 @@ public class DelGameboardGm extends GmPacketHandler {
         if (args.containsKey("noticeId")) {
             try {
                 delGameboard(Integer.parseInt(args.get("noticeId").toString()));
-                ModuleManager.loadProductData(MConst.Gameboard);
             } catch (Exception e) {
                 e.printStackTrace();
             }

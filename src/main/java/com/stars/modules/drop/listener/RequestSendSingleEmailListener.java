@@ -6,7 +6,6 @@ import com.stars.core.module.Module;
 import com.stars.modules.MConst;
 import com.stars.modules.drop.DropModule;
 import com.stars.modules.email.event.RequestSendSingleEmailEvent;
-import com.stars.modules.loottreasure.packet.ClientLootTreasureInfo;
 import com.stars.services.ServiceHelper;
 
 import java.util.Map;
@@ -53,9 +52,6 @@ public class RequestSendSingleEmailListener  extends AbstractEventListener<Modul
                     }
                 }
                 //要发送到客户端进行奖励预览;
-                ClientLootTreasureInfo clientLootTreasureInfo = new ClientLootTreasureInfo(ClientLootTreasureInfo.TYPE_END_AWARDS);
-                clientLootTreasureInfo.setRewardMap(resultMap);
-                dropModule.send(clientLootTreasureInfo);
                 break;
             default:
                 resultMap = requestSendSingleEmailEvent.getAffixMap();

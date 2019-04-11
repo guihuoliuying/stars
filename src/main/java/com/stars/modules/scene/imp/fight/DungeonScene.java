@@ -2,7 +2,6 @@ package com.stars.modules.scene.imp.fight;
 
 import com.stars.core.module.Module;
 import com.stars.modules.MConst;
-import com.stars.modules.buddy.BuddyModule;
 import com.stars.modules.dungeon.DungeonManager;
 import com.stars.modules.dungeon.DungeonModule;
 import com.stars.modules.dungeon.prodata.DungeoninfoVo;
@@ -161,13 +160,6 @@ public class DungeonScene extends FightScene {
         com.stars.util.LogUtil.info("roleSkill:{}", roleEntity.getSkills());
         entityMap.put(roleEntity.getUniqueId(), roleEntity);
         /* 出战伙伴 */
-        BuddyModule buddyModule = (BuddyModule) moduleMap.get(MConst.Buddy);
-        // 有出战伙伴
-        if (buddyModule.getFightBuddyId() != 0) {
-            FighterEntity buddyEntity = FighterCreator.create(FighterEntity.TYPE_BUDDY, FighterEntity.CAMP_SELF,
-                    buddyModule.getRoleBuddy(buddyModule.getFightBuddyId()));
-            entityMap.put(buddyEntity.getUniqueId(), buddyEntity);
-        }
         /* 预加载怪物 */
         initMonsterData(moduleMap, enterFight, stageVo);
         fighterList.addAll(entityMap.values());

@@ -2,17 +2,18 @@ package com.stars.modules.demologin;
 
 import com.stars.AccountRow;
 import com.stars.core.SystemRecordMap;
+import com.stars.core.actor.Actor;
+import com.stars.core.db.DBUtil;
 import com.stars.core.event.EventDispatcher;
 import com.stars.core.gmpacket.SwitchEntranceGm;
 import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.module.ModuleContext;
 import com.stars.core.module.ModuleManager;
+import com.stars.core.persist.SaveDBManager;
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerSystem;
 import com.stars.core.redpoint.RedPoints;
-import com.stars.core.persist.SaveDBManager;
-import com.stars.core.db.DBUtil;
 import com.stars.modules.MConst;
 import com.stars.modules.data.DataManager;
 import com.stars.modules.demologin.message.DailyResetMsg;
@@ -20,15 +21,12 @@ import com.stars.modules.demologin.message.FiveOClockResetMsg;
 import com.stars.modules.demologin.message.MonthlyResetMsg;
 import com.stars.modules.demologin.message.WeeklyResetMsg;
 import com.stars.modules.demologin.userdata.AccountRole;
-import com.stars.modules.demologin.userdata.AccountTransfer;
 import com.stars.modules.demologin.userdata.LoginRow;
 import com.stars.modules.role.userdata.Role;
 import com.stars.modules.serverLog.ServerLogModule;
-import com.stars.services.accounttransfer.AccountTransferServiceActor;
 import com.stars.startup.MainStartup;
 import com.stars.util.LogUtil;
 import com.stars.util.StringUtil;
-import com.stars.core.actor.Actor;
 
 import java.lang.reflect.Field;
 import java.sql.SQLException;
@@ -125,15 +123,6 @@ public class LoginModuleHelper {
      * @throws SQLException
      */
     public static String getTransferAccount(String name) {
-        AccountTransfer accountTransfer = null;
-        try {
-            accountTransfer = AccountTransferServiceActor.accountTransferCache.get(name);
-        } catch (Exception e) {
-            com.stars.util.LogUtil.error("缓存中获取转移信息失败："+name, e);
-        }
-        if (accountTransfer != null && !accountTransfer.isInvalid()) {
-            name = accountTransfer.getOldAccount();
-        }
         return name;
     }
 

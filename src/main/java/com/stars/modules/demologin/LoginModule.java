@@ -2,17 +2,17 @@ package com.stars.modules.demologin;
 
 import com.stars.AccountRow;
 import com.stars.core.SystemRecordMap;
+import com.stars.core.db.DBUtil;
 import com.stars.core.event.EventDispatcher;
 import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Guard;
 import com.stars.core.module.Module;
+import com.stars.core.persist.SaveDBManager;
+import com.stars.core.persist.SaveDbResult;
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerSystem;
 import com.stars.core.recordmap.RoleRecord;
 import com.stars.core.recordmap.RoleRecordMapImpl;
-import com.stars.core.persist.SaveDBManager;
-import com.stars.core.persist.SaveDbResult;
-import com.stars.core.db.DBUtil;
 import com.stars.modules.MConst;
 import com.stars.modules.daily.DailyManager;
 import com.stars.modules.daily.event.DailyFuntionEvent;
@@ -26,7 +26,6 @@ import com.stars.modules.demologin.userdata.LoginInfo;
 import com.stars.modules.demologin.userdata.LoginRow;
 import com.stars.modules.dungeon.DungeonModule;
 import com.stars.modules.family.FamilyModule;
-import com.stars.modules.newserversign.NewServerSignManager;
 import com.stars.modules.role.RoleModule;
 import com.stars.modules.serverLog.ServerLogModule;
 import com.stars.modules.serverLog.ThemeType;
@@ -250,15 +249,6 @@ public class LoginModule extends AbstractModule implements Guard {
             eventDispatcher().fire(new LoginSuccessEvent()); // 抛出登录成功事件
             eventDispatcher().fire(new DailyFuntionEvent(DailyManager.DAILYID_LOGININ, 1)); // 抛出日常活动事件
             finishMessage(message, true); // 完成登录
-
-            //首测七天登陆奖励,二测发奖逻辑
-            if (accountRow != null && NewServerSignManager.FIRST_TEST_REWARD_SET.contains(accountRow.getName())) {
-                if (accountRow.getFirstTestAwardGet() == 0) {
-                    accountRow.setFirstTestAwardGet((byte) 1);//标识为已领奖
-                    context().update(accountRow);
-                    ServiceHelper.emailService().sendToSingle(roleId, 25101, 0L, "系统", null);
-                }
-            }
 
         } catch (Throwable t) {
             state = OFFLINE;

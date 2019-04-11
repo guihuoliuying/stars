@@ -4,9 +4,6 @@ import com.stars.core.attr.Attribute;
 import com.stars.core.db.DBUtil;
 import com.stars.core.db.DbRow;
 import com.stars.core.db.SqlUtil;
-import com.stars.modules.newequipment.NewEquipmentManager;
-import com.stars.modules.newequipment.prodata.EquipmentVo;
-import com.stars.modules.skill.SkillManager;
 import com.stars.network.server.buffer.NewByteBuffer;
 import com.stars.util.StringUtil;
 
@@ -152,41 +149,7 @@ public class RoleToolRow extends DbRow implements Comparable {
                     vo.writeToBuffer(buff);
                 }
             }
-            //符文信息
-            if (isTokenEquip()) {//不是符文下面的buff
-                buff.writeByte((byte) 1); //是否符文技能
-                Map<Integer, Integer> tokenWashCostMap = getWashTokenCost();
-                int tokenWashCostSize = tokenWashCostMap.size();
-                buff.writeInt(tokenWashCostSize); //洗练符文材料
-                for (Map.Entry<Integer, Integer> entry : tokenWashCostMap.entrySet()) {
-                    buff.writeInt(entry.getKey());
-                    buff.writeInt(entry.getValue());
-                }
-                EquipmentVo equipmentVo = NewEquipmentManager.getEquipmentVo(itemId);
-                int totalHoldCount = NewEquipmentManager.getTokenMaxNumIndex(equipmentVo.getTokenNumIndex());
-                buff.writeInt(totalHoldCount); //当前已开启装备符文孔
-                for (byte i = 1; i <= totalHoldCount; i++) {
-                    RoleTokenEquipmentHolePo holePo = roleTokenHoleInfoMap.get(i);
-                    if (holePo != null) {
-                        holePo.writeToBuffer(buff);
-                    } else {
-                        buff.writeByte(i);
-                        buff.writeInt(0);
-                        buff.writeInt(0);
-                    }
-                }
-                buff.writeInt(tokenSkillId); //符文技能id
-                buff.writeInt(tokenSKillLevel); //符文技能等级
 
-                if (tokenSkillId != 0) {
-                    Integer maxLevel = SkillManager.getMaxSkillLevel(tokenSkillId);
-                    buff.writeInt(maxLevel.intValue());
-                } else {
-                    buff.writeInt(0);
-                }
-            } else {
-                buff.writeByte((byte) 0);
-            }
         }
     }
 
@@ -416,10 +379,10 @@ public class RoleToolRow extends DbRow implements Comparable {
     }
 
     public boolean isTokenEquip() {
-        return NewEquipmentManager.isTokenEquipment(itemId);
+        return false;
     }
 
     public Map<Integer, Integer> getWashTokenCost() {
-        return NewEquipmentManager.getEquipmentVo(itemId).getTokenWashCostMap();
+        return null;
     }
 }

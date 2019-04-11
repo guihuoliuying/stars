@@ -1,19 +1,16 @@
 package com.stars.modules.friendShare;
 
 import com.stars.core.SystemRecordMap;
+import com.stars.core.db.DBUtil;
 import com.stars.core.event.EventDispatcher;
 import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
-import com.stars.core.db.DBUtil;
 import com.stars.modules.MConst;
 import com.stars.modules.drop.DropModule;
-import com.stars.modules.friendInvite.InviteManager;
-import com.stars.modules.friendInvite.InviteModule;
 import com.stars.modules.friendShare.packet.ClientShare;
 import com.stars.modules.friendShare.userdata.RoleShareRecordPo;
 import com.stars.modules.redpoint.RedPointConst;
-import com.stars.modules.role.RoleModule;
 import com.stars.modules.serverLog.EventType;
 import com.stars.modules.serverLog.ServerLogModule;
 import com.stars.modules.serverLog.ThemeType;
@@ -62,7 +59,7 @@ public class ShareModule extends AbstractModule {
     @Override
     public void onInit(boolean isCreation) throws Throwable {
         // 红点
-        signCalRedPoint(MConst.FriendShare, RedPointConst.FRIEND_SHARE);
+//        signCalRedPoint(MConst.FriendShare, RedPointConst.FRIEND_SHARE);
     }
 
     @Override
@@ -74,17 +71,7 @@ public class ShareModule extends AbstractModule {
      * 显示界面
      */
     public void view() {
-        InviteModule inviteModule = module(MConst.FriendInvite);
-        RoleModule roleModule = (RoleModule) module(MConst.Role);
-        int level = roleModule.getLevel();
-        ClientShare clientShare = new ClientShare();
-        clientShare.setStatus(roleShareRecordPo.getStatus());
-        if (level > InviteManager.INVITEATR_ROLELIMIT) {
-            // X级及以后,开放好友邀请功能
-            clientShare.setInviteCode(inviteModule.getInviteCount());
-            clientShare.setLink(inviteModule.getLink());
-        }
-        send(clientShare);
+
     }
 
     /**
@@ -103,7 +90,7 @@ public class ShareModule extends AbstractModule {
         clientShare.setStatus(roleShareRecordPo.getStatus());
         send(clientShare);
         // 红点
-        signCalRedPoint(MConst.FriendShare, RedPointConst.FRIEND_SHARE);
+//        signCalRedPoint(MConst.FriendShare, RedPointConst.FRIEND_SHARE);
         // 日志
         ServerLogModule module = module(MConst.ServerLog);
         module.dynamic_4_Log_str(ThemeType.DYNAMIC_WX_SHARED.getThemeId(), "share", "", "");
@@ -133,7 +120,7 @@ public class ShareModule extends AbstractModule {
         clientShare.setStatus(roleShareRecordPo.getStatus());
         send(clientShare);
         // 红点
-        signCalRedPoint(MConst.FriendShare, RedPointConst.FRIEND_SHARE);
+//        signCalRedPoint(MConst.FriendShare, RedPointConst.FRIEND_SHARE);
     }
 
     @Override
@@ -155,7 +142,7 @@ public class ShareModule extends AbstractModule {
             setLong("invite.resetTimestamp", SystemRecordMap.fiveOClockResetTimestamp);
         }
         // 红点
-        signCalRedPoint(MConst.FriendShare, RedPointConst.FRIEND_SHARE);
+//        signCalRedPoint(MConst.FriendShare, RedPointConst.FRIEND_SHARE);
     }
 
     @Override

@@ -5,14 +5,12 @@ import com.stars.core.player.PlayerUtil;
 import com.stars.modules.MConst;
 import com.stars.modules.demologin.packet.ClientText;
 import com.stars.modules.gm.GmHandler;
-import com.stars.modules.searchtreasure.SearchTreasureModule;
 import com.stars.modules.serverLog.EventType;
 import com.stars.modules.tool.ToolManager;
 import com.stars.modules.tool.ToolModule;
 import com.stars.modules.tool.productdata.ItemVo;
 import com.stars.util.LogUtil;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -34,10 +32,7 @@ public class AddItemGmHandler implements GmHandler {
             //要区别存放道具奖励;
             ItemVo itemVo = ToolManager.getItemVo(itemId);
             if (itemVo.getType() == ToolManager.TYPE_SEARCHTREASURE) {
-                SearchTreasureModule searchTreasureModule = (SearchTreasureModule) moduleMap.get(MConst.SearchTreasure);
-                Map<Integer, Integer> map = new HashMap<>();
-                map.put(itemId, count);
-                searchTreasureModule.getRecordMapSearchTreasure().addItem(map);
+
             } else {
                 ToolModule toolModule = (ToolModule) moduleMap.get(MConst.Tool);
                 toolModule.addAndSend(itemId, count, EventType.GM.getCode());

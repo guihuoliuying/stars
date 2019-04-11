@@ -6,7 +6,6 @@ import com.stars.modules.MConst;
 import com.stars.modules.scene.SceneModule;
 import com.stars.modules.scene.ScenePacketSet;
 import com.stars.network.server.buffer.NewByteBuffer;
-import com.stars.services.ServiceHelper;
 
 /**
  * 非战斗场景传送请求
@@ -19,7 +18,6 @@ public class ServerEnterCity extends PlayerPacket {
     public void execPacket(Player player) {
         SceneModule sceneModule = (SceneModule) module(MConst.Scene);
         sceneModule.transferSafeStage(enterPosition);
-        ServiceHelper.familyWarService().roleOnline(player.id());
     }
 
     @Override

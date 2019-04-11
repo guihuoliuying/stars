@@ -6,13 +6,9 @@ import com.stars.modules.daily.prodata.DailyVo;
 import com.stars.modules.data.DataManager;
 import com.stars.modules.dungeon.DungeonManager;
 import com.stars.modules.dungeon.prodata.DungeoninfoVo;
-import com.stars.modules.elitedungeon.EliteDungeonManager;
 import com.stars.modules.foreshow.ForeShowManager;
 import com.stars.modules.foreshow.prodata.ForeShowVo;
 import com.stars.modules.gm.GmHandler;
-import com.stars.modules.newofflinepvp.NewOfflinePvpManager;
-import com.stars.modules.shop.ShopManager;
-import com.stars.modules.shop.prodata.Shop;
 
 import java.util.Map;
 
@@ -45,9 +41,6 @@ public class UnlimitGmHandler implements GmHandler {
     }
 
     private void unlockShopLimit() {
-        for (Shop shop : ShopManager.shopMap.values()) {
-            shop.setCount(Integer.MAX_VALUE / 2);
-        }
     }
 
     private void unlockDungeonLimit() {
@@ -58,7 +51,6 @@ public class UnlimitGmHandler implements GmHandler {
     }
 
     private void unlockNewOfflinePvpLimit() {
-        NewOfflinePvpManager.setMaxFightCount(Integer.MAX_VALUE / 2);
     }
 
     private void unlockTrialLimit() {
@@ -70,10 +62,6 @@ public class UnlimitGmHandler implements GmHandler {
             if (vo.getCount() > 0) {
                 vo.setCount((byte) (Byte.MAX_VALUE / 2));
             }
-        }
-        // 组队精英
-        for (Map.Entry<Integer, Integer> entry : EliteDungeonManager.rewardTimesMap.entrySet()) {
-            entry.setValue(Integer.MAX_VALUE / 2);
         }
     }
 

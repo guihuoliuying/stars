@@ -1,12 +1,9 @@
 package com.stars.multiserver.fightutil;
 
-import com.stars.modules.pk.packet.ClientUpdatePlayer;
-import com.stars.modules.pk.packet.ServerOrder;
 import com.stars.modules.scene.SceneManager;
 import com.stars.modules.scene.fightdata.FighterEntity;
 import com.stars.modules.scene.prodata.StageinfoVo;
 import com.stars.multiserver.MultiServerHelper;
-import com.stars.multiserver.fight.ServerOrders;
 import com.stars.network.server.buffer.NewByteBuffer;
 import com.stars.network.server.packet.Packet;
 import com.stars.services.fightbase.FightBaseService;
@@ -145,50 +142,7 @@ public class Fight {
         }
     }
 
-    public synchronized void handleRevive(String fighterUid, short fightConst) {
-        if (!reviveMap.containsKey(fighterUid)) return;
-        FighterEntity entity = fighterMap.get(fighterUid);
-        if (entity == null) return;
-        List<FighterEntity> entityList = new ArrayList<>();
-        ArrayList<String> reviveList = new ArrayList<>();
-        entityList.add(entity);
-        reviveList.add(entity.uniqueId);
-        fightBaseService.addFighter(fightServerId, fightConst,
-                MultiServerHelper.getServerId(), fightId, entityList);
-        //发送满血满状态指令
-        ServerOrder serverOrder = new ServerOrder();
-        serverOrder.setOrderType(ServerOrder.ORDER_TYPE_RESET_CHARACS);
-        serverOrder.setUniqueIDs(reviveList);
-        sendServerOrder(fightId, serverOrder, fightConst);//发送服务端lua命令
-    }
 
-    public void setBuff(long campId, byte selfTarget, byte otherTarget, int buffId, int debuffId, int buffLevel, short fightConst) {
-        if (campId == camp1Id) {
-            removeBuffOrder(camp1BuffInstanceId, FightConst.CAMP1, fightConst);
-            removeBuffOrder(camp2BuffInstanceId, FightConst.CAMP2, fightConst);
-            ServerOrder order = ServerOrders.newAddBuffOrder(FightConst.CAMP1, selfTarget, buffId, buffLevel);
-            camp1BuffId = buffId;
-            camp1BuffInstanceId.add(order.getInstanceId());
-            fightBaseService.addServerOrder(fightServerId, fightConst,
-                    MultiServerHelper.getServerId(), fightId, order);
-            ServerOrder order2 = ServerOrders.newAddBuffOrder(FightConst.CAMP2, otherTarget, debuffId, buffLevel);
-            camp2BuffInstanceId.add(order2.getInstanceId());
-            fightBaseService.addServerOrder(fightServerId, fightConst,
-                    MultiServerHelper.getServerId(), fightId, order2);
-        } else if (campId == camp2Id) {
-            removeBuffOrder(camp1BuffInstanceId, FightConst.CAMP1, fightConst);
-            removeBuffOrder(camp2BuffInstanceId, FightConst.CAMP2, fightConst);
-            ServerOrder order = ServerOrders.newAddBuffOrder(FightConst.CAMP2, selfTarget, buffId, buffLevel);
-            camp2BuffId = buffId;
-            camp2BuffInstanceId.add(order.getInstanceId());
-            fightBaseService.addServerOrder(fightServerId, fightConst,
-                    MultiServerHelper.getServerId(), fightId, order);
-            ServerOrder order2 = ServerOrders.newAddBuffOrder(FightConst.CAMP1, otherTarget, debuffId, buffLevel);
-            camp1BuffInstanceId.add(order2.getInstanceId());
-            fightBaseService.addServerOrder(fightServerId, fightConst,
-                    MultiServerHelper.getServerId(), fightId, order2);
-        }
-    }
 
     public FightStat updateCampPoints(long campId, long points) {
         return stat.updateCampPoints(campId, points);
@@ -287,16 +241,6 @@ public class Fight {
         return newMap;
     }
 
-    /**
-     * 发送服务端lua命令
-     */
-    public void sendServerOrder(String fightId, ServerOrder serverOrder, short fightConst) {
-        ClientUpdatePlayer packet = new ClientUpdatePlayer();
-        packet.addOrder(serverOrder);
-        byte[] bytes = packetToBytes(packet);
-        fightBaseService.addServerOrder(fightServerId, fightConst,
-                MultiServerHelper.getServerId(), fightId, bytes);
-    }
 
     /**
      * 将包转为byte[]
@@ -310,15 +254,6 @@ public class Fight {
         return bytes;
     }
 
-    private void removeBuffOrder(Set<Integer> buffInstanceId, byte camp, short fightConst) {
-        if (!buffInstanceId.isEmpty()) {
-            for (int buffInstId : buffInstanceId) {
-                fightBaseService.addServerOrder(fightServerId, fightConst,
-                        MultiServerHelper.getServerId(), fightId,
-                        ServerOrders.newRemoveBuffOrder(camp, buffInstId));
-            }
-        }
-    }
 
     public String getFightId() {
         return fightId;

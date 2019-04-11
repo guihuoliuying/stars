@@ -1,6 +1,5 @@
 package com.stars.modules.operateactivity;
 
-import com.stars.modules.MConst;
 import com.stars.modules.operateactivity.prodata.OperateActVo;
 import com.stars.services.SConst;
 import com.stars.util.LogUtil;
@@ -109,31 +108,6 @@ public class OperateActivityManager {
         registerOpCheck(OperateActivityConstant.ActType_WeeklyCharge, "");
         registerOpCheck(OperateActivityConstant.ActType_ChargeGift, "");
         registerOpCheck(OperateActivityConstant.ActType_Quwudu, "");
-        registerOpCheck(OperateActivityConstant.ActType_OnlyClientShow1, MConst.OnlyClientShow);
-        registerOpCheck(OperateActivityConstant.ActType_OnlyClientShow2, MConst.OnlyClientShow);
-        registerOpCheck(OperateActivityConstant.ActType_OnlyClientShow3, MConst.OnlyClientShow);
-        registerOpCheck(OperateActivityConstant.ActType_OnlyClientShow4, MConst.OnlyClientShow);
-        registerOpCheck(OperateActivityConstant.ActType_Archery, MConst.Archery);
-        registerOpCheck(OperateActivityConstant.ActType_ActiveWeapon, MConst.ActiveWeapon);
-        registerOpCheck(OperateActivityConstant.ActType_Invite, MConst.FriendInvite);
-        registerOpCheck(OperateActivityConstant.ActType_BenefitToken, MConst.OpActBenefitToken);
-        registerOpCheck(OperateActivityConstant.ActType_WeiXinBind, MConst.OnlyClientShow);
-        registerOpCheck(OperateActivityConstant.ActType_WeeklyGift, MConst.WeeklyGift);
-        registerOpCheck(OperateActivityConstant.ActType_CountDown, MConst.CountDown);
-        registerOpCheck(OperateActivityConstant.ActType_CountDown1, MConst.CountDown);
-        registerOpCheck(OperateActivityConstant.ActType_NewDailyCharge, MConst.NewDailyCharge);
-        registerOpCheck(OperateActivityConstant.ActType_LuckyTurnTable, MConst.LuckyTurnTable);
-        registerOpCheck(OperateActivityConstant.ActType_SecondKill, MConst.OpActSecondKill);
-        registerOpCheck(OperateActivityConstant.ActType_LuckyDraw, MConst.LuckyDraw);
-        registerOpCheck(OperateActivityConstant.ActType_LuckyDraw1, MConst.LuckyDraw1);
-        registerOpCheck(OperateActivityConstant.ActType_LuckyDraw2, MConst.LuckyDraw2);
-        registerOpCheck(OperateActivityConstant.ActType_LuckyDraw3, MConst.LuckyDraw3);
-        registerOpCheck(OperateActivityConstant.ActType_LuckyDraw4, MConst.LuckyDraw4);
-        registerOpCheck(OperateActivityConstant.ActType_NewFirstRecharge, MConst.NewFirstRechargeModule);
-        registerOpCheck(OperateActivityConstant.ActType_NewFirstRecharge1, MConst.NewFirstRechargeModule1);
-        registerOpCheck(OperateActivityConstant.ActType_CollectPhone, MConst.CollectPhone);
-        registerOpCheck(OperateActivityConstant.ActType_MoonCake, MConst.MoonCake);
-        registerOpCheck(OperateActivityConstant.ActType_LuckyCard, MConst.LuckyCard);
     }
 
     public static void registerOpCheck(int opType, String serviceName) {
@@ -153,55 +127,6 @@ public class OperateActivityManager {
      * 实现getCurShowActivityId方法，控制是否要显示这个活动 实现getIsShowLabel()方法，控制是否要显示活动页签
      */
     public static void registerOpMoudle() {
-        registerOpModule(OperateActivityConstant.ActType_OnlineReward, MConst.OnlineReward);
-        registerOpModule(OperateActivityConstant.ActType_RetrieveReward, MConst.RetrieveReward);
-        registerOpModule(OperateActivityConstant.ActType_WordExchange, MConst.WordExchange);
-        registerOpModule(OperateActivityConstant.ActType_SevenDayGoal, MConst.SevenDayGoal);
-        registerOpModule(OperateActivityConstant.ActType_NewServerRank, MConst.NewServerRank);
-        registerOpModule(OperateActivityConstant.ActType_NewServerSign, MConst.NewServerSign);
-        registerOpModule(OperateActivityConstant.ActType_NewServerMoney, MConst.NewServerMoney);
-        registerOpModule(OperateActivityConstant.ActType_NewServerFightScore, MConst.NewServerFightScore);
-        registerOpModule(OperateActivityConstant.ActType_NewServerFamilyFightScore, MConst.OpActFamilyFightScore);
-        registerOpModule(OperateActivityConstant.ActType_NewServerFightScore0, MConst.OpActFightScore);
-        registerOpModule(OperateActivityConstant.ActType_ChargeBack, MConst.ChargeBack);// 公测返利
-        registerOpModule(OperateActivityConstant.ActType_ServerFund, MConst.ServerFund);
-        registerOpModule(OperateActivityConstant.ActType_MonthCard, MConst.Vip);
-        registerOpModule(OperateActivityConstant.ActType_DailyCharge, MConst.DailyCharge);
-        registerOpModule(OperateActivityConstant.ActType_EverydayCharge, MConst.EverydayCharge);
-        registerOpModule(OperateActivityConstant.ActType_GiftCome520, MConst.GiftCome520);
-        registerOpModule(OperateActivityConstant.ActType_DragBoat, MConst.DragonBoat);
-        registerOpModule(OperateActivityConstant.ActType_ChargeScore, MConst.OpActChargeScore);
-        registerOpModule(OperateActivityConstant.ActType_KickBack, MConst.OpActKickBack);
-        registerOpModule(OperateActivityConstant.ActType_BestCP520, MConst.BestCP520);
-        registerOpModule(OperateActivityConstant.ActType_TencentVideo, MConst.TencentVideo);
-        registerOpModule(OperateActivityConstant.ActType_WeeklyCharge, MConst.WeeklyCharge);
-        registerOpModule(OperateActivityConstant.ActType_ChargeGift, MConst.ChargeGift);
-        registerOpModule(OperateActivityConstant.ActType_Quwudu, MConst.Quwudu);
-        registerOpModule(OperateActivityConstant.ActType_OnlyClientShow1, MConst.OnlyClientShow);
-        registerOpModule(OperateActivityConstant.ActType_OnlyClientShow2, MConst.OnlyClientShow);
-        registerOpModule(OperateActivityConstant.ActType_OnlyClientShow3, MConst.OnlyClientShow);
-        registerOpModule(OperateActivityConstant.ActType_OnlyClientShow4, MConst.OnlyClientShow);
-        registerOpModule(OperateActivityConstant.ActType_Archery, MConst.Archery);
-        registerOpModule(OperateActivityConstant.ActType_ActiveWeapon, MConst.ActiveWeapon);
-        registerOpModule(OperateActivityConstant.ActType_Invite, MConst.FriendInvite);
-        registerOpModule(OperateActivityConstant.ActType_BenefitToken, MConst.OpActBenefitToken);
-        registerOpModule(OperateActivityConstant.ActType_WeiXinBind, MConst.OnlyClientShow);
-        registerOpModule(OperateActivityConstant.ActType_WeeklyGift, MConst.WeeklyGift);
-        registerOpModule(OperateActivityConstant.ActType_CountDown, MConst.CountDown);
-        registerOpModule(OperateActivityConstant.ActType_CountDown1, MConst.CountDown);
-        registerOpModule(OperateActivityConstant.ActType_NewDailyCharge, MConst.NewDailyCharge);
-        registerOpModule(OperateActivityConstant.ActType_LuckyTurnTable, MConst.LuckyTurnTable);
-        registerOpModule(OperateActivityConstant.ActType_SecondKill, MConst.OpActSecondKill);
-        registerOpModule(OperateActivityConstant.ActType_LuckyDraw, MConst.LuckyDraw);
-        registerOpModule(OperateActivityConstant.ActType_LuckyDraw1, MConst.LuckyDraw1);
-        registerOpModule(OperateActivityConstant.ActType_LuckyDraw2, MConst.LuckyDraw2);
-        registerOpModule(OperateActivityConstant.ActType_LuckyDraw3, MConst.LuckyDraw3);
-        registerOpModule(OperateActivityConstant.ActType_LuckyDraw4, MConst.LuckyDraw4);
-        registerOpModule(OperateActivityConstant.ActType_NewFirstRecharge, MConst.NewFirstRechargeModule);
-        registerOpModule(OperateActivityConstant.ActType_NewFirstRecharge1, MConst.NewFirstRechargeModule1);
-        registerOpModule(OperateActivityConstant.ActType_CollectPhone, MConst.CollectPhone);
-        registerOpModule(OperateActivityConstant.ActType_MoonCake, MConst.MoonCake);
-        registerOpModule(OperateActivityConstant.ActType_LuckyCard, MConst.LuckyCard);
     }
 
     public static void registerOpModule(int opType, String moudleName) {
