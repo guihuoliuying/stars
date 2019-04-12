@@ -21,13 +21,10 @@ import com.stars.modules.demologin.LoginPacketSet;
 import com.stars.modules.demologin.message.LoginMsg;
 import com.stars.modules.demologin.userdata.AccountRole;
 import com.stars.modules.role.userdata.Role;
-import com.stars.modules.serverLog.ServerLogModule;
-import com.stars.modules.serverLog.ThemeType;
 import com.stars.network.server.buffer.NewByteBuffer;
 import com.stars.network.server.packet.Packet;
 import com.stars.network.server.packet.PacketManager;
 import com.stars.services.ServiceHelper;
-import com.stars.util.DateUtil;
 import com.stars.util.DirtyWords;
 import com.stars.util.LogUtil;
 import com.stars.util.StringUtil;
@@ -210,9 +207,6 @@ public class ServerRoleOp extends Packet {
                     RedPoints redPoints = new RedPoints(player);
                     Map<String, Module> moduleMap = ModuleManager.newModuleList(roleId, player, eventDispatcher);
                     LoginModuleHelper.inject(moduleMap, context, redPoints);
-                    ServerLogModule log = (ServerLogModule) moduleMap.get(MConst.ServerLog);
-                    accountRow.sendLog(log);
-                    log.accept("roleCreateTime", accountRow.getRelativeRoleTime(roleId + ""));
                     // 创建账号与角色的关联关系
                     AccountRole accountRole = new AccountRole(account, Long.toString(roleId), new Timestamp(System.currentTimeMillis()));
                     accountRole.roleName = roleName;
@@ -244,9 +238,6 @@ public class ServerRoleOp extends Packet {
                     //
                     player.init(moduleMap, eventDispatcher, context, redPoints);
                     Player oldPlayer = PlayerSystem.getOrAdd(roleId, player);
-                    log.accept("roleid", roleId + "");
-                    log.accept("job", jobId + "");
-                    log.Log_core_role(ThemeType.ROLEREG.getOperateId(), ThemeType.ROLEREG.getOperateName(), DateUtil.formatDateTime(System.currentTimeMillis()), "");
 
                     if (oldPlayer == player) {
                         SaveDBManager.addRole2Save(roleId);

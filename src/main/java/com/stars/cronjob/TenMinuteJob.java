@@ -5,8 +5,6 @@ import com.stars.core.actor.AbstractActor;
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerSystem;
 import com.stars.modules.demologin.LoginModuleHelper;
-import com.stars.modules.serverLog.ServerLogModule;
-import com.stars.modules.serverLog.ThemeType;
 import com.stars.network.server.session.GameSession;
 import com.stars.services.ServiceHelper;
 import com.stars.startup.MainStartup;
@@ -57,13 +55,6 @@ public class TenMinuteJob implements Job{
 		}
 		String name = ManagementFactory.getRuntimeMXBean().getName();
 		String pid = name.split("@")[0];
-		if(channelRole.size()==0){
-//			ServerLogModule.Log_core_stat_1(ThemeType.STAGE1_ONLINE.getOperateId(), "1", "0", pid, "0");
-		}else{			
-			for(String subchannel:channelRole.keySet()){
-				ServerLogModule.Log_core_stat_1(ThemeType.STAGE1_ONLINE.getOperateId(), subchannel.split("_")[0], channelRole.get(subchannel)[0], pid, channelRole.get(subchannel)[1]);
-			}
-		}
 	}
 
     public static void printServiceState() {

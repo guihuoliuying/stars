@@ -13,7 +13,6 @@ import com.stars.modules.data.DataManager;
 import com.stars.modules.redpoint.RedPointConst;
 import com.stars.modules.role.RoleModule;
 import com.stars.modules.serverLog.EventType;
-import com.stars.modules.serverLog.ServerLogModule;
 import com.stars.modules.tool.event.AddToolEvent;
 import com.stars.modules.tool.event.UseToolEvent;
 import com.stars.modules.tool.func.ToolFunc;
@@ -380,8 +379,6 @@ public class ToolModule extends AbstractModule {
             }
         }
         // sendItem(itemId,count);
-        ServerLogModule log = module(MConst.ServerLog);
-        log.Log_core_item(itemId, count, eventType, (byte) 1);
         flushToClient(ToolManager.FLUSH_BAG_TYPE_ALL);
         fireAddItemEvent(itemId, count);
         return realGetMap;
@@ -422,8 +419,6 @@ public class ToolModule extends AbstractModule {
         sendResToolByMail(restMap);
 
         if (!com.stars.util.EmptyUtil.isEmpty(toolMap)) {// 有物品变动打日志
-            ServerLogModule log = (ServerLogModule) module(MConst.ServerLog);
-            log.Log_core_item(toolMap, null, eventType);
         }
         flushToClient(ToolManager.FLUSH_BAG_TYPE_ALL);
         fireAddItemEvent(toolMap);
@@ -475,8 +470,6 @@ public class ToolModule extends AbstractModule {
             }
         }
         sendResToolByMail(restMap);
-        ServerLogModule log = (ServerLogModule) module(MConst.ServerLog);
-        log.Log_core_item(toolMap, null, eventType);
 
         flushToClient(ToolManager.FLUSH_BAG_TYPE_ALL, clientSystemConstant);
         fireAddItemEvent(toolMap);
@@ -515,8 +508,6 @@ public class ToolModule extends AbstractModule {
             }
         }
         sendResToolByMail(restMap);
-        ServerLogModule log = (ServerLogModule) module(MConst.ServerLog);
-        log.Log_core_item(toolMap, null, eventType);
         // fireAddItemEvent(toolMap);
         return realGetMap;
     }
@@ -614,8 +605,6 @@ public class ToolModule extends AbstractModule {
             return;
         ToolHandler handler = getHandlerByItemId(itemId);
         handler.deleteByItemId(itemId, count, eventType);
-        ServerLogModule log = (ServerLogModule) module(MConst.ServerLog);
-        log.Log_core_item(itemId, count, eventType, (byte) 0);
         ItemVo itemVo = ToolManager.getItemVo(itemId);
         if (itemVo != null && itemVo.getFuncType() == ToolManager.FUNC_TYPE_BOX) {
             signCalRedPoint(MConst.Tool, RedPointConst.BAG_USE_BOX);
@@ -629,14 +618,12 @@ public class ToolModule extends AbstractModule {
         if (handler != null) {
             RoleToolRow toolRow = getToolById(toolId);
             handler.deleteByToolId(toolId, count);
-            ServerLogModule log = (ServerLogModule) module(MConst.ServerLog);
 
             if (toolRow == null) {
                 com.stars.util.LogUtil.info("不存在toolId={}的道具数据");
                 return;
             }
             int itemId = toolRow.getItemId();
-            log.Log_core_item(itemId, count, eventType, (byte) 0);
             eventDispatcher().fire(new UseToolEvent(itemId, count));
         }
         if (row != null) {

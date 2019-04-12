@@ -6,7 +6,6 @@ import com.stars.core.attr.FormularUtils;
 import com.stars.core.db.DBUtil;
 import com.stars.core.event.Event;
 import com.stars.core.event.EventDispatcher;
-import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
 import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
@@ -32,8 +31,6 @@ import com.stars.modules.role.userdata.Role;
 import com.stars.modules.scene.SceneManager;
 import com.stars.modules.scene.SceneModule;
 import com.stars.modules.serverLog.EventType;
-import com.stars.modules.serverLog.ServerLogModule;
-import com.stars.modules.serverLog.event.SpecialAccountEvent;
 import com.stars.modules.tool.ToolManager;
 import com.stars.modules.tool.ToolModule;
 import com.stars.modules.tool.productdata.ItemVo;
@@ -285,15 +282,7 @@ public class FamilyModule extends AbstractModule {
 
 
     private void handleFamilyLogEvent(FamilyLogEvent event) {
-        ServerLogModule logger = module(MConst.ServerLog);
-        byte opType = event.getOpType();
-        if (opType == FamilyLogEvent.RED_SEND) {
-            logger.log_personal_family_red_send(event.getType(), event.getItemType(), event.getMoney(), event.getRoleId());
-        } else if (opType == FamilyLogEvent.EXCHANGE) {
-            logger.log_personal_family_exchange(event.getType(), event.getItemId(), event.getNum(), event.getRoleId());
-        } else if (opType == FamilyLogEvent.FAMILY_QUIT) {
-            logger.log_personal_family_quit(event.getFamilyId(), event.getRoleId());
-        }
+
     }
 
     private void handleFamilyAuthUpdatedEvent(FamilyAuthUpdatedEvent event) {
@@ -691,8 +680,6 @@ public class FamilyModule extends AbstractModule {
             warn("common_tips_getaward", ToolManager.getItemName(ToolManager.FAMILY_MONEY), toString(FamilyManager.donateGainedFamilyMoney));
             warn("common_tips_getaward", ToolManager.getItemName(ToolManager.FAMILY_CONTRIBUTION), toString(FamilyManager.donateGainedContribution));
             //捐献日志
-            ServerLogModule logger = module(MConst.ServerLog);
-            logger.log_personal_family_donate((byte) 0, FamilyManager.donateReqValue);
         } else {
             warn("bag_buyitem_nomoney", ToolManager.getItemName(ToolManager.MONEY));
         }
@@ -722,8 +709,6 @@ public class FamilyModule extends AbstractModule {
             warn("common_tips_getaward", ToolManager.getItemName(ToolManager.FAMILY_CONTRIBUTION), toString(FamilyManager.rmbDonateGainedContribution));
             ServiceHelper.familyEventService().sendEvent(auth, ServerFamilyEvent.SUBTYPE_DONATE); // 刷新一次捐献记录
             //捐献日志
-            ServerLogModule logger = module(MConst.ServerLog);
-            logger.log_personal_family_donate((byte) 1, FamilyManager.rmbDonateReqValue);
         } else {
             warn("bag_buyitem_nomoney", ToolManager.getItemName(ToolManager.GOLD));
         }
@@ -782,8 +767,6 @@ public class FamilyModule extends AbstractModule {
             warn("family_tips_reqfamilydonate");
             return;
         }
-        ServerLogModule log = (ServerLogModule) module(MConst.ServerLog);
-        log.Log_core_item(51, nextLevelSkillVo.getReqContribution(), EventType.FAMILYBUFF.getCode(), (byte) 0);
         skillLevelMap.put(attribute, nextLevel);
         context().update(roleFamilyPo);
         recalcFamilySkillFightScore(Boolean.TRUE);
@@ -811,8 +794,6 @@ public class FamilyModule extends AbstractModule {
                 logStr.append("&").append(i).append("@").append(state);
             }
         }
-        ServerLogModule logger = module(MConst.ServerLog);
-        logger.log_personal_family_spell(logStr.toString());
     }
 
     private int getAttributeIndex(String attribute) {
@@ -905,8 +886,6 @@ public class FamilyModule extends AbstractModule {
                     return;
                 }
                 boolean flag = ServiceHelper.familyRoleService().addAndSendContribution(id(), -usedContribution);
-                ServerLogModule log = (ServerLogModule) module(MConst.ServerLog);
-                log.Log_core_item(51, usedContribution, EventType.FAMILYBUFF.getCode(), (byte) 0);
                 if (flag) {
                     isUpgrade = true;
                     Map<String, Integer> skillLevelMap = roleFamilyPo.getSkillLevelMap();
@@ -955,8 +934,6 @@ public class FamilyModule extends AbstractModule {
                     logStr.append("&").append(j).append("@").append(state);
                 }
             }
-            ServerLogModule log = (ServerLogModule) module(MConst.ServerLog);
-            log.log_personal_family_spell(logStr.toString());
         }
     }
 
@@ -1154,8 +1131,6 @@ public class FamilyModule extends AbstractModule {
     }
 
     private void fireSpecialAccountLogEvent(String content) {
-        if (SpecialAccountManager.isSpecialAccount(id())) {
-            eventDispatcher().fire(new SpecialAccountEvent(id(), content, true));
-        }
+
     }
 }

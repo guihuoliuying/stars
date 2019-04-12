@@ -1,7 +1,5 @@
 package com.stars.modules.tool.handler;
 
-import com.stars.modules.MConst;
-import com.stars.modules.serverLog.ServerLogModule;
 import com.stars.modules.tool.ToolManager;
 import com.stars.modules.tool.ToolModule;
 import com.stars.modules.tool.func.ToolFunc;
@@ -78,11 +76,7 @@ public class ItemHandler implements ToolHandler {
                 }
             }
             {
-                // 自动使用的物品不会记录消耗日志，但是有获得日志,这里记录消耗日志吧
-                if (autoUse > 0) {
-                    ServerLogModule log = (ServerLogModule)toolModule.moduleMap().get(MConst.ServerLog);
-                    log.Log_core_item(itemId, autoUse, eventType, (byte) 0);
-                }
+
             }
         }else{
             resultMap.put(itemId,count);

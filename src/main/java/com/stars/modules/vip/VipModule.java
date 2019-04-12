@@ -26,7 +26,6 @@ import com.stars.modules.redpoint.RedPointConst;
 import com.stars.modules.role.RoleModule;
 import com.stars.modules.role.packet.ClientRole;
 import com.stars.modules.serverLog.EventType;
-import com.stars.modules.serverLog.ServerLogModule;
 import com.stars.modules.tool.ToolManager;
 import com.stars.modules.tool.ToolModule;
 import com.stars.modules.vip.packet.ClientChargeSwitchPacket;
@@ -242,8 +241,7 @@ public class VipModule extends AbstractModule implements OpActivityModule, Accou
                     uid = tmpStr;
                 }
             }
-            ((ServerLogModule) module(MConst.ServerLog)).Log_core_pay(orderNo, money, rewardMap.get(ToolManager.GOLD), payPoint + "",
-                    lastVipLevel, uid, id());
+
         } catch (Exception e) {
             com.stars.util.LogUtil.error(e.getMessage(), e);
         }
@@ -535,8 +533,6 @@ public class VipModule extends AbstractModule implements OpActivityModule, Accou
 
     @Override
     public void onLog() {
-        ServerLogModule log = (ServerLogModule) module(MConst.ServerLog);
-        log.accept("vip", accountRow.getVipLevel() + "");
     }
 
     @Override

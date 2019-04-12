@@ -1,16 +1,15 @@
 package com.stars.modules.customerService;
 
+import com.stars.core.db.DBUtil;
 import com.stars.core.event.EventDispatcher;
 import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
-import com.stars.core.db.DBUtil;
 import com.stars.modules.MConst;
 import com.stars.modules.customerService.packet.ClientCustomerService;
 import com.stars.modules.data.DataManager;
 import com.stars.modules.drop.DropModule;
 import com.stars.modules.role.RoleModule;
-import com.stars.modules.serverLog.ServerLogModule;
 import com.stars.services.ServiceHelper;
 import com.stars.startup.MainStartup;
 import com.stars.util.DateUtil;
@@ -90,8 +89,6 @@ public class CustomerServiceModule extends AbstractModule {
 			}
 			RoleModule roleModule = module(MConst.Role);
 			String roleName = roleModule.getRoleRow().getName();
-			ServerLogModule log = module(MConst.ServerLog);
-			log.logVipInfo(roleName, cellphone, qq);
 			//发奖励
 			DropModule drop = module(MConst.Drop);
 			Map<Integer, Integer> rewardMap = drop.executeDrop(CustomerServiceManager.AWARD_DROP_ID, 1, true);

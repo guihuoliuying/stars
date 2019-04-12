@@ -32,7 +32,6 @@ import com.stars.modules.scene.SceneManager;
 import com.stars.modules.scene.SceneModule;
 import com.stars.modules.scene.prodata.SafeinfoVo;
 import com.stars.modules.serverLog.EventType;
-import com.stars.modules.serverLog.ServerLogModule;
 import com.stars.modules.tool.ToolManager;
 import com.stars.modules.tool.ToolModule;
 import com.stars.services.summary.SummaryComponent;
@@ -196,8 +195,6 @@ public class RoleModule extends AbstractModule {
             // 升级抛出事件
             eventDispatcher().fire(new RoleLevelUpEvent(getRoleRow().getLevel(), levelBefore));
             eventDispatcher().fire(new RoleLevelAchieveEvent(getRoleRow().getLevel(), levelBefore));
-            ServerLogModule log = (ServerLogModule) module(MConst.ServerLog);
-            log.Log_core_action(getRoleRow().getLevel(), levelBefore, lastFightScore);
 
         }
     }
@@ -234,8 +231,6 @@ public class RoleModule extends AbstractModule {
         role.addResource(resourceId, count);
         context().update(role);
         //打印日志
-        ServerLogModule log = module(MConst.ServerLog);
-        log.Log_core_coin(eventType, count, resourceId);
         ClientRole clientRole = new ClientRole(ClientRole.UPDATE_RESOURCE, role);
         clientRole.setClientSystemConstant(clientSystemConstant);
         send(clientRole);
@@ -625,11 +620,6 @@ public class RoleModule extends AbstractModule {
 
     @Override
     public void onLog() {
-        ServerLogModule log = (ServerLogModule) module(MConst.ServerLog);
-        log.accept("roleid", this.role.getRoleId() + "");
-        log.accept("level", this.role.getLevel() + "");
-        log.accept("fightScore", this.role.getFightScore() + "");
-        log.accept("job", this.role.getJobId() + "");
     }
 
     public int getRideLevelId() {

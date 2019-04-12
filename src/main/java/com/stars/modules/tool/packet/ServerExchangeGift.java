@@ -1,11 +1,8 @@
 package com.stars.modules.tool.packet;
 
-import com.stars.core.gmpacket.giftpackage.ExchangeGiftPackageGm;
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerPacket;
-import com.stars.modules.MConst;
 import com.stars.modules.demologin.packet.ClientText;
-import com.stars.modules.serverLog.ServerLogModule;
 import com.stars.modules.tool.ToolPacketSet;
 import com.stars.network.server.buffer.NewByteBuffer;
 import com.stars.network.server.packet.PacketManager;
@@ -25,11 +22,6 @@ public class ServerExchangeGift extends PlayerPacket {
             return;
         }
 
-        ServerLogModule serverLogModule = module(MConst.ServerLog);
-        int channel = Integer.parseInt(serverLogModule.getMainChannel());
-        ExchangeGiftPackageGm packageGm = new ExchangeGiftPackageGm(activateCode, getRoleId(), getRoleId(), channel,
-                serverLogModule.getAccount());
-        packageGm.checkingGiftId();
     }
 
     @Override

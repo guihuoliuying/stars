@@ -1,14 +1,13 @@
 package com.stars.services.family.welfare.redpacket;
 
 import com.google.common.cache.*;
-import com.stars.core.persist.DbRowDao;
-import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
-import com.stars.core.player.PlayerUtil;
+import com.stars.core.actor.invocation.ServiceActor;
 import com.stars.core.db.DBUtil;
 import com.stars.core.db.DbRow;
+import com.stars.core.persist.DbRowDao;
+import com.stars.core.player.PlayerUtil;
 import com.stars.modules.family.event.FamilyChangeRedPacketEvent;
 import com.stars.modules.family.packet.ClientFamilyRedPacket;
-import com.stars.modules.serverLog.event.SpecialAccountEvent;
 import com.stars.services.ServiceHelper;
 import com.stars.services.ServiceSystem;
 import com.stars.services.ServiceUtil;
@@ -20,7 +19,6 @@ import com.stars.services.family.welfare.redpacket.userdata.FamilyRedPacketRecor
 import com.stars.services.family.welfare.redpacket.userdata.FamilyRedPacketSeizedRecordPo;
 import com.stars.util.I18n;
 import com.stars.util.LogUtil;
-import com.stars.core.actor.invocation.ServiceActor;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -164,9 +162,7 @@ public class FamilyRedPacketServiceActor extends ServiceActor implements FamilyR
         packet.setData(data);
         packet.setMemberRedPacketPo(memberRedPacketPo);
         PlayerUtil.send(auth.getRoleId(), packet);
-        if (SpecialAccountManager.isSpecialAccount(auth.getRoleId())) {
-            ServiceHelper.roleService().notice(auth.getRoleId(), new SpecialAccountEvent(auth.getRoleId(), "家族红包信息", true));
-        }
+
     }
 
     @Override
@@ -220,11 +216,7 @@ public class FamilyRedPacketServiceActor extends ServiceActor implements FamilyR
         ServiceHelper.familyEventService().logEvent(
                 auth.getFamilyId(), FamilyEvent.W_REDPACKET, auth.getRoleName());
         ServiceHelper.roleService().notice(auth.getRoleId(), new FamilyChangeRedPacketEvent(memberRedPacketPo.getOwnedCount()));
-//        // 强制同步一次数据
-//        sendRedPacketInfo(auth);
-        if (SpecialAccountManager.isSpecialAccount(auth.getRoleId())) {
-            ServiceHelper.roleService().notice(auth.getRoleId(), new SpecialAccountEvent(auth.getRoleId(), "获取家族红包", true));
-        }
+
         return true;
     }
 
@@ -293,9 +285,6 @@ public class FamilyRedPacketServiceActor extends ServiceActor implements FamilyR
         memberRedPacketPo.setSeizedCount(memberRedPacketPo.getSeizedCount() + 1);
         dao.insert(seizedRecordPo);
         dao.update(recordPo, memberRedPacketPo);
-        if (SpecialAccountManager.isSpecialAccount(auth.getRoleId())) {
-            ServiceHelper.roleService().notice(auth.getRoleId(), new SpecialAccountEvent(auth.getRoleId(), "家族红包相关", true));
-        }
         return true;
     }
 

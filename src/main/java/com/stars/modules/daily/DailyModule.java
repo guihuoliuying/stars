@@ -21,7 +21,6 @@ import com.stars.modules.redpoint.RedPointConst;
 import com.stars.modules.role.RoleManager;
 import com.stars.modules.role.RoleModule;
 import com.stars.modules.serverLog.EventType;
-import com.stars.modules.serverLog.ServerLogModule;
 import com.stars.modules.tool.ToolManager;
 import com.stars.modules.tool.ToolModule;
 import com.stars.util.LogUtil;
@@ -666,8 +665,6 @@ public class DailyModule extends AbstractModule {
         toolModule.deleteAndSend(dailyBallStageVo.getCostMap(),EventType.DAILY_BALL_LEVEL_UP.getCode());
         int preLevel = dailyRecord.getDailyBallLevel();
         dailyRecord.setDailyBallLevel(preLevel+1);
-        ServerLogModule serverLogModule = module(MConst.ServerLog);
-        serverLogModule.log_dailyBall(dailyRecord.getDailyBallLevel());
         com.stars.util.LogUtil.info("斗魂珠升级|roleid:{}|level:{}->{}",id(),preLevel,dailyRecord.getDailyBallLevel());
         //发送斗魂珠数据
         sendDailyBall2Client();
@@ -735,8 +732,6 @@ public class DailyModule extends AbstractModule {
             toolModule.addAndSend(dailyAwardVo.getAwardMap(),EventType.DAILY_MUTIPLE_OR_SUPER_AWARD.getCode());
             dailyRecord.gotAward(dailyAwardVo.getDailyAwardId());
             context().update(dailyRecord);
-            ServerLogModule serverLogModule = module(MConst.ServerLog);
-            serverLogModule.log_dailyAward(dailyAwardVo.getDailyid(),dailyAwardVo.getAwardType(),dailyAwardVo.getAwardMap());
             if(isSendTips) {
                 //发送多倍或者超级奖励信息
                 ClientDailyData clientDailyData = new ClientDailyData();

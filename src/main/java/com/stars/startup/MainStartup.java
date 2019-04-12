@@ -48,7 +48,6 @@ import com.stars.modules.push.PushModuleFactory;
 import com.stars.modules.redpoint.RedPointModuleFactory;
 import com.stars.modules.role.RoleModuleFactory;
 import com.stars.modules.scene.SceneModuleFactory;
-import com.stars.modules.serverLog.ServerLogModuleFactory;
 import com.stars.modules.skill.SkillModuleFactory;
 import com.stars.modules.tool.ToolModuleFactory;
 import com.stars.multiserver.MultiServerHelper;
@@ -98,7 +97,7 @@ public class MainStartup implements Business {
             loadServerChannel();
             registerOtherPacket();
             checkPacket(); // 检查协议号，是否全局唯一
-            com.stars.bootstrap.SchedulerHelper.init("./config/jobs/quartz.properties");
+            SchedulerHelper.init("./config/jobs/quartz.properties");
             SchedulerManager.init(SchedulerManager.scheduledCorePoolSize);
             initModule(); // 初始化模块
             loadProductData(); // 加载数据(产品数据)
@@ -167,7 +166,6 @@ public class MainStartup implements Business {
         ModuleManager.register(MConst.Friend, new FriendModuleFactory()); // 好友 OK -
         ModuleManager.register(MConst.Family, new FamilyModuleFactory()); // 家族 OK
         ModuleManager.register(MConst.ForeShow, new ForeShowModuleFactory()); // 系统开放（预告） OK
-        ModuleManager.register(MConst.ServerLog, new ServerLogModuleFactory()); // 日志模块 OK
         ModuleManager.register(MConst.OperateActivity, new OperateActivityModuleFactory()); // 运营活动系统 OK
         ModuleManager.register(MConst.GetWay, new GetWayModuleFactory()); // 获取途径
         ModuleManager.initDependence();

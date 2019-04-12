@@ -27,8 +27,6 @@ import com.stars.modules.demologin.userdata.LoginRow;
 import com.stars.modules.dungeon.DungeonModule;
 import com.stars.modules.family.FamilyModule;
 import com.stars.modules.role.RoleModule;
-import com.stars.modules.serverLog.ServerLogModule;
-import com.stars.modules.serverLog.ThemeType;
 import com.stars.network.server.packet.Packet;
 import com.stars.network.server.packet.PacketManager;
 import com.stars.network.server.session.GameSession;
@@ -36,7 +34,6 @@ import com.stars.network.server.session.SessionManager;
 import com.stars.services.ServiceHelper;
 import com.stars.services.summary.SummaryComponent;
 import com.stars.startup.MainStartup;
-import com.stars.util.DateUtil;
 import com.stars.util.LogUtil;
 import com.stars.util.ServerLogConst;
 
@@ -800,28 +797,19 @@ public class LoginModule extends AbstractModule implements Guard {
 
     @Override
     public void onLog() {
-        ServerLogModule log = (ServerLogModule) module(MConst.ServerLog);
-        String key = "account";
-        String value = this.account;
-        log.accept(key, value);
+
     }
 
     private void logLogin(LoginMsg message) throws SQLException {
         AccountRow accountRow = LoginModuleHelper.getOrLoadAccount(message.getAccount(), null);
         LoginInfo loginInfo = accountRow.getLoginInfo();
-        ServerLogModule log = (ServerLogModule) module(MConst.ServerLog);
         Player player = PlayerSystem.get(message.getRoleId());
         if (player != null && player.isLogExit()) {
             player.setLogExit(false);
         }
         if (loginInfo != null) {
-            ServerLogModule.static_core_gamesvr(loginInfo, DateUtil.formatDateTime(accountRow.getFirstLoginTimestamp()), accountRow.getVipLevel(), ThemeType.LOGIN.getOperateName(), ThemeType.LOGIN.getOperateId(), "");
-            ServerLogModule.static_core_account_int(loginInfo, "");
             accountRow.setLastLogLoginTime(System.currentTimeMillis());
             String time = accountRow.getRelativeRoleTime(message.getRoleId() + "");
-//            log.Log_core_role(ThemeType.ROLELOGIN.getOperateId(), ThemeType.ROLELOGIN.getOperateName(), time, "");
-            log.Log_core_role(ThemeType.ROLELOGIN.getOperateId(), ThemeType.ROLELOGIN.getOperateName(), time, "imei#" + loginInfo.getImei());
-//            log.loginLogoutLog(ServerLogConst.STATUS_LOGIN);//角色登陆静态日志,运营需求，暂时上线不打
         }
     }
 
@@ -851,10 +839,6 @@ public class LoginModule extends AbstractModule implements Guard {
         // imei
         String imei = loginInfo != null ? (loginInfo.getImei() != null ? loginInfo.getImei() : "") : "";
         String info = makeOfflineLog(online, gold, money, bandGold, pg, jg, familyId, imei);
-        ServerLogModule log = (ServerLogModule) module(MConst.ServerLog);
-        log.Log_core_role(ThemeType.ROLELOGOUT.getOperateId(), ThemeType.ROLELOGOUT.getOperateName(), time, info);
-
-        log.loginLogoutLog(ServerLogConst.STATUS_LOGOUT);//角色登出静态日志
     }
 
 
@@ -892,7 +876,6 @@ public class LoginModule extends AbstractModule implements Guard {
     }
 
     public void logExit() {
-        ServerLogModule log = (ServerLogModule) module(MConst.ServerLog);
         AccountRow accountRow = MainStartup.accountMap.get(this.account);
 
         Player player = PlayerSystem.get(id());
@@ -915,8 +898,6 @@ public class LoginModule extends AbstractModule implements Guard {
                 if (online <= 0) {
                     online = 1;
                 }
-                log.Log_core_gamesvr(loginInfo, accountRow.getVipLevel(), DateUtil.formatDateTime(accountRow.getFirstLoginTimestamp()), online);
-                log.Log_core_account(loginInfo, "online_time:" + online);
             }
             if (player != null) {
                 player.setLogExit(true);
@@ -997,7 +978,6 @@ public class LoginModule extends AbstractModule implements Guard {
             resetWhileLogin();
             ServiceHelper.summaryService().online(roleId);
             //重连打印登陆日志
-            ServerLogModule log = module(MConst.ServerLog);
             String time = accountRow.getRelativeRoleTime(curRoleId + "");
             accountRow.setLastLogLoginTime(System.currentTimeMillis());
             succeedReconnect();//重连成功，反馈客户端

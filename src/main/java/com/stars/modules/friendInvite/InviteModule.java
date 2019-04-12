@@ -27,7 +27,6 @@ import com.stars.modules.redpoint.RedPointConst;
 import com.stars.modules.role.RoleModule;
 import com.stars.modules.role.userdata.Role;
 import com.stars.modules.serverLog.EventType;
-import com.stars.modules.serverLog.ServerLogModule;
 import com.stars.modules.tool.ToolModule;
 import com.stars.modules.tool.packet.ClientAward;
 import com.stars.multiserver.MultiServerHelper;
@@ -181,7 +180,6 @@ public class InviteModule extends AbstractModule implements OpActivityModule {
      * 领取奖励（邀请方）
      */
     public void award() {
-        ServerLogModule logModule = module(MConst.ServerLog);
         if (roleInvitePo != null) {
             DropModule dropModule = module(MConst.Drop);
             ToolModule toolModule = module(MConst.Tool);
@@ -206,7 +204,6 @@ public class InviteModule extends AbstractModule implements OpActivityModule {
 //                    signCalRedPoint(MConst.FriendInvite, RedPointConst.FRIEND_INVITE);
                 }
                 warn("剩余可领取奖励份数：" + (roleInvitePo.getInviteCount() - roleInvitePo.getFetchCount()));
-                logModule.logInvite(id(), roleInvitePo.getFetchCount(), toolMap);
             } else if (roleInvitePo.getInviteCount() > 0 && roleInvitePo.getFetchCount() < roleInvitePo.getInviteCount()) {
                 // 玩家累计邀请好友个数大于0且累计领取奖励次数小于玩家累计邀请好友个数，每次奖励
                 Map<Integer, Integer> toolMap = dropModule.executeDrop(InviteManager.INVITEATR_REWARD_EVERYTIME, 1, true);
@@ -228,7 +225,6 @@ public class InviteModule extends AbstractModule implements OpActivityModule {
 //                    signCalRedPoint(MConst.FriendInvite, RedPointConst.FRIEND_INVITE);
                 }
                 warn("剩余可领取奖励份数：" + (roleInvitePo.getInviteCount() - roleInvitePo.getFetchCount()));
-                logModule.logInvite(id(), roleInvitePo.getFetchCount(), toolMap);
             } else {
                 warn("奖励已领取完");
             }
@@ -275,7 +271,6 @@ public class InviteModule extends AbstractModule implements OpActivityModule {
      * @param inviteCode
      */
     public void bindInviteCode(String inviteCode) {
-        ServerLogModule serverLogModule = module(MConst.ServerLog);
         String sql = "select * from roleinvite where invitecode = '" + inviteCode + "'";
         try {
             RoleInvitePo roleInvitePoFrom = DBUtil.queryBean(DBUtil.DB_COMMON, RoleInvitePo.class, sql);
@@ -285,19 +280,16 @@ public class InviteModule extends AbstractModule implements OpActivityModule {
 
             if (StringUtil.isNotEmpty(roleBeInvitePo.getBindInviteCode())) {
                 warn("当前角色已经绑定了邀请码");
-                serverLogModule.logBeInvite(false, roleBeInvitePo.getRoleId(), "");
                 return;
             }
             if (roleInvitePoFrom == null) {
 //                warn("请输入正确的好友邀请码");
                 warn(DataManager.getGametext("inviteatr_bind_failed2"));
-                serverLogModule.logBeInvite(false, roleBeInvitePo.getRoleId(), "");
                 return;
             }
             if (accountRow.getAccountRole(roleInvitePoFrom.getRoleId()) != null) {
 //                warn("不能输入自己的邀请码");
                 warn(DataManager.getGametext("inviteatr_bind_failed3"));
-                serverLogModule.logBeInvite(false, roleBeInvitePo.getRoleId(), "");
                 return;
             }
             List<AccountRole> relativeRoleList = accountRow.getRelativeRoleList();
@@ -311,14 +303,12 @@ public class InviteModule extends AbstractModule implements OpActivityModule {
             if (count > 0) {
 //                warn("你的账号内其他角色已绑定过邀请码");
                 warn(DataManager.getGametext("inviteatr_bind_failed4"));
-                serverLogModule.logBeInvite(false, roleBeInvitePo.getRoleId(), "");
                 return;
             }
             // 有可领取次数上限，以防刷号
             if (roleInvitePoFrom.getInviteCount() >= InviteManager.INVITEATR_REWARD_LIMIT) {
 //                warn("此邀请码邀请次数已达到上限");
                 warn(DataManager.getGametext("inviteatr_bind_failed5"));
-                serverLogModule.logBeInvite(false, roleBeInvitePo.getRoleId(), "");
                 return;
             }
 
@@ -332,7 +322,6 @@ public class InviteModule extends AbstractModule implements OpActivityModule {
             ServiceHelper.inviteService().bindInviteCode(roleInvitePoFrom, roleBeInvitePo);
 
             // 日志打印#受邀方
-            serverLogModule.logBeInvite(true, roleInvitePoFrom.getRoleId(), roleBeInvitePo.getBindInviteCode());
 
             if (roleInvitePoFrom.getServerId() != MultiServerHelper.getServerId()) {
                 // 发送邀请方服务器信息

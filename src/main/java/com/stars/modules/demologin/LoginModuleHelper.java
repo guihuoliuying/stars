@@ -14,7 +14,6 @@ import com.stars.core.persist.SaveDBManager;
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerSystem;
 import com.stars.core.redpoint.RedPoints;
-import com.stars.modules.MConst;
 import com.stars.modules.data.DataManager;
 import com.stars.modules.demologin.message.DailyResetMsg;
 import com.stars.modules.demologin.message.FiveOClockResetMsg;
@@ -23,7 +22,6 @@ import com.stars.modules.demologin.message.WeeklyResetMsg;
 import com.stars.modules.demologin.userdata.AccountRole;
 import com.stars.modules.demologin.userdata.LoginRow;
 import com.stars.modules.role.userdata.Role;
-import com.stars.modules.serverLog.ServerLogModule;
 import com.stars.startup.MainStartup;
 import com.stars.util.LogUtil;
 import com.stars.util.StringUtil;
@@ -287,9 +285,6 @@ public class LoginModuleHelper {
         RedPoints redPoints = new RedPoints(player);
         Map<String, Module> moduleMap = ModuleManager.newModuleList(roleId, player, eventDispatcher);
         inject(moduleMap, context, redPoints);
-        ServerLogModule log = (ServerLogModule) moduleMap.get(MConst.ServerLog);
-        accountRow.sendLog(log);
-        log.accept("roleCreateTime", accountRow.getRelativeRoleTime(roleId + ""));
         for (Module module : moduleMap.values()) {
             moduleAccountInject(module, accountRow);
             module.onDataReq();

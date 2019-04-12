@@ -6,7 +6,6 @@ import com.stars.core.db.SqlUtil;
 import com.stars.modules.demologin.userdata.AccountRole;
 import com.stars.modules.demologin.userdata.LoginInfo;
 import com.stars.modules.demologin.userdata.LoginRow;
-import com.stars.modules.serverLog.ServerLogModule;
 import com.stars.util.DateUtil;
 import com.stars.util.StringUtil;
 
@@ -271,22 +270,6 @@ public class AccountRow extends DbRow {
             }
         }
         return time;
-    }
-
-    public void sendLog(ServerLogModule log) {
-        log.accept("account", this.getName());
-        if (loginInfo != null) {
-            log.accept("login_channel", this.loginInfo.getChannelSub());
-            log.accept("uid", this.loginInfo.getUid());
-            log.accept("phoneSystem", this.loginInfo.getPhoneSystem());
-            log.accept("phoneNet", this.loginInfo.getPhoneNet());
-            log.accept("reg_channel", this.loginInfo.getRegChannel());
-            log.accept("verision", this.loginInfo.getVerision());
-            log.accept("platForm", this.loginInfo.getPlatForm());
-            log.accept("accoutRegisterTime", loginInfo.getAccoutRegisterTime());
-            log.accept("mainChannel", loginInfo.getChannel().split("@")[0]);
-            log.accept("osVersion", loginInfo.getOsVersion());
-        }
     }
 
     public long getLastLoginTime() {

@@ -2,14 +2,15 @@ package com.stars.modules.demologin.packet;
 
 import com.stars.AccountRow;
 import com.stars.ServerVersion;
+import com.stars.core.actor.Actor;
 import com.stars.core.clientpatch.PatchManager;
+import com.stars.core.db.DBUtil;
+import com.stars.core.db.SqlUtil;
 import com.stars.core.gmpacket.BlockAccountGm;
 import com.stars.core.gmpacket.SwitchEntranceGm;
 import com.stars.core.gmpacket.WhiteListOpenOrCloseGm;
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerSystem;
-import com.stars.core.db.DBUtil;
-import com.stars.core.db.SqlUtil;
 import com.stars.modules.demologin.LoginManager;
 import com.stars.modules.demologin.LoginModuleHelper;
 import com.stars.modules.demologin.LoginPacketSet;
@@ -20,15 +21,12 @@ import com.stars.modules.demologin.userdata.AccountPassWord;
 import com.stars.modules.demologin.userdata.AccountRole;
 import com.stars.modules.demologin.userdata.BlockAccount;
 import com.stars.modules.demologin.userdata.LoginInfo;
-import com.stars.modules.serverLog.ServerLogModule;
-import com.stars.modules.serverLog.ThemeType;
 import com.stars.multiserver.MultiServerHelper;
 import com.stars.network.server.buffer.NewByteBuffer;
 import com.stars.network.server.packet.Packet;
 import com.stars.network.server.packet.PacketManager;
 import com.stars.startup.MainStartup;
 import com.stars.util.*;
-import com.stars.core.actor.Actor;
 
 import java.sql.SQLException;
 import java.text.MessageFormat;
@@ -177,7 +175,6 @@ public class ServerLogin extends Packet {
                 if (tempAccountRow != null && tempAccountRow != accountRow) {
                     accountRow = tempAccountRow;
                 }
-                ServerLogModule.static_core_gamesvr(loginInfo, DateUtil.formatDateTime(accountRow.getFirstLoginTimestamp()), 0, ThemeType.REGEDIT.getOperateName(), ThemeType.REGEDIT.getOperateId(), "");
             } else {
                 com.stars.util.LogUtil.info("登陆|账号验证|account:{}|已有账号", apw.getAccount());
             }

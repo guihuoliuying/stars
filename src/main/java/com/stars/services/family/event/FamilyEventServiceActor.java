@@ -1,21 +1,18 @@
 package com.stars.services.family.event;
 
 import com.google.common.cache.*;
-import com.stars.core.persist.DbRowDao;
-import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
-import com.stars.core.player.PlayerUtil;
+import com.stars.core.actor.invocation.ServiceActor;
 import com.stars.core.db.DBUtil;
 import com.stars.core.db.DbRow;
+import com.stars.core.persist.DbRowDao;
+import com.stars.core.player.PlayerUtil;
 import com.stars.modules.family.packet.ClientFamilyEvent;
 import com.stars.modules.family.packet.ServerFamilyEvent;
-import com.stars.modules.serverLog.event.SpecialAccountEvent;
-import com.stars.services.ServiceHelper;
 import com.stars.services.ServiceSystem;
 import com.stars.services.ServiceUtil;
 import com.stars.services.family.FamilyAuth;
 import com.stars.services.family.event.userdata.FamilyEventPo;
 import com.stars.util.LogUtil;
-import com.stars.core.actor.invocation.ServiceActor;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -137,9 +134,6 @@ public class FamilyEventServiceActor extends ServiceActor implements FamilyEvent
             PlayerUtil.send(auth.getRoleId(), new ClientFamilyEvent(subtype, data.getDonateList()));
         } else {
             PlayerUtil.send(auth.getRoleId(), new ClientFamilyEvent(subtype, data.getEventList()));
-        }
-        if (SpecialAccountManager.isSpecialAccount(auth.getRoleId())) {
-            ServiceHelper.roleService().notice(auth.getRoleId(), new SpecialAccountEvent(auth.getRoleId(), "查看家族事件", true));
         }
     }
 

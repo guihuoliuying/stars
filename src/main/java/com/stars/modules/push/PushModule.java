@@ -1,12 +1,11 @@
 package com.stars.modules.push;
 
+import com.stars.core.db.DBUtil;
 import com.stars.core.event.Event;
 import com.stars.core.event.EventDispatcher;
 import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
-import com.stars.core.db.DBUtil;
-import com.stars.modules.MConst;
 import com.stars.modules.demologin.event.LoginSuccessEvent;
 import com.stars.modules.push.event.PushActivedEvent;
 import com.stars.modules.push.event.PushInactivedEvent;
@@ -15,7 +14,6 @@ import com.stars.modules.push.event.PushLoginInitEvent;
 import com.stars.modules.push.prodata.PushVo;
 import com.stars.modules.push.trigger.PushTrigger;
 import com.stars.modules.push.userdata.RolePushPo;
-import com.stars.modules.serverLog.ServerLogModule;
 import com.stars.util.LogUtil;
 
 import java.util.*;
@@ -456,9 +454,6 @@ public class PushModule extends AbstractModule {
 
     public void finishPush(int pushId, int times) {
         try {
-            ServerLogModule serverLogModule = module(MConst.ServerLog);
-//            serverLogModule.logPushFinish(pushId, times);
-            serverLogModule.logPrecisionPushFinish(pushId);
         } catch (Throwable cause) {
             LogUtil.info("推送|异常:finishPush", cause);
         }

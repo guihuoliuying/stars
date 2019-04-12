@@ -19,8 +19,6 @@ import com.stars.modules.scene.packet.clientEnterFight.ClientEnterDungeon;
 import com.stars.modules.scene.prodata.MonsterSpawnVo;
 import com.stars.modules.scene.prodata.StageinfoVo;
 import com.stars.modules.serverLog.EventType;
-import com.stars.modules.serverLog.ServerLogModule;
-import com.stars.modules.serverLog.ThemeType;
 import com.stars.modules.tool.ToolModule;
 import com.stars.util.LogUtil;
 import com.stars.util.MapUtil;
@@ -121,8 +119,6 @@ public class DungeonScene extends FightScene {
         } else {
             goType = "2";
         }
-        ServerLogModule log = (ServerLogModule) moduleMap.get(MConst.ServerLog);
-        log.Log_core_case(ThemeType.DUNGEON_START.getOperateId(), ThemeType.DUNGEON_START.getOperateName(), "enter", juci + "", tmpDungeonId + "", "", goType, dungeonVo.getBossIcon() + 1);
     }
 
     @Override
@@ -337,8 +333,6 @@ public class DungeonScene extends FightScene {
             info.append((this.endTimestamp - this.startTimestamp) / 1000).append("#sp_case:");
             info.append(dungeonModule.getRoleMaxDungeonId((byte) 0)).append("#nm_case:").append(dungeonModule.getRoleMaxDungeonId((byte) 1));
             //日志
-            ServerLogModule log = (ServerLogModule) moduleMap.get(MConst.ServerLog);
-            log.Log_core_case(ThemeType.DUNGEON_WIN.getOperateId(), ThemeType.DUNGEON_WIN.getOperateName(), "1", juci + "", dungeonId + "", info.toString(), goType, dungeonVo.getBossIcon() + 1);
         } else if (finish == SceneManager.STAGE_FAIL) {//挑战失败
             if (dungeonModule.isFirstPass(dungeonId)) {
                 goType = "1";
@@ -348,8 +342,6 @@ public class DungeonScene extends FightScene {
             info.append("fight_time:");
             info.append((this.endTimestamp - this.startTimestamp) / 1000).append("#sp_case:");
             info.append(dungeonModule.getRoleMaxDungeonId((byte) 0)).append("#nm_case:").append(dungeonModule.getRoleMaxDungeonId((byte) 1));
-            ServerLogModule log = (ServerLogModule) moduleMap.get(MConst.ServerLog);
-            log.Log_core_case(ThemeType.DUNGEON_FAIL.getOperateId(), ThemeType.DUNGEON_FAIL.getOperateName(), "1", juci + "", dungeonId + "", info.toString(), goType, dungeonVo.getBossIcon() + 1);
         }
         ToolModule toolModule = (ToolModule) moduleMap.get(MConst.Tool);
         Map<Integer, Integer> map = toolModule.addAndSend(rewardMap, EventType.DUNGEONSCENE.getCode());

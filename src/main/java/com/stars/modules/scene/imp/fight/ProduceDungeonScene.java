@@ -3,7 +3,6 @@ package com.stars.modules.scene.imp.fight;
 import com.stars.core.module.Module;
 import com.stars.core.player.PlayerPacket;
 import com.stars.modules.MConst;
-import com.stars.modules.daily.DailyModule;
 import com.stars.modules.daily.event.DailyFuntionEvent;
 import com.stars.modules.drop.DropModule;
 import com.stars.modules.dungeon.DungeonManager;
@@ -21,13 +20,10 @@ import com.stars.modules.scene.packet.clientEnterFight.ClientEnterProduceDungeon
 import com.stars.modules.scene.prodata.MonsterSpawnVo;
 import com.stars.modules.scene.prodata.StageinfoVo;
 import com.stars.modules.serverLog.EventType;
-import com.stars.modules.serverLog.ServerLogModule;
-import com.stars.modules.serverLog.ThemeType;
 import com.stars.modules.tool.ToolManager;
 import com.stars.modules.tool.ToolModule;
 import com.stars.util.LogUtil;
 import com.stars.util.MapUtil;
-import com.stars.util.ServerLogConst;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,13 +73,7 @@ public class ProduceDungeonScene extends DungeonScene {
         // 抛出每日活动事件
         sceneModule.dispatchEvent(new DailyFuntionEvent((short) produceDungeonVo.getDailyId(produceDungeonType), 1));
         // 开始日志
-        ServerLogModule logModule = (ServerLogModule) moduleMap.get(MConst.ServerLog);
-        ThemeType themeType = getLogThemeType();
-        if (themeType != null) {
-            DailyModule dailyModule = (DailyModule) moduleMap.get(MConst.Daily);
-            logModule.Log_core_activity(ServerLogConst.ACTIVITY_START, themeType.getThemeId(), logModule.makeJuci(),
-                    themeType.getThemeId(), stageId, 0);
-        }
+
     }
 
     @Override
@@ -93,13 +83,7 @@ public class ProduceDungeonScene extends DungeonScene {
             ToolModule toolModule = (ToolModule) moduleMap.get(MConst.Tool);
             toolModule.addAndSend(totalDropMap, EventType.DUNGEONSCENE.getCode());
             // 退出日志
-            ServerLogModule logModule = (ServerLogModule) moduleMap.get(MConst.ServerLog);
-            ThemeType themeType = getLogThemeType();
-            if (themeType != null) {
-                logModule.Log_core_activity(ServerLogConst.ACTIVITY_FAIL, themeType.getThemeId(), logModule.makeJuci(),
-                        themeType.getThemeId(), stageId,
-                        (int) Math.floor((System.currentTimeMillis() - startTimestamp) / 1000.0));
-            }
+
         }
     }
 
@@ -122,14 +106,7 @@ public class ProduceDungeonScene extends DungeonScene {
         SceneModule sceneModule = (SceneModule) moduleMap.get(MConst.Scene);
         sceneModule.send(clientStageFinish);
         // 结束日志
-        ServerLogModule logModule = (ServerLogModule) moduleMap.get(MConst.ServerLog);
-        ThemeType themeType = getLogThemeType();
-        if (themeType != null) {
-            byte logType = finish == SceneManager.STAGE_VICTORY ? ServerLogConst.ACTIVITY_WIN : ServerLogConst.ACTIVITY_FAIL;
-            logModule.Log_core_activity(logType, themeType.getThemeId(), logModule.makeJuci(),
-                    themeType.getThemeId(), stageId,
-                    (int) Math.floor((endTimestamp - startTimestamp) / 1000.0));
-        }
+
     }
 
     @Override
@@ -258,21 +235,6 @@ public class ProduceDungeonScene extends DungeonScene {
         return achievementId;
     }
 
-    private ThemeType getLogThemeType() {
-        ThemeType themeType = null;
-        switch (produceDungeonType) {
-            case SceneManager.PRODUCE_ROLEEXP:
-                themeType = ThemeType.ACTIVITY_18;
-                break;
-            case SceneManager.PRODUCE_STRENGTHEN_STONE:
-                themeType = ThemeType.ACTIVITY_22;
-                break;
-            case SceneManager.PRODUCE_RIDEFOOD:
-                themeType = ThemeType.ACTIVITY_25;
-                break;
-        }
-        return themeType;
-    }
 
     private void dropItemSwitch(RoleModule roleModule) {
         ProduceDungeonVo produceDungeonVo = DungeonManager.getProduceDungeonVo(produceDungeonType, produceDungeonId);

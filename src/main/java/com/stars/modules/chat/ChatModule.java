@@ -2,7 +2,6 @@ package com.stars.modules.chat;
 
 import com.stars.core.db.DBUtil;
 import com.stars.core.event.EventDispatcher;
-import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
 import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
@@ -17,8 +16,6 @@ import com.stars.modules.demologin.packet.ClientText;
 import com.stars.modules.family.FamilyModule;
 import com.stars.modules.redpoint.RedPointConst;
 import com.stars.modules.role.RoleModule;
-import com.stars.modules.serverLog.ServerLogModule;
-import com.stars.modules.serverLog.event.SpecialAccountEvent;
 import com.stars.network.server.packet.Packet;
 import com.stars.services.ServiceHelper;
 import com.stars.services.chat.ChatManager;
@@ -234,8 +231,6 @@ public class ChatModule extends AbstractModule {
         cm.setSenderLevel((short) rm.getLevel());
         cm.setAccount(loginModule.getAccount());
 
-        ServerLogModule log = module(MConst.ServerLog);
-        log.log_chat(cm);    // 聊天日志
         //查看玩家是否处于静默禁言中，如果在，则只发送给自己
         roleChatSilentFlag = context().recordMap().getByte(CHAT_BAN_SLIENT_FLAG, (byte) 0);
         String lastWord = new String(cm.getContent());
@@ -255,9 +250,6 @@ public class ChatModule extends AbstractModule {
         }
 
         ServiceHelper.chatService().filterChatMessage(cm);
-        if (SpecialAccountManager.isSpecialAccount(cm.getSenderId())) {
-            eventDispatcher().fire(new SpecialAccountEvent(cm.getSenderId(), "在" + cm.getChannel() + "频道发消息", true));
-        }
     }
 
     /**

@@ -30,14 +30,20 @@ public class PushMain {
 //        System.out.println("Z:" + String.format("0x%04X", (int) 'Z')); // 0x39
 
         PushCondLexer lexer = new PushCondLexer(
-                "1 == 1");
+                "1 == 1 and 1 != 0 or 2 == 1 and (1 == 2)");
+        // level >= 1
+        // level between (1, 20)
+        // level in (1, 2, 3)
+        // [bag, lv > 10, quality > 10]
+        // {add, 1, 2}
+
 //        PushCondToken token = null;
 //        while ((token = lexer.scan()) != null) {
 //            System.out.println(token);
 //        }
         PushCondParser parser = new PushCondParser(lexer);
         PushCondNode ret = parser.parse();
-//        System.out.println("ret: " + ret.eval(null));
+        System.out.println("ret: " + ret.eval(null));
     }
 
 }

@@ -17,8 +17,6 @@ import com.stars.modules.redpoint.RedPointConst;
 import com.stars.modules.role.RoleModule;
 import com.stars.modules.role.userdata.Role;
 import com.stars.modules.serverLog.EventType;
-import com.stars.modules.serverLog.ServerLogModule;
-import com.stars.modules.serverLog.event.SpecialAccountEvent;
 import com.stars.modules.tool.ToolManager;
 import com.stars.modules.tool.ToolModule;
 import com.stars.modules.tool.productdata.ItemVo;
@@ -255,28 +253,11 @@ public class FriendModule extends AbstractModule {
 
     public void fireSpecialAccountLogEvent(String content) {
         if (SpecialAccountManager.isSpecialAccount(id())) {
-            eventDispatcher().fire(new SpecialAccountEvent(id(), content, true));
         }
     }
 
     public void friendLog(FriendLogEvent event) {
-        ServerLogModule logger = module(MConst.ServerLog);
-        byte opType = event.getOpType();
-        if (opType == FriendLogEvent.APPLY) {
-            logger.log_friend_apply(event.getFriendId());
-        } else if (opType == FriendLogEvent.ACCEPT) {
-            logger.log_friend_accept(event.getFriendId(), event.getState());
-        } else if (opType == FriendLogEvent.PHYSICAL) {
-            logger.log_friend_physical(event.getNum(), event.getFriendId());
-        } else if (opType == FriendLogEvent.FLOWER) {
-            logger.log_friend_flower(event.getFriendId(), event.getFriendShip(), event.getState(), event.getNum());
-        } else if (opType == FriendLogEvent.BLACKLIST) {
-            logger.log_friend_blacklist(event.getFriendId(), event.getNum());
-        } else if (opType == FriendLogEvent.FIGHT) {
-            logger.log_friend_fight(event.getFriendId(), event.getState());
-        } else if (opType == FriendLogEvent.FAMILY_INVITE) {
-            logger.log_friend_family(event.getFriendId(), event.getState());
-        }
+
     }
 
     public Set<Long> getFriendList() {

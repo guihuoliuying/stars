@@ -29,15 +29,12 @@ import com.stars.modules.scene.Scene;
 import com.stars.modules.scene.SceneModule;
 import com.stars.modules.scene.imp.fight.DungeonScene;
 import com.stars.modules.serverLog.EventType;
-import com.stars.modules.serverLog.ServerLogModule;
-import com.stars.modules.serverLog.ThemeType;
 import com.stars.modules.tool.ToolManager;
 import com.stars.modules.tool.ToolModule;
 import com.stars.modules.tool.packet.ClientAward;
 import com.stars.services.summary.SummaryComponent;
 import com.stars.util.I18n;
 import com.stars.util.MapUtil;
-import com.stars.util.ServerLogConst;
 import com.stars.util.StringUtil;
 
 import java.util.*;
@@ -153,9 +150,6 @@ public class DungeonModule extends AbstractModule {
         if (scene != null && scene.getClass() == DungeonScene.class) {
             // log it
             DungeonScene dungeonScene = (DungeonScene) scene;
-            ServerLogModule logModule = module(MConst.ServerLog);
-            com.stars.util.LogUtil.info("dungeon|reconnect|roleId:{}|dungeonId:{}", id(), dungeonScene.getDungeonId());
-            logModule.logDungeonReconnect(dungeonScene.getDungeonId());
         }
     }
 
@@ -621,9 +615,6 @@ public class DungeonModule extends AbstractModule {
         }
         // 开始日志
         long startTimestamp = System.currentTimeMillis();
-        ServerLogModule logModule = module(MConst.ServerLog);
-        logModule.Log_core_activity(ServerLogConst.ACTIVITY_START, ThemeType.ACTIVITY_2.getThemeId(),
-                logModule.makeJuci(), ThemeType.ACTIVITY_2.getThemeId(), dungeonVo.getStageId(), 0);
         ToolModule toolModule = (ToolModule) module(MConst.Tool);
         List<Map<Integer, Integer>> rewardList = new LinkedList<>();
         Map<Integer, Integer> rewardPer;
@@ -673,15 +664,11 @@ public class DungeonModule extends AbstractModule {
         eventDispatcher().fire(new DailyFuntionEvent(DailyManager.DAILYID_SWEEPDUNGEON, times));
         // 结束日志
         long endTimestamp = System.currentTimeMillis();
-        logModule.Log_core_activity(ServerLogConst.ACTIVITY_WIN, ThemeType.ACTIVITY_2.getThemeId(),
-                String.valueOf(times), ThemeType.ACTIVITY_2.getThemeId(), dungeonVo.getStageId(),
-                (endTimestamp - startTimestamp) / 1000);
         int juci = getDungeonCount(dungeonId);
         StringBuffer info = new StringBuffer();
         info.append("fight_time:");
         info.append("0").append("#sp_case:");
         info.append(getRoleMaxDungeonId((byte) 0)).append("#nm_case:").append(getRoleMaxDungeonId((byte) 1));
-        logModule.Log_core_case(ThemeType.DUNGEON_WIN.getOperateId(), ThemeType.DUNGEON_WIN.getOperateName(), "1", juci + "", dungeonId + "", info.toString(), "3", dungeonVo.getBossIcon() + 1);
 
     }
 

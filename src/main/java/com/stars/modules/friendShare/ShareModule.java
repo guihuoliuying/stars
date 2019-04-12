@@ -12,11 +12,8 @@ import com.stars.modules.friendShare.packet.ClientShare;
 import com.stars.modules.friendShare.userdata.RoleShareRecordPo;
 import com.stars.modules.redpoint.RedPointConst;
 import com.stars.modules.serverLog.EventType;
-import com.stars.modules.serverLog.ServerLogModule;
-import com.stars.modules.serverLog.ThemeType;
 import com.stars.modules.tool.ToolModule;
 import com.stars.modules.tool.packet.ClientAward;
-import com.stars.util.StringUtil;
 
 import java.sql.SQLException;
 import java.util.Calendar;
@@ -92,8 +89,6 @@ public class ShareModule extends AbstractModule {
         // 红点
 //        signCalRedPoint(MConst.FriendShare, RedPointConst.FRIEND_SHARE);
         // 日志
-        ServerLogModule module = module(MConst.ServerLog);
-        module.dynamic_4_Log_str(ThemeType.DYNAMIC_WX_SHARED.getThemeId(), "share", "", "");
     }
 
     /**
@@ -112,8 +107,6 @@ public class ShareModule extends AbstractModule {
             clientAward.setType((byte) 0);
             toolModule.sendPacket(clientAward);
             // 日志
-            ServerLogModule module = module(MConst.ServerLog);
-            module.dynamic_4_Log_str(ThemeType.DYNAMIC_WX_SHARED.getThemeId(), "award", "reward@number:" + StringUtil.makeString(toolMap, '@', '&'), "");
         }
         // 通知客户端
         ClientShare clientShare = new ClientShare();

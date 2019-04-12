@@ -1,17 +1,16 @@
 package com.stars.services.family.role;
 
 import com.google.common.cache.*;
-import com.stars.core.persist.DbRowDao;
-import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
-import com.stars.core.player.PlayerUtil;
+import com.stars.core.actor.invocation.ServiceActor;
 import com.stars.core.db.DBUtil;
 import com.stars.core.db.DbRow;
+import com.stars.core.persist.DbRowDao;
+import com.stars.core.player.PlayerUtil;
 import com.stars.modules.family.FamilyManager;
 import com.stars.modules.family.event.FamilyAuthUpdatedEvent;
 import com.stars.modules.family.event.FamilyContributionEvent;
 import com.stars.modules.family.packet.ClientFamilyContribution;
 import com.stars.modules.family.packet.ClientFamilyRecommendation;
-import com.stars.modules.serverLog.event.SpecialAccountEvent;
 import com.stars.services.ServiceHelper;
 import com.stars.services.ServiceSystem;
 import com.stars.services.ServiceUtil;
@@ -24,7 +23,6 @@ import com.stars.services.family.role.userdata.FamilyRoleApplicationPo;
 import com.stars.services.family.role.userdata.FamilyRolePo;
 import com.stars.util.I18n;
 import com.stars.util.LogUtil;
-import com.stars.core.actor.invocation.ServiceActor;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -267,9 +265,7 @@ public class FamilyRoleServiceActor extends ServiceActor implements FamilyRoleSe
                     FamilyMainServiceActor.recommList, data.getApplicationPoMap());
             PlayerUtil.send(roleId, packet);
         }
-        if (SpecialAccountManager.isSpecialAccount(roleId)) {
-            ServiceHelper.roleService().notice(roleId, new SpecialAccountEvent(roleId, "家族推荐数据", true));
-        }
+
     }
 
     public void searchFamily(long roleId, String pattern) {

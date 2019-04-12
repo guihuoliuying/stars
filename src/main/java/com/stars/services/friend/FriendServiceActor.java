@@ -22,7 +22,6 @@ import com.stars.modules.friend.packet.ClientFriend;
 import com.stars.modules.friend.packet.ClientRecommendation;
 import com.stars.modules.role.event.FriendGetVigorEvent;
 import com.stars.modules.role.summary.RoleSummaryComponent;
-import com.stars.modules.serverLog.event.SpecialAccountEvent;
 import com.stars.modules.tool.ToolManager;
 import com.stars.modules.tool.func.impl.FriendFlowerFunc;
 import com.stars.modules.tool.productdata.ItemVo;
@@ -1321,9 +1320,7 @@ public class FriendServiceActor extends ServiceActor implements FriendService {
     }
 
     private void fireSpecialAccountEvent(long selfId, long roleId, String content, boolean self) {
-        if (SpecialAccountManager.isSpecialAccount(roleId)) {
-            ServiceHelper.roleService().notice(selfId, new SpecialAccountEvent(roleId, content, self));
-        }
+
     }
 
     @Override
