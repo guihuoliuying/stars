@@ -30,4 +30,57 @@ public interface ExprTag {
     int TAG_BRACE_RIGHT = 0x007D; // }
     int TAG_COMMA = 0x002C; // ,
 
+    static String toString(int tag) {
+        switch (tag) {
+            case TAG_IDENTIFIER:
+                return "标识符";
+            case TAG_DIGITS:
+                return "数值";
+            case TAG_STRING:
+                return "字符串";
+            case TAG_RELATION_OP:
+                return "关系运算符";
+            case TAG_OR:
+                return "or";
+            case TAG_AND:
+                return "and";
+            case TAG_NOT:
+                return "not";
+            case TAG_IN:
+                return "in";
+            case TAG_BETWEEN:
+                return "between";
+            case TAG_OP_POW:
+                return "^";
+            case TAG_OP_MUL:
+                return "*";
+            case TAG_OP_DIV:
+                return "/";
+            case TAG_OP_MOD:
+                return "%";
+            case TAG_OP_ADD:
+                return "+";
+            case TAG_OP_SUB:
+                return "-";
+            case TAG_EOF:
+                return "eof";
+
+            case TAG_PARENTHESIS_LEFT:
+                return "(";
+            case TAG_PARENTHESIS_RIGHT:
+                return ")";
+            case TAG_BRACKET_LEFT:
+                return "[";
+            case TAG_BRACKET_RIGHT:
+                return "]";
+            case TAG_BRACE_LEFT:
+                return "{";
+            case TAG_BRACE_RIGHT:
+                return "}";
+            case TAG_COMMA:
+                return ",";
+        }
+        return "";
+    }
+
 }

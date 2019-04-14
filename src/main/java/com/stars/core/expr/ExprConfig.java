@@ -1,9 +1,8 @@
 package com.stars.core.expr;
 
-import com.stars.core.expr.node.dataset.PushCondDataSet;
+import com.stars.core.expr.node.dataset.ExprDataSet;
 import com.stars.core.expr.node.func.ExprFunc;
 import com.stars.core.expr.node.value.ExprValue;
-import com.stars.core.module.Module;
 import com.stars.util.LogUtil;
 
 import java.util.HashMap;
@@ -17,7 +16,7 @@ import static com.stars.core.expr.ExprTag.*;
 public class ExprConfig {
 
     private Map<String, ExprValue> valueMap = new HashMap<>();
-    private Map<String, Class<? extends PushCondDataSet>> dataSetClassMap = new HashMap<>();
+    private Map<String, Class<? extends ExprDataSet>> dataSetClassMap = new HashMap<>();
     private Map<String, Set<String>> dataSetFieldMap = new HashMap<>();
     private Map<String, ExprFunc> funcMap = new HashMap<>();
 
@@ -32,7 +31,7 @@ public class ExprConfig {
         }
     }
 
-    private void registerDataSet(String name, Class<? extends PushCondDataSet> clazz) {
+    protected void registerDataSet(String name, Class<? extends ExprDataSet> clazz) {
         checkNotNull(name);
         checkNotNull(clazz);
         checkArgument(!dataSetClassMap.containsKey(name), "data set name duplicate: " + name);
@@ -59,13 +58,13 @@ public class ExprConfig {
         return valueMap.get(name);
     }
 
-    public PushCondDataSet newDataSet(String name, Map<String, Module> moduleMap) {
-        Class<? extends PushCondDataSet> clazz = dataSetClassMap.get(name);
+    public ExprDataSet newDataSet(String name, Object obj) {
+        Class<? extends ExprDataSet> clazz = dataSetClassMap.get(name);
         if (clazz == null) {
             LogUtil.error("条件表达式|不存在集合:" + name);
         }
         try {
-            return clazz.getConstructor(Map.class).newInstance(moduleMap);
+            return clazz.getConstructor(Map.class).newInstance(obj);
         } catch (Throwable cause) {
             throw new RuntimeException(cause);
         }

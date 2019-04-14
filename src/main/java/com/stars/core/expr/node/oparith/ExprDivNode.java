@@ -2,9 +2,6 @@ package com.stars.core.expr.node.oparith;
 
 import com.stars.core.expr.ExprConfig;
 import com.stars.core.expr.node.ExprNode;
-import com.stars.core.module.Module;
-
-import java.util.Map;
 
 public class ExprDivNode extends ExprNode {
 
@@ -18,7 +15,7 @@ public class ExprDivNode extends ExprNode {
     }
 
     @Override
-    public Object eval(Map<String, Module> moduleMap) {
-        return (long) l.eval(moduleMap) / (long) r.eval(moduleMap);
+    public Object eval(Object obj) {
+        return (long) l.eval(obj) / (long) r.eval(obj);
     }
 }

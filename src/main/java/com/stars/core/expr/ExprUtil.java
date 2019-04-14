@@ -46,6 +46,9 @@ public class ExprUtil {
         System.out.println(new ExprParser(new ExprLexer("((1+1)*(1+2))^3")).parse().eval(null));
         System.out.println(new ExprParser(new ExprLexer("(1+1)*(1+2)^3")).parse().eval(null));
 
+        new ExprParser(new ExprLexer("level > 1 and level < 10")).parse();
+        new ExprParser(new ExprLexer("(level > 1]")).parse();
+
 
     }
 

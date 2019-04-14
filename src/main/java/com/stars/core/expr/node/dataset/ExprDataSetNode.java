@@ -1,11 +1,9 @@
 package com.stars.core.expr.node.dataset;
 
-import com.stars.core.expr.PushCondGlobal;
+import com.stars.core.expr.ExprConfig;
 import com.stars.core.expr.node.ExprNode;
-import com.stars.core.module.Module;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -14,13 +12,14 @@ import java.util.Set;
 public class ExprDataSetNode extends ExprNode {
 
     private String name;
-    private List<PushCondDataSetWhereNode> whereList;
+    private List<ExprDataSetWhereNode> whereList;
 
-    public ExprDataSetNode(String name, List<PushCondDataSetWhereNode> whereList) {
+    public ExprDataSetNode(ExprConfig config, String name, List<ExprDataSetWhereNode> whereList) {
+        super(config);
         this.name = name;
         this.whereList = whereList;
-        Set<String> fieldSet = PushCondGlobal.getFieldSet(name);
-        for (PushCondDataSetWhereNode whereNode : whereList) {
+        Set<String> fieldSet = config.getFieldSet(name);
+        for (ExprDataSetWhereNode whereNode : whereList) {
             if (!fieldSet.contains(whereNode.getFieldName())) {
                 throw new IllegalStateException("条件解析异常|不存在维度:" + whereNode.getFieldName() + "|集合:" + name);
             }
@@ -28,15 +27,15 @@ public class ExprDataSetNode extends ExprNode {
     }
 
     @Override
-    public Object eval(Map<String, Module> moduleMap) {
-        PushCondDataSet dataSet = PushCondGlobal.newDataSet(name, moduleMap);
+    public Object eval(Object obj) {
+        ExprDataSet dataSet = config.newDataSet(name, obj);
         long c = 0L;
         while (dataSet.hasNext()) {
-            PushCondData data = dataSet.next();
+            ExprData data = dataSet.next();
             if (!data.isInvalid()) { // 是否有效
                 boolean flag = true;
-                for (PushCondDataSetWhereNode whereNode : whereList) {
-                    if (!whereNode.eval(data, moduleMap)) {
+                for (ExprDataSetWhereNode whereNode : whereList) {
+                    if (!whereNode.eval(data, obj)) {
                         flag = false;
                         break;
                     }

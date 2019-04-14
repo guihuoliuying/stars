@@ -4,10 +4,10 @@ import com.stars.core.expr.node.ExprNode;
 import com.stars.core.expr.node.basic.ExprDigitsNode;
 import com.stars.core.expr.node.basic.ExprStringNode;
 import com.stars.core.expr.node.dataset.ExprDataSetNode;
-import com.stars.core.expr.node.dataset.PushCondDataSetWhereNode;
-import com.stars.core.expr.node.dataset.where.PcdswnBetween;
-import com.stars.core.expr.node.dataset.where.PcdswnIn;
-import com.stars.core.expr.node.dataset.where.PcdswnRelation;
+import com.stars.core.expr.node.dataset.ExprDataSetWhereNode;
+import com.stars.core.expr.node.dataset.where.ExprDataSetWhereBetweenNode;
+import com.stars.core.expr.node.dataset.where.ExprDataSetWhereInNode;
+import com.stars.core.expr.node.dataset.where.ExprDataSetWhereRelationNode;
 import com.stars.core.expr.node.func.ExprFuncNode;
 import com.stars.core.expr.node.oparith.*;
 import com.stars.core.expr.node.oplogic.ExprAndNode;
@@ -32,13 +32,18 @@ public class ExprParser {
 
     private ExprLexer lexer;
     private ExprToken lookahead;
-
     private Queue<ExprToken> parsedTokenQueue;
+    private ExprConfig config;
 
     public ExprParser(ExprLexer lexer) {
         this.lexer = lexer;
         this.parsedTokenQueue = new LinkedList<>();
         this.lookahead = lexer.scan();
+    }
+
+    public ExprParser(ExprLexer lexer, ExprConfig config) {
+        this(lexer);
+        this.config = config;
     }
 
     private ExprToken match(int tag) {
@@ -52,22 +57,8 @@ public class ExprParser {
             return ret;
         } else {
             throw new IllegalStateException("条件解析异常" +
-                    "|expected:" + PushCondGlobal.toString(tag) + "|actual:" + lookahead +
+                    "|expected:" + ExprTag.toString(tag) + "|actual:" + lookahead +
                     "|已解析:" + parsedTokenQueue);
-        }
-    }
-
-    private boolean isArithmeticOperator(int tag) {
-        switch (tag) {
-            case TAG_OP_POW:
-            case TAG_OP_MUL:
-            case TAG_OP_DIV:
-            case TAG_OP_MOD:
-            case TAG_OP_ADD:
-            case TAG_OP_SUB:
-                return true;
-            default:
-                return false;
         }
     }
 
@@ -77,6 +68,111 @@ public class ExprParser {
             throw new IllegalStateException("push condition parser error");
         }
         return ret;
+    }
+
+
+
+    // or
+    private ExprNode parseOrExpr() {
+        ExprNode left = parseAndExpr();
+        ExprNode ret = parseOrExpr0(left);
+        if (ret != null) {
+            return ret;
+        } else {
+            return left;
+        }
+    }
+
+    private ExprNode parseOrExpr0(ExprNode left) {
+        ExprNode ret = null;
+        if (lookahead.tag() == TAG_OR) {
+            match(TAG_OR);
+            ret = new ExprOrNode(config, left, parseAndExpr());
+            ret = parseOrExpr0(ret);
+        }
+        if (ret != null) {
+            return ret;
+        } else {
+            return left;
+        }
+    }
+
+    private ExprNode parseAndExpr() {
+//        ExprNode ret = null;
+        ExprNode left = parseNotExpr();
+        ExprNode ret = parseAndExpr0(left);
+        if (ret != null) {
+            return ret;
+        } else {
+            return left;
+        }
+    }
+
+    private ExprNode parseAndExpr0(ExprNode left) {
+        ExprNode ret = null;
+        if (lookahead.tag() == TAG_AND) {
+            match(TAG_AND);
+            ret = new ExprAndNode(config, left, parseNotExpr());
+            ret = parseAndExpr0(ret);
+        }
+        if (ret != null) {
+            return ret;
+        } else {
+            return left;
+        }
+    }
+
+    private ExprNode parseNotExpr() {
+        if (lookahead.tag() == TAG_NOT) {
+            match(TAG_NOT);
+            return new ExprNotNode(config, parseNotExpr());
+        } else {
+            return parseRelationExpr();
+        }
+    }
+
+    private ExprNode parseRelationExpr() {
+//        ExprNode left = parseNumberExpr();
+        ExprNode left = parseAddSubExpr();
+        return parseRelationExpr0(left);
+    }
+
+    private ExprNode parseRelationExpr0(ExprNode left) {
+        ExprNode ret = null;
+        switch (lookahead.tag()) {
+            case TAG_RELATION_OP:
+                String op = match(TAG_RELATION_OP).lexeme();
+//                ExprNode right = parseNumberExpr();
+                ExprNode right = parseAddSubExpr();
+                ret = new PcnRelation(config, left, right, op);
+                break;
+            case TAG_BETWEEN:
+                match(TAG_BETWEEN);
+                match('(');
+//                ExprNode rln = parseNumberExpr();
+                ExprNode rln = parseAddSubExpr();
+                match(',');
+//                ExprNode rrn = parseNumberExpr();
+                ExprNode rrn = parseAddSubExpr();
+                match(')');
+                ret = new ExprBetweenNode(config, left, rln, rrn);
+                break;
+            case TAG_IN:
+                List<ExprNode> el = new ArrayList<>();
+                match(TAG_IN);
+                match('(');
+//                el.add(parseNumberExpr());
+                el.add(parseAddSubExpr());
+                parseRelationEnumExpr(el);
+                match(')');
+                ret = new ExprInNode(config, left, el);
+                break;
+        }
+        if (ret != null) {
+            return ret;
+        } else {
+            return left;
+        }
     }
 
     // + -
@@ -167,127 +263,24 @@ public class ExprParser {
         }
     }
 
-    // or
-    private ExprNode parseOrExpr() {
-        ExprNode left = parseAndExpr();
-        ExprNode ret = parseOrExpr0(left);
-        if (ret != null) {
-            return ret;
-        } else {
-            return left;
-        }
-    }
-
-    private ExprNode parseOrExpr0(ExprNode left) {
-        ExprNode ret = null;
-        if (lookahead.tag() == TAG_OR) {
-            match(TAG_OR);
-            ret = new ExprOrNode(left, parseAndExpr());
-            ret = parseOrExpr0(ret);
-        }
-        if (ret != null) {
-            return ret;
-        } else {
-            return left;
-        }
-    }
-
-    private ExprNode parseAndExpr() {
-//        ExprNode ret = null;
-        ExprNode left = parseNotExpr();
-        ExprNode ret = parseAndExpr0(left);
-        if (ret != null) {
-            return ret;
-        } else {
-            return left;
-        }
-    }
-
-    private ExprNode parseAndExpr0(ExprNode left) {
-        ExprNode ret = null;
-        if (lookahead.tag() == TAG_AND) {
-            match(TAG_AND);
-            ret = new ExprAndNode(left, parseNotExpr());
-            ret = parseAndExpr0(ret);
-        }
-        if (ret != null) {
-            return ret;
-        } else {
-            return left;
-        }
-    }
-
-    private ExprNode parseNotExpr() {
-        if (lookahead.tag() == TAG_NOT) {
-            match(TAG_NOT);
-            return new ExprNotNode(parseNotExpr());
-        } else {
-            return parseRelationExpr();
-        }
-    }
-
-    private ExprNode parseRelationExpr() {
-//        ExprNode left = parseNumberExpr();
-        ExprNode left = parseAddSubExpr();
-        return parseRelationExpr0(left);
-    }
-
-    private ExprNode parseRelationExpr0(ExprNode left) {
-        ExprNode ret = null;
-        switch (lookahead.tag()) {
-            case TAG_RELATION_OP:
-                String op = match(TAG_RELATION_OP).lexeme();
-//                ExprNode right = parseNumberExpr();
-                ExprNode right = parseAddSubExpr();
-                ret = new PcnRelation(left, right, op);
-                break;
-            case TAG_BETWEEN:
-                match(TAG_BETWEEN);
-                match('(');
-//                ExprNode rln = parseNumberExpr();
-                ExprNode rln = parseAddSubExpr();
-                match(',');
-//                ExprNode rrn = parseNumberExpr();
-                ExprNode rrn = parseAddSubExpr();
-                match(')');
-                ret = new ExprBetweenNode(left, rln, rrn);
-                break;
-            case TAG_IN:
-                List<ExprNode> el = new ArrayList<>();
-                match(TAG_IN);
-                match('(');
-//                el.add(parseNumberExpr());
-                el.add(parseAddSubExpr());
-                parseRelationEnumExpr(el);
-                match(')');
-                ret = new ExprInNode(left, el);
-                break;
-        }
-        if (ret != null) {
-            return ret;
-        } else {
-            return left;
-        }
-    }
-
     private ExprNode parseNumberExpr() {
         ExprNode ret = null;
         switch (lookahead.tag()) {
             case TAG_DIGITS:
-                ret = new ExprDigitsNode(lookahead.lexeme());
+                ret = new ExprDigitsNode(config, lookahead.lexeme());
                 match(TAG_DIGITS);
                 break;
             case TAG_IDENTIFIER:
-                ret = new ExprValueNode(lookahead.lexeme());
+                ret = new ExprValueNode(config, lookahead.lexeme());
                 match(TAG_IDENTIFIER);
                 break;
             case TAG_BRACKET_LEFT:
                 match('[');
                 String dataSetName = match(TAG_IDENTIFIER).lexeme();
-                List<PushCondDataSetWhereNode> whereList = new ArrayList<>();
+                List<ExprDataSetWhereNode> whereList = new ArrayList<>();
                 parseDataSetCond(whereList); // fixme:
                 match(']');
-                ret = new ExprDataSetNode(dataSetName, whereList);
+                ret = new ExprDataSetNode(config, dataSetName, whereList);
                 break;
             case TAG_PARENTHESIS_LEFT:
                 match('(');
@@ -300,7 +293,7 @@ public class ExprParser {
                 List<ExprNode> paramList = new ArrayList<>();
                 parseFuncParams(paramList);
                 match('}');
-                ret = new ExprFuncNode(funcName, paramList);
+                ret = new ExprFuncNode(config, funcName, paramList);
                 break;
         }
         if (ret != null) {
@@ -310,7 +303,7 @@ public class ExprParser {
         }
     }
 
-    private void parseDataSetCond(List<PushCondDataSetWhereNode> whereList) {
+    private void parseDataSetCond(List<ExprDataSetWhereNode> whereList) {
         if (lookahead.tag() == ',') {
             match(',');
             String fieldName = match(TAG_IDENTIFIER).lexeme();
@@ -318,12 +311,12 @@ public class ExprParser {
         }
     }
 
-    private void parseDataSetCond0(List<PushCondDataSetWhereNode> whereList, String fieldName) {
+    private void parseDataSetCond0(List<ExprDataSetWhereNode> whereList, String fieldName) {
         switch (lookahead.tag()) {
             case TAG_RELATION_OP:
                 String op = match(TAG_RELATION_OP).lexeme();
-//                whereList.add(new PcdswnRelation(fieldName, parseNumberExpr(), op));
-                whereList.add(new PcdswnRelation(fieldName, parseAddSubExpr(), op));
+//                whereList.add(new ExprDataSetWhereRelationNode(fieldName, parseNumberExpr(), op));
+                whereList.add(new ExprDataSetWhereRelationNode(fieldName, parseAddSubExpr(), op));
                 parseDataSetCond(whereList);
                 break;
             case TAG_BETWEEN:
@@ -335,7 +328,7 @@ public class ExprParser {
 //                ExprNode rr = parseNumberExpr();
                 ExprNode rr = parseAddSubExpr();
                 match(')');
-                whereList.add(new PcdswnBetween(fieldName, rl, rr));
+                whereList.add(new ExprDataSetWhereBetweenNode(fieldName, rl, rr));
                 parseDataSetCond(whereList);
                 break;
             case TAG_IN:
@@ -346,7 +339,7 @@ public class ExprParser {
                 el.add(parseAddSubExpr());
                 parseRelationEnumExpr(el); // fixme:
                 match(')');
-                whereList.add(new PcdswnIn(fieldName, el));
+                whereList.add(new ExprDataSetWhereInNode(fieldName, el));
                 parseDataSetCond(whereList);
                 break;
         }
@@ -372,7 +365,7 @@ public class ExprParser {
     private ExprNode parseFuncParam() {
         if (lookahead.tag() == TAG_STRING) {
             String str = match(TAG_STRING).lexeme();
-            return new ExprStringNode(str);
+            return new ExprStringNode(config, str);
         } else {
 //            return parseNumberExpr();
             return parseAddSubExpr();
