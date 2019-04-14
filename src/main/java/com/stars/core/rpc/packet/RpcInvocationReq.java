@@ -1,4 +1,4 @@
-package com.stars.core.rpc2.packet;
+package com.stars.core.rpc.packet;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;

@@ -14,7 +14,7 @@ import com.stars.server.main.MainServer;
 import com.stars.server.main.message.Disconnected;
 import com.stars.util.ExecuteManager;
 import com.stars.util.log.CoreLogger;
-import com.stars.core.rpc2.RpcManager;
+import com.stars.core.rpc.RpcManager;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.DefaultChannelPromise;

@@ -2,7 +2,7 @@ package com.stars.services.fightServerManager;
 
 
 import com.stars.multiserver.fightManager.RMFSManagerService;
-import com.stars.core.rpc2.RpcClientConnectedCallback;
+import com.stars.core.rpc.RpcClientConnectedCallback;
 
 public class Conn2FightManagerServerCallBack implements RpcClientConnectedCallback {
 

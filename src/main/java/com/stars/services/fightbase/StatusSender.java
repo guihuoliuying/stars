@@ -8,7 +8,7 @@ import com.stars.network.server.session.GameSession;
 import com.stars.server.main.actor.ActorServer;
 import com.stars.util.LogUtil;
 import com.stars.core.actor.AbstractActor;
-import com.stars.core.rpc2.RpcManager;
+import com.stars.core.rpc.RpcManager;
 
 import java.util.Collection;
 import java.util.Properties;

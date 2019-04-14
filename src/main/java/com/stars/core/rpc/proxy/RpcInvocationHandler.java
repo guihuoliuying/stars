@@ -1,12 +1,12 @@
-package com.stars.core.rpc2.proxy;
+package com.stars.core.rpc.proxy;
 
 import com.stars.network.server.packet.PacketManager;
 import com.stars.network.server.session.GameSession;
 import com.stars.util.LogUtil;
 import com.stars.core.actor.invocation.InvocationFuture;
 import com.stars.core.actor.invocation.InvocationMessage;
-import com.stars.core.rpc2.RpcManager;
-import com.stars.core.rpc2.packet.RpcInvocationReq;
+import com.stars.core.rpc.RpcManager;
+import com.stars.core.rpc.packet.RpcInvocationReq;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -40,7 +40,7 @@ public class RpcInvocationHandler implements InvocationHandler {
             throw new IllegalStateException();
         }
         // 封装Rpc调用请求
-        com.stars.core.rpc2.packet.RpcInvocationReq req = new RpcInvocationReq();
+        com.stars.core.rpc.packet.RpcInvocationReq req = new RpcInvocationReq();
         Class clazz = getInterface(method);
         com.stars.core.actor.invocation.InvocationMessage im = new InvocationMessage(
                 clazz.getName(), method.getName(), method.getParameterTypes(), args, new InvocationFuture());

@@ -1,11 +1,11 @@
-package com.stars.core.rpc2;
+package com.stars.core.rpc;
 
 import com.stars.network.server.packet.Packet;
 import com.stars.network.server.session.GameSession;
 import com.stars.util.LogUtil;
 import com.stars.core.actor.invocation.InvocationMessage;
-import com.stars.core.rpc2.packet.RpcInvocationReq;
-import com.stars.core.rpc2.packet.RpcRegistrationReq;
+import com.stars.core.rpc.packet.RpcInvocationReq;
+import com.stars.core.rpc.packet.RpcRegistrationReq;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;

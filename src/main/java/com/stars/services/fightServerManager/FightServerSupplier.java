@@ -4,8 +4,8 @@ import com.stars.multiserver.fightManager.FightServer;
 import com.stars.services.chat.cache.MyLinkedList;
 import com.stars.services.chat.cache.MyLinkedListNode;
 import com.stars.util.LogUtil;
-import com.stars.core.rpc2.RpcClient;
-import com.stars.core.rpc2.RpcManager;
+import com.stars.core.rpc.RpcClient;
+import com.stars.core.rpc.RpcManager;
 
 import java.util.ArrayList;
 import java.util.Collection;

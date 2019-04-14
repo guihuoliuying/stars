@@ -1,4 +1,4 @@
-package com.stars.core.rpc2;
+package com.stars.core.rpc;
 
 /**
  * Created by zhaowenshuo on 2016/11/10.

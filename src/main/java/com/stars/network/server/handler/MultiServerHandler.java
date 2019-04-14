@@ -7,7 +7,7 @@ import com.stars.network.server.session.GameSession;
 import com.stars.server.Business;
 import com.stars.server.connector.Connector;
 import com.stars.util.log.CoreLogger;
-import com.stars.core.rpc2.RpcManager;
+import com.stars.core.rpc.RpcManager;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.DefaultChannelPromise;

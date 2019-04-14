@@ -5,10 +5,10 @@ import com.stars.bootstrap.ServerManager;
 import com.stars.util.LogUtil;
 import com.stars.core.actor.invocation.ServiceActor;
 import com.stars.core.actor.invocation.ServiceActorHelper;
-import com.stars.core.rpc2.RpcClient;
-import com.stars.core.rpc2.RpcClientConnectedCallback;
-import com.stars.core.rpc2.RpcManager;
-import com.stars.core.rpc2.proxy.RpcInvocationHandler;
+import com.stars.core.rpc.RpcClient;
+import com.stars.core.rpc.RpcClientConnectedCallback;
+import com.stars.core.rpc.RpcManager;
+import com.stars.core.rpc.proxy.RpcInvocationHandler;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -124,11 +124,11 @@ public abstract class ServiceManager {
     }
 
     protected void connectServer(String serverName) throws Exception {
-        new com.stars.core.rpc2.RpcClient(serverName, null).connect();
+        new com.stars.core.rpc.RpcClient(serverName, null).connect();
     }
 
-    protected void connectServer(String serverName, com.stars.core.rpc2.RpcClientConnectedCallback callback) throws Exception {
-        new com.stars.core.rpc2.RpcClient(serverName, callback).connect();
+    protected void connectServer(String serverName, com.stars.core.rpc.RpcClientConnectedCallback callback) throws Exception {
+        new com.stars.core.rpc.RpcClient(serverName, callback).connect();
     }
     
     protected void connectServer(String serverName, RpcClientConnectedCallback callback, Runnable netExceptionTask) throws Exception {

@@ -1,4 +1,4 @@
-package com.stars.core.rpc2.packet;
+package com.stars.core.rpc.packet;
 
 import com.stars.network.server.buffer.NewByteBuffer;
 import com.stars.network.server.packet.Packet;

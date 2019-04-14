@@ -1,7 +1,7 @@
 package com.stars.services.fightServerManager;
 
 import com.stars.services.ServiceHelper;
-import com.stars.core.rpc2.RpcClientConnectedCallback;
+import com.stars.core.rpc.RpcClientConnectedCallback;
 
 public class Connect2FightServerCallBack implements RpcClientConnectedCallback {
 

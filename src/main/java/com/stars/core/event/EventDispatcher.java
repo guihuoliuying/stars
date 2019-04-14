@@ -28,7 +28,7 @@ public class EventDispatcher {
 
     public void reg(Class<? extends Event> eventClass, EventListener listener) {
         if (!additionListeners.containsKey(eventClass)) {
-            additionListeners.put(eventClass, new ArrayList<EventListener>());
+            additionListeners.put(eventClass, new ArrayList<>());
         }
         additionListeners.get(eventClass).add(listener);
         if (!inEventLoop()) {
@@ -60,14 +60,14 @@ public class EventDispatcher {
         }
         // 关注一般事件
         if (!listeners.containsKey(eventClass)) {
-            listeners.put(eventClass, new ArrayList<EventListener>());
+            listeners.put(eventClass, new ArrayList<>());
         }
         listeners.get(eventClass).add(listener);
     }
 
     public void unreg(Class<? extends Event> eventClass, EventListener listener) {
         if (!removalListeners.containsKey(eventClass)) {
-            removalListeners.put(eventClass, new ArrayList<EventListener>());
+            removalListeners.put(eventClass, new ArrayList<>());
         }
         removalListeners.get(eventClass).add(listener);
         if (!inEventLoop()) {

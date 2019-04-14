@@ -1,4 +1,4 @@
-package com.stars.core.rpc2;
+package com.stars.core.rpc;
 
 import com.stars.bootstrap.BootstrapConfig;
 import com.stars.bootstrap.ServerManager;
@@ -9,7 +9,7 @@ import com.stars.network.server.packet.PacketManager;
 import com.stars.network.server.session.GameSession;
 import com.stars.server.Business;
 import com.stars.util.LogUtil;
-import com.stars.core.rpc2.packet.RpcRegistrationReq;
+import com.stars.core.rpc.packet.RpcRegistrationReq;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -60,7 +60,7 @@ public class RpcClient {
             this.ip = props.getProperty("serverIp"); // 服务器ip
             this.port = Integer.parseInt(props.getProperty("serverPort")); // 服务器端口
             if (callback != null) {
-                com.stars.core.rpc2.RpcManager.callbackMap.put(serverId, callback);
+                com.stars.core.rpc.RpcManager.callbackMap.put(serverId, callback);
             }
         } catch (Exception e) {
             com.stars.util.LogUtil.error("解析[{}]配置错误", serverName);
@@ -74,7 +74,7 @@ public class RpcClient {
     	this.serverName = this.ip;
     	this.port = port;
     	if (callback != null) {
-            com.stars.core.rpc2.RpcManager.callbackMap.put(serverId, callback);
+            com.stars.core.rpc.RpcManager.callbackMap.put(serverId, callback);
         }
     }
     
@@ -113,7 +113,7 @@ public class RpcClient {
                     GameSession session = new GameSession();
                     session.setServerId(serverId);
                     session.setChannel(future.channel());
-                    com.stars.core.rpc2.RpcManager.sessionMap.put(serverId, session);
+                    com.stars.core.rpc.RpcManager.sessionMap.put(serverId, session);
                     // rpc注册包
                     List<Integer> serverIdList = new ArrayList<Integer>();
                     serverIdList.add(ServerManager.getServer().getConfig().getServerId()); // todo: maybe more（合区

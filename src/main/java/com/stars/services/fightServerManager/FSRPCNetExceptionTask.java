@@ -3,7 +3,7 @@ package com.stars.services.fightServerManager;
 import com.stars.bootstrap.ServerManager;
 import com.stars.multiserver.fightManager.RMFSManagerService;
 import com.stars.util.LogUtil;
-import com.stars.core.rpc2.RpcClient;
+import com.stars.core.rpc.RpcClient;
 
 public class FSRPCNetExceptionTask implements Runnable {
 	

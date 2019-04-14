@@ -1,7 +1,7 @@
 package com.stars.modules.chat;
 
 import com.stars.bootstrap.BootstrapConfig;
-import com.stars.core.rpc2.RpcClientConnectedCallback;
+import com.stars.core.rpc.RpcClientConnectedCallback;
 import com.stars.multiserver.MainRpcHelper;
 
 import java.util.Properties;

@@ -1,6 +1,6 @@
 package com.stars.multiserver.fightingmaster;
 
-import com.stars.core.rpc2.RpcClientConnectedCallback;
+import com.stars.core.rpc.RpcClientConnectedCallback;
 
 /**
  * Created by zhouyaohui on 2016/11/14.
