@@ -120,7 +120,7 @@
  *     4.6.4  保存：AbstractModule.setXXX(name, value)
  *     4.6.5  保存到Map中：AbstractModule.setXXXToMap(name, key, value)
  *   4.7  多条件判断（等级/vip），可以使用精准推送模块中的条件表达式解析器
- *     4.7.1  解析表达式：PushCondNode node = new PushCondParser(new PushCondLexer(condition)).parse();
+ *     4.7.1  解析表达式：ExprNode node = new ExprParser(new ExprLexer(condition)).parse();
  *     4.7.2  表达式求值：node.eval(moduleMap)
  *     4.7.3  判断真假：PushUtil.isTrue(node, moduleMap)
  *     4.7.3  例子：PopUpModule和ChargePrefModule

@@ -1,8 +1,8 @@
 package com.stars.modules.push.prodata;
 
-import com.stars.modules.push.conditionparser.PushCondLexer;
-import com.stars.modules.push.conditionparser.PushCondParser;
-import com.stars.modules.push.conditionparser.node.PushCondNode;
+import com.stars.core.expr.ExprLexer;
+import com.stars.core.expr.ExprParser;
+import com.stars.core.expr.node.ExprNode;
 import com.stars.modules.push.trigger.PushTriggerSet;
 import com.stars.util.LogUtil;
 
@@ -26,7 +26,7 @@ public class PushVo {
     private String pushTimes;
 
     /* 内存数据 */
-    private PushCondNode condChecker;
+    private ExprNode condChecker;
     private PushTriggerSet triggerSet;
     private int type;
     private int times;
@@ -36,7 +36,7 @@ public class PushVo {
 
     public void init() throws Exception {
         try {
-            this.condChecker = new PushCondParser(new PushCondLexer(condition)).parse();
+            this.condChecker = new ExprParser(new ExprLexer(condition)).parse();
             this.triggerSet = new PushTriggerSet(pushId, trigger);
             // pushtimes -> type + times
             this.type = Integer.parseInt(pushTimes.split("\\+")[0]);
@@ -134,7 +134,7 @@ public class PushVo {
         this.pushTimes = pushTimes;
     }
 
-    public PushCondNode getCondChecker() {
+    public ExprNode getCondChecker() {
         return condChecker;
     }
 

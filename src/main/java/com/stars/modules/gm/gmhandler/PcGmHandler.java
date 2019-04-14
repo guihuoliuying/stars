@@ -1,11 +1,11 @@
 package com.stars.modules.gm.gmhandler;
 
+import com.stars.core.expr.ExprLexer;
+import com.stars.core.expr.ExprParser;
+import com.stars.core.expr.node.ExprNode;
 import com.stars.core.module.Module;
 import com.stars.modules.MConst;
 import com.stars.modules.gm.GmHandler;
-import com.stars.modules.push.conditionparser.PushCondLexer;
-import com.stars.modules.push.conditionparser.PushCondParser;
-import com.stars.modules.push.conditionparser.node.PushCondNode;
 import com.stars.modules.role.RoleModule;
 
 import java.util.Map;
@@ -24,7 +24,7 @@ public class PcGmHandler implements GmHandler {
             }
         }
         System.out.println(sb.toString());
-        PushCondNode node = new PushCondParser(new PushCondLexer(sb.toString())).parse();
+        ExprNode node = new ExprParser(new ExprLexer(sb.toString())).parse();
         long ret = (long) node.eval(moduleMap);
         System.out.println(node.eval(moduleMap));
         ((RoleModule) moduleMap.get(MConst.Role)).warn("ret = " + ret);

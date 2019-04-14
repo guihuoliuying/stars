@@ -1,8 +1,8 @@
 package com.stars.modules.push;
 
-import com.stars.modules.push.conditionparser.PushCondLexer;
-import com.stars.modules.push.conditionparser.PushCondParser;
-import com.stars.modules.push.conditionparser.node.PushCondNode;
+import com.stars.core.expr.ExprLexer;
+import com.stars.core.expr.ExprParser;
+import com.stars.core.expr.node.ExprNode;
 
 /**
  * Created by zhaowenshuo on 2017/3/23.
@@ -29,7 +29,7 @@ public class PushMain {
 //        System.out.println("A:" + String.format("0x%04X", (int) 'A')); // 0x39
 //        System.out.println("Z:" + String.format("0x%04X", (int) 'Z')); // 0x39
 
-        PushCondLexer lexer = new PushCondLexer(
+        ExprLexer lexer = new ExprLexer(
                 "1 == 1 and 1 != 0 or 2 == 1 and (1 == 2)");
         // level >= 1
         // level between (1, 20)
@@ -37,12 +37,12 @@ public class PushMain {
         // [bag, lv > 10, quality > 10]
         // {add, 1, 2}
 
-//        PushCondToken token = null;
+//        ExprToken token = null;
 //        while ((token = lexer.scan()) != null) {
 //            System.out.println(token);
 //        }
-        PushCondParser parser = new PushCondParser(lexer);
-        PushCondNode ret = parser.parse();
+        ExprParser parser = new ExprParser(lexer);
+        ExprNode ret = parser.parse();
         System.out.println("ret: " + ret.eval(null));
     }
 

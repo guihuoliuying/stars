@@ -1,12 +1,12 @@
 package com.stars.modules.getway;
 
 import com.stars.core.event.EventDispatcher;
+import com.stars.core.expr.ExprUtil;
 import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
 import com.stars.modules.getway.packet.ClientGetWay;
 import com.stars.modules.getway.prodata.GetWayVo;
-import com.stars.modules.push.conditionparser.CondUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class GetWayModule extends AbstractModule {
         List<Integer> resultList = new ArrayList<>();
         for (int getWayId : getWayIdList) {
             GetWayVo vo = GetWayManager.getGetWayVo(getWayId);
-            if (vo != null && CondUtils.isTrue(vo.getCondExpr(), moduleMap())) {
+            if (vo != null && ExprUtil.isTrue(vo.getCondExpr(), moduleMap())) {
                 resultList.add(getWayId);
             }
         }

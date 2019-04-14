@@ -1,8 +1,8 @@
 package com.stars.modules.getway.prodata;
 
-import com.stars.modules.push.conditionparser.PushCondLexer;
-import com.stars.modules.push.conditionparser.PushCondParser;
-import com.stars.modules.push.conditionparser.node.PushCondNode;
+import com.stars.core.expr.ExprLexer;
+import com.stars.core.expr.ExprParser;
+import com.stars.core.expr.node.ExprNode;
 
 /**
  * Created by zhaowenshuo on 2017/6/22.
@@ -11,7 +11,7 @@ public class GetWayVo {
 
     private int getWayId;
     private String condition;
-    private PushCondNode condExpr;
+    private ExprNode condExpr;
 
     public int getGetWayId() {
         return getWayId;
@@ -27,10 +27,10 @@ public class GetWayVo {
 
     public void setCondition(String condition) {
         this.condition = condition;
-        this.condExpr = new PushCondParser(new PushCondLexer(condition)).parse();
+        this.condExpr = new ExprParser(new ExprLexer(condition)).parse();
     }
 
-    public PushCondNode getCondExpr() {
+    public ExprNode getCondExpr() {
         return this.condExpr;
     }
 }

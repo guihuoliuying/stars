@@ -1,7 +1,7 @@
 package com.stars.modules.push;
 
+import com.stars.core.expr.node.ExprNode;
 import com.stars.core.module.Module;
-import com.stars.modules.push.conditionparser.node.PushCondNode;
 
 import java.util.Map;
 
@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public class PushUtil {
 
-    public static boolean isTrue(PushCondNode expr, Map<String, Module> moduleMap) {
+    public static boolean isTrue(ExprNode expr, Map<String, Module> moduleMap) {
         return (Long) expr.eval(moduleMap) != 0L;
     }
 
