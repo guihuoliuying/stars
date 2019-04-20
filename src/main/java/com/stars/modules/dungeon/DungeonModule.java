@@ -3,7 +3,6 @@ package com.stars.modules.dungeon;
 import com.stars.core.db.DBUtil;
 import com.stars.core.event.Event;
 import com.stars.core.event.EventDispatcher;
-import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
 import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
@@ -132,15 +131,13 @@ public class DungeonModule extends AbstractModule {
 
     @Override
     public void onUpateSummary(Map<String, SummaryComponent> componentMap) {
-        if (!SpecialAccountManager.isSpecialAccount(id())) {
-            Map<Integer, Byte> dungeonStatusMap = new HashMap<Integer, Byte>();
-            for (RoleDungeon roleDungeon : roleDungeonMap.values()) {
-                int dungeonId = roleDungeon.getDungeonId();
-                byte status = roleDungeon.getStatus();
-                dungeonStatusMap.put(dungeonId, status);
-            }
-            componentMap.put(MConst.Dungeon, new DungeonSummaryComponentImpl(dungeonStatusMap));
+        Map<Integer, Byte> dungeonStatusMap = new HashMap<Integer, Byte>();
+        for (RoleDungeon roleDungeon : roleDungeonMap.values()) {
+            int dungeonId = roleDungeon.getDungeonId();
+            byte status = roleDungeon.getStatus();
+            dungeonStatusMap.put(dungeonId, status);
         }
+        componentMap.put(MConst.Dungeon, new DungeonSummaryComponentImpl(dungeonStatusMap));
     }
 
     @Override

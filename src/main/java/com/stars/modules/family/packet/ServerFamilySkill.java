@@ -1,16 +1,12 @@
 package com.stars.modules.family.packet;
 
-import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerPacket;
 import com.stars.core.player.PlayerUtil;
 import com.stars.modules.MConst;
-import com.stars.modules.demologin.packet.ClientText;
 import com.stars.modules.family.FamilyModule;
 import com.stars.modules.family.FamilyPacketSet;
 import com.stars.network.server.buffer.NewByteBuffer;
-import com.stars.network.server.packet.PacketManager;
-import com.stars.util.LogUtil;
 
 /**
  * Created by zhaowenshuo on 2016/9/8.
@@ -27,11 +23,6 @@ public class ServerFamilySkill extends PlayerPacket {
 
     @Override
     public void execPacket(Player player) {
-        if (SpecialAccountManager.isSpecialAccount(player.id())) {
-            LogUtil.info("SpecialAccountPacketType:{}", String.format("0x%04X", FamilyPacketSet.S_SKILL));
-            PacketManager.send(player.id(), new ClientText("common_tips_cantcontrol"));
-            return;
-        }
         FamilyModule familyModule = (FamilyModule) module(MConst.Family);
         switch (subtype) {
             case SUBTYPE_VIEW:

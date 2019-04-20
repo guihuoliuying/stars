@@ -3,6 +3,7 @@ package com.stars.startup;
 import com.stars.AccountRow;
 import com.stars.ServerStatePrinter;
 import com.stars.ServerVersion;
+import com.stars.SwitchEntranceGm;
 import com.stars.bootstrap.SchedulerHelper;
 import com.stars.bootstrap.ServerManager;
 import com.stars.core.AccessControl;
@@ -12,11 +13,7 @@ import com.stars.core.actor.ActorSystem;
 import com.stars.core.actor.invocation.ServiceActor;
 import com.stars.core.clientpatch.PatchManager;
 import com.stars.core.db.DBUtil;
-import com.stars.core.gmpacket.BlockAccountGm;
 import com.stars.core.gmpacket.GmPacketDefine;
-import com.stars.core.gmpacket.SwitchEntranceGm;
-import com.stars.core.gmpacket.WhiteListOpenOrCloseGm;
-import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
 import com.stars.core.hotupdate.YinHanHotUpdateManager;
 import com.stars.core.module.ModuleManager;
 import com.stars.core.player.Player;
@@ -111,9 +108,6 @@ public class MainStartup implements Business {
             SchedulerManager.initScheduler();
 //            //输出资源加载文件列表
 //            ResoucePrinter.getInstance().writeResourceList();
-            WhiteListOpenOrCloseGm.loadWhiteList(); // 加载白名单账号
-            BlockAccountGm.loadBlockAccount();// 加载封号账号
-            SpecialAccountManager.loadSpecialAccount();//加载特殊账号(充值白名单)
             GmPacketDefine.reg();
             PatchManager.init();
             initGameServerConfig(); // 初始化服务入口

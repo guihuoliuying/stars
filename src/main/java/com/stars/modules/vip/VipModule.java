@@ -3,7 +3,6 @@ package com.stars.modules.vip;
 import com.stars.AccountRow;
 import com.stars.core.db.DBUtil;
 import com.stars.core.event.EventDispatcher;
-import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
 import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
@@ -86,7 +85,7 @@ public class VipModule extends AbstractModule implements OpActivityModule, Accou
     @Override
     public void onSyncData() throws Throwable {
         // vip等级上线滚屏公告
-        if (accountRow.getVipLevel() > 0 && !SpecialAccountManager.isSpecialAccount(id())) {
+        if (accountRow.getVipLevel() > 0) {
             VipinfoVo vipinfoVo = VipManager.getVipinfoVo(accountRow.getVipLevel());
             if (vipinfoVo == null
                     || StringUtil.isEmptyIncludeZero(vipinfoVo.getOnlineNotice()))

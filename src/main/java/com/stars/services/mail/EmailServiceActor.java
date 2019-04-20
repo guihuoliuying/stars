@@ -1,21 +1,14 @@
 package com.stars.services.mail;
 
 import com.google.common.cache.*;
-import com.stars.core.persist.DbRowDao;
-import com.stars.core.exception.AffixsCoolTimeException;
-import com.stars.core.gmpacket.email.condition.RoleMatcherFactory;
-import com.stars.core.gmpacket.email.util.EmailUtils;
-import com.stars.core.gmpacket.email.vo.AllEmailGmPo;
-import com.stars.core.player.Player;
-import com.stars.core.player.PlayerSystem;
-import com.stars.core.player.PlayerUtil;
+import com.stars.core.actor.invocation.ServiceActor;
 import com.stars.core.db.DBUtil;
 import com.stars.core.db.DbRow;
-import com.stars.modules.data.DataManager;
-import com.stars.modules.email.EmailManager;
+import com.stars.core.exception.AffixsCoolTimeException;
+import com.stars.core.persist.DbRowDao;
+import com.stars.core.player.PlayerUtil;
 import com.stars.modules.email.event.EmailLogEvent;
 import com.stars.modules.email.event.EmailRedPointEvent;
-import com.stars.modules.email.event.SpecialEmailEvent;
 import com.stars.modules.email.packet.ClientEmail;
 import com.stars.modules.email.pojodata.EmailConditionArgs;
 import com.stars.services.ServiceHelper;
@@ -28,10 +21,7 @@ import com.stars.services.mail.userdata.RoleEmailPo;
 import com.stars.util.DateUtil;
 import com.stars.util.I18n;
 import com.stars.util.LogUtil;
-import com.stars.util.StringUtil;
-import com.stars.core.actor.invocation.ServiceActor;
 
-import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -49,7 +39,6 @@ public class EmailServiceActor extends ServiceActor implements EmailService {
     private static boolean isLoadData = false;
 
     private static ConcurrentMap<Integer, AllEmailPo> allEmailMap = new ConcurrentHashMap<>();
-    private static ConcurrentMap<Integer, AllEmailGmPo> allEmailGmMap = new ConcurrentHashMap<>();
     private static AtomicInteger allEmailIdGenerator = new AtomicInteger(0);
 
     private DbRowDao dao;
@@ -73,17 +62,12 @@ public class EmailServiceActor extends ServiceActor implements EmailService {
             if (!isLoadData) {
                 ConcurrentMap<Integer, AllEmailPo> tmpAllEmailMap = DBUtil.queryConcurrentMap(DBUtil.DB_USER, "allemailid", AllEmailPo.class,
                         "select * from `allemail`");
-                ConcurrentMap<Integer, AllEmailGmPo> tmpAllEmailGmMap = DBUtil.queryConcurrentMap(DBUtil.DB_USER, "allemailgmid", AllEmailGmPo.class,
-                        "select * from `allemailgm`");
                 int maxAllEmailId = 0;
                 for (Integer allEmailId : tmpAllEmailMap.keySet()) {
                     maxAllEmailId = allEmailId > maxAllEmailId ? allEmailId : maxAllEmailId;
                 }
-                for (Integer allEmailGmId : tmpAllEmailGmMap.keySet()) {
-                    maxAllEmailId = allEmailGmId > maxAllEmailId ? allEmailGmId : maxAllEmailId;
-                }
+
                 allEmailMap = tmpAllEmailMap;
-                allEmailGmMap = tmpAllEmailGmMap;
                 allEmailIdGenerator = new AtomicInteger(maxAllEmailId);
                 isLoadData = true;
             }
@@ -314,7 +298,6 @@ public class EmailServiceActor extends ServiceActor implements EmailService {
     public void sendToSingle(RoleEmailPo emailPo) {
         // todo: 1. check mail
         // todo: 2. check mail list.size()
-        EmailUtils.checkRoleEmailPo(emailPo);
         boolean isOnline = false;
         RoleEmailData data = onlineDataMap.get(emailPo.getReceiverId());
         if (data != null) {
@@ -433,7 +416,6 @@ public class EmailServiceActor extends ServiceActor implements EmailService {
 
     //    @Override
     public void sendToOnline(AllEmailPo emailPo) {
-        EmailUtils.checkAllEmailPo(emailPo);
         for (RoleEmailData data : onlineDataMap.values()) {
             RoleEmailPo roleEmailPo = EmailUtils.newRoleEmailPo(emailPo);
             roleEmailPo.setEmailId(data.info().nextRoleEmailId());
@@ -563,10 +545,6 @@ public class EmailServiceActor extends ServiceActor implements EmailService {
         int allEmailId = roleEmailPo.getRefEmailId();
         if (allEmailId != 0) {
             AllEmailPo allEmailPo = allEmailMap.get(allEmailId);
-            if (allEmailPo == null) {
-                AllEmailGmPo allEmailGmPo = allEmailGmMap.get(allEmailId);
-                allEmailPo = EmailUtils.newAllEmail(allEmailGmPo, true);
-            }
             int coolTime = allEmailPo.getCoolTime();
 
             if (coolTime != 0) {
@@ -634,146 +612,6 @@ public class EmailServiceActor extends ServiceActor implements EmailService {
         }
     }
 
-    /**
-     * 发送给白名单账户中的合格的角色
-     *
-     * @param checkedRoleResult
-     */
-    @Override
-    public void gmSendToWhite(AllEmailGmPo allEmailGmPo, Map<Integer, Set<Long>> checkedRoleResult) {
-        AllEmailPo allEmailPo = EmailUtils.newAllEmail(allEmailGmPo, true);
-        /**
-         * 放入白名单全服邮件中
-         */
-        allEmailGmMap.put(allEmailGmPo.getAllEmailGmId(), allEmailGmPo);
-        gmSendToAll(allEmailPo, checkedRoleResult, true);
-
-    }
-
-    /**
-     * 发送给服务器或缓存中的合格的角色
-     *
-     * @param allEmailPo
-     * @param checkedRoleMap
-     */
-    @Override
-    public void gmSendToAll(AllEmailPo allEmailPo, Map<Integer, Set<Long>> checkedRoleMap, boolean isWhite) {
-        if (!isWhite) {
-            allEmailMap.put(allEmailPo.getAllEmailId(), allEmailPo);
-        }
-        LogUtil.info("gmSendToAll:allEmailMap:", StringUtil.makeString(allEmailMap.keySet(),'+'));
-        LogUtil.info("gmSendToAll:allEmailGMMap:", StringUtil.makeString(allEmailGmMap.keySet(),'+'));
-        for (Long roleId : checkedRoleMap.get(RoleMatcherFactory.PASS)) {
-            RoleEmailData roleEmailData = null;
-            if (!isWhite) {
-                roleEmailData = onlineDataMap.get(roleId);
-                if (roleEmailData == null) {
-                    roleEmailData = offlineDataMap.getIfPresent(roleId);
-                }
-                if (roleEmailData == null) {
-                    continue;
-                }
-            }
-
-            RoleEmailPo emailPo = EmailUtils.newRoleEmailPo(allEmailPo);
-            emailPo.setReceiverId(roleId);
-            /**
-             * 条件通过的角色发送全服邮件
-             */
-
-            ServiceHelper.emailService().sendToSingle(emailPo);
-        }
-
-    }
-
-    @Override
-    public void gmSend(RoleEmailPo emailPo) {
-        sendToSingle(emailPo);
-        if(emailPo.getEmailType()==EmailManager.EMAIL_TYPE_1){
-        	Player player = PlayerSystem.get(emailPo.getReceiverId());
-            if (player != null) {            	
-            	SpecialEmailEvent event = new SpecialEmailEvent();
-            	event.setEmailType(emailPo.getEmailType());
-            	event.setEmailId(emailPo.getEmailId());
-            	ServiceHelper.roleService().notice(emailPo.getReceiverId(), event);
-            }else{
-            	StringBuffer sql = new StringBuffer();
-            	sql.append("insert into rolerecords values(").append(emailPo.getReceiverId())
-            	.append(", 'email_award_weixin',").append(1).append(");");
-            	try {
-					DBUtil.execUserSql(sql.toString());
-				} catch (SQLException e) {
-					LogUtil.error("special email handle fail, roleId:"+emailPo.getReceiverId()+
-							", emailType:"+emailPo.getEmailType(), e);
-					delete(emailPo.getReceiverId(), emailPo.getEmailId());
-				}
-            }
-        }
-    }
-
-    @Override
-    public List<Map<String, Object>> gmView(long roleId) {
-        RoleEmailData data = getData(roleId);
-        if (data == null) {
-            return null;
-        }
-        List<Map<String, Object>> list = new ArrayList<>();
-        for (RoleEmailPo emailPo : data.emailMap().values()) {
-            Map<String, Object> email = new HashMap<>();
-            email.put("id", emailPo.getEmailId());
-            String titleText = DataManager.getGametext(emailPo.getTitle());
-            email.put("title", titleText == null ? emailPo.getTitle() : titleText);
-            String contentText = DataManager.getGametext(emailPo.getText());
-            contentText = contentText == null ? emailPo.getText() : contentText;
-            if (emailPo.getParams() != null && emailPo.getParams().length() > 0) {
-                contentText = contentText + " " + emailPo.getParams();
-            }
-            email.put("content", contentText);
-            email.put("toolList", emailPo.getAffixs());
-            email.put("sendTime", emailPo.getSendTime());
-            email.put("receiveTime", 0);
-            email.put("expireTime", 0);
-            list.add(email);
-        }
-        return list;
-    }
-
-    @Override
-    public List<Integer> gmDele(long roleId, List<Integer> emailIdList) {
-        RoleEmailData data = getData(roleId);
-        List<Integer> failureEmailIdList = new ArrayList<>();
-        if (data != null) {
-            for (int emailId : emailIdList) {
-                RoleEmailPo roleEmailPo = data.emailMap().get(emailId);
-                if (roleEmailPo == null) {
-                    failureEmailIdList.add(emailId);
-                    continue;
-                }
-//                ServiceHelper.roleService().notice(roleId, new RemoveEmailEvent(roleEmailPo.getEmailId()));
-                data.emailMap().remove(emailId);
-                data.deleteEmailFromList(emailId);
-                data.removeUntreatedEmail(emailId);
-                dao.delete(roleEmailPo);
-                LogUtil.info("删除邮件, 邮件信息: " + roleEmailPo);
-                if (onlineDataMap.containsKey(roleId)) {
-                    ClientEmail packet = new ClientEmail(ClientEmail.C_DELETE);
-                    packet.setEmailId(emailId);
-                    ServiceHelper.roleService().send(roleId, packet);
-
-                    sendRedPoint(roleId, data);
-                }
-            }
-        } else {
-            failureEmailIdList.addAll(emailIdList);
-        }
-        return failureEmailIdList;
-    }
-
-    //    @Override
-//    public void innerSendToSingle(RoleEmailPo emailPo) {
-//        ServiceHelper.emailService().sendToSingle(emailPo); // 这里要走代理（因为异步）
-//    }
-
     private RoleEmailData getData(long roleId) {
         RoleEmailData data = onlineDataMap.get(roleId);
         if (data == null) {
@@ -838,33 +676,29 @@ public class EmailServiceActor extends ServiceActor implements EmailService {
         for (AllEmailPo allEmailPo : allEmailMap.values()) {
             if (allEmailPo.getAllEmailId() > maxAllEmailId) {
                 LogUtil.info("roleid:{} to receive allmailid={}", data.info().getRoleId(),allEmailPo.getAllEmailId());
-                Map<Integer, Set<Long>> checkRoleStateMap = EmailUtils.checkRoleState(allEmailPo, emailConditionArgs);
-                if (checkRoleStateMap.get(RoleMatcherFactory.PASS).size() > 0) {
-                    /**
-                     * 判断此时是否在过期时间之前，已经过期则此邮件无法领取
-                     */
-                    int expireTime = allEmailPo.getExpireTime();
-                    Calendar now = Calendar.getInstance();
-                    Calendar expireDate = Calendar.getInstance();
-                    expireDate.setTimeInMillis(allEmailPo.getSendTime() * 1000L);
-                    expireDate.add(Calendar.DAY_OF_YEAR, expireTime);
+                /**
+                 * 判断此时是否在过期时间之前，已经过期则此邮件无法领取
+                 */
+                int expireTime = allEmailPo.getExpireTime();
+                Calendar now = Calendar.getInstance();
+                Calendar expireDate = Calendar.getInstance();
+                expireDate.setTimeInMillis(allEmailPo.getSendTime() * 1000L);
+                expireDate.add(Calendar.DAY_OF_YEAR, expireTime);
 
-                    if (expireTime == 0 || now.before(expireDate)) {
-                        LogUtil.info("roleid:{} to receive allmailid={} successful", data.info().getRoleId(),allEmailPo.getAllEmailId());
-                        RoleEmailPo roleEmailPo = EmailUtils.newRoleEmailPo(allEmailPo);
-                        roleEmailPo.setEmailId(data.info().nextRoleEmailId());
-                        roleEmailPo.setReceiverId(data.info().getRoleId());
-                        dao.insert(roleEmailPo);
-                        data.emailMap().put(roleEmailPo.getEmailId(), roleEmailPo);
-                        data.addEmailToList(roleEmailPo);
-                        data.addUntreatedEmail(roleEmailPo.getEmailId());
-                        newEmails.add(roleEmailPo.getEmailId());
-                        newCount++;
-
-                    }
-
+                if (expireTime == 0 || now.before(expireDate)) {
+                    LogUtil.info("roleid:{} to receive allmailid={} successful", data.info().getRoleId(), allEmailPo.getAllEmailId());
+                    RoleEmailPo roleEmailPo = EmailUtils.newRoleEmailPo(allEmailPo);
+                    roleEmailPo.setEmailId(data.info().nextRoleEmailId());
+                    roleEmailPo.setReceiverId(data.info().getRoleId());
+                    dao.insert(roleEmailPo);
+                    data.emailMap().put(roleEmailPo.getEmailId(), roleEmailPo);
+                    data.addEmailToList(roleEmailPo);
+                    data.addUntreatedEmail(roleEmailPo.getEmailId());
+                    newEmails.add(roleEmailPo.getEmailId());
+                    newCount++;
 
                 }
+
                 if (allEmailPo.getAllEmailId() > data.info().getAllEmailId()) {
                     data.info().setAllEmailId(allEmailPo.getAllEmailId());
                 }
@@ -929,10 +763,6 @@ public class EmailServiceActor extends ServiceActor implements EmailService {
         return allEmailMap;
     }
 
-    public static ConcurrentMap<Integer, AllEmailGmPo> getAllEmailGmMap() {
-        return allEmailGmMap;
-    }
-
     class RoleEmailDataCacheLoader extends CacheLoader<Long, RoleEmailData> {
         @Override
         public RoleEmailData load(Long roleId) throws Exception {
@@ -948,11 +778,6 @@ public class EmailServiceActor extends ServiceActor implements EmailService {
                     "select * from `roleemailinfo` where `roleid`=" + roleId);
             Map<Integer, RoleEmailPo> emailPoMap = DBUtil.queryMap(DBUtil.DB_USER, "emailid", RoleEmailPo.class,
                     "select * from `roleemail` where `receiverid`=" + roleId + " order by `emailid` asc");
-//            if (infoPo == null && (emailPoMap == null || emailPoMap.size() == 0)) { // 新建
-//                infoPo = new RoleEmailInfoPo(roleId, 0, 0);
-//                emailPoMap = new HashMap<>();
-//                dao.insert(infoPo);
-//            }
             if (infoPo == null) {
 //                throw new NoSuchElementException();
                 infoPo = new RoleEmailInfoPo(roleId, 0, 0);

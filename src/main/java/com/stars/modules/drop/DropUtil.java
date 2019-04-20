@@ -1,6 +1,5 @@
 package com.stars.modules.drop;
 
-import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
 import com.stars.modules.data.DataManager;
 import com.stars.modules.drop.prodata.DropRewardVo;
 import com.stars.modules.drop.prodata.DropVo;
@@ -159,8 +158,7 @@ public class DropUtil {
                 for (Map<Integer, Integer> map : list) {
                     MapUtil.add(rewardMap, map);
                 }
-                if (totalContain(rewardMap, dropVo.getReportCode(), dropVo.getReportCount())
-                        && !SpecialAccountManager.isSpecialAccount(roleId)) {//掉落了传闻道具
+                if (totalContain(rewardMap, dropVo.getReportCode(), dropVo.getReportCount())) {//掉落了传闻道具
                     String desc = String.format(DataManager.getGametext(dropVo.getReportDesc()), roleName, DataManager.getGametext(itemVo.getName()), String.valueOf(dropVo.getReportCount()));
                     ServiceHelper.chatService().announce(desc);//发送全服公告
                 }

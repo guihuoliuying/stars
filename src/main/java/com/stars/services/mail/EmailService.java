@@ -1,17 +1,15 @@
 package com.stars.services.mail;
 
-import com.stars.core.gmpacket.email.vo.AllEmailGmPo;
+import com.stars.core.actor.invocation.ActorService;
+import com.stars.core.actor.invocation.annotation.AsyncInvocation;
+import com.stars.core.actor.invocation.annotation.DispatchAll;
 import com.stars.modules.email.pojodata.EmailConditionArgs;
 import com.stars.services.Service;
 import com.stars.services.mail.userdata.AllEmailPo;
 import com.stars.services.mail.userdata.RoleEmailPo;
-import com.stars.core.actor.invocation.ActorService;
-import com.stars.core.actor.invocation.annotation.AsyncInvocation;
-import com.stars.core.actor.invocation.annotation.DispatchAll;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by zhaowenshuo on 2016/7/16.
@@ -204,19 +202,6 @@ public interface EmailService extends Service, ActorService {
 
     void innerSendToAll(AllEmailPo allEmailPo);
 
-    @AsyncInvocation
-    void gmSendToWhite(AllEmailGmPo allEmailPo, Map<Integer, Set<Long>> roleIds);
-
-
-    /*
-             * Gm相关
-             */
-    void gmSend(RoleEmailPo emailPo);
-
-    List<Map<String, Object>> gmView(long roleId);
-
-    List<Integer> gmDele(long roleId, List<Integer> emailIdList);
-
     /*
      * 内部接口
      */
@@ -224,12 +209,4 @@ public interface EmailService extends Service, ActorService {
     @DispatchAll
     void sendToAll(AllEmailPo emailPo); // 异步，内部使用
 
-    @AsyncInvocation
-    @DispatchAll
-    void gmSendToAll(AllEmailPo allEmailPo, Map<Integer, Set<Long>> checkedRoleResult, boolean isWhite); // 异步，内部使用 Map<Long, RoleEmailData> getOnlineDataMap();
-
-
-
-    //    @AsyncInvocation
-//    void innerSendToSingle(RoleEmailPo emailPo); // 异步，内部使用
 }

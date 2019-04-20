@@ -3,8 +3,7 @@ package com.stars.modules.truename.packet;
 import com.google.gson.Gson;
 import com.stars.AccountRow;
 import com.stars.ServerVersion;
-import com.stars.core.gmpacket.SwitchEntranceGm;
-import com.stars.core.gmpacket.WhiteListOpenOrCloseGm;
+import com.stars.SwitchEntranceGm;
 import com.stars.http.net.HttpConn;
 import com.stars.modules.demologin.LoginModuleHelper;
 import com.stars.modules.demologin.packet.ClientText;
@@ -198,7 +197,7 @@ public class ServerTrueNameLogin extends Packet {
     }
 
     private boolean isWhiteList(String accountName) {
-        return WhiteListOpenOrCloseGm.isWhiteList(accountName);
+        return true;
     }
 
     private boolean isDrirectConnected(LoginInfo loginInfo) {

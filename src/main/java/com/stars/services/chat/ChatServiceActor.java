@@ -1,11 +1,12 @@
 package com.stars.services.chat;
 
-import com.stars.core.persist.DbRowDao;
-import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
-import com.stars.core.player.PlayerUtil;
 import com.stars.ExcutorKey;
-import com.stars.core.schedule.SchedulerManager;
+import com.stars.core.actor.Actor;
+import com.stars.core.actor.invocation.ServiceActor;
 import com.stars.core.db.DBUtil;
+import com.stars.core.persist.DbRowDao;
+import com.stars.core.player.PlayerUtil;
+import com.stars.core.schedule.SchedulerManager;
 import com.stars.modules.chat.packet.ClientChatMessage;
 import com.stars.modules.demologin.packet.ClientAnnouncement;
 import com.stars.multiserver.MultiServerHelper;
@@ -17,8 +18,6 @@ import com.stars.services.chat.filter.*;
 import com.stars.services.chat.userdata.ForbiddenChater;
 import com.stars.util.LogUtil;
 import com.stars.util.StringUtil;
-import com.stars.core.actor.Actor;
-import com.stars.core.actor.invocation.ServiceActor;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -195,10 +194,6 @@ public class ChatServiceActor extends ServiceActor implements ChatService {
     }
 
     public void chat(String senderName, byte channel, long senderId, long receiverId, String message, boolean hasObject) {
-        if (SpecialAccountManager.isSpecialAccount(senderId)) {
-            //// TODO: 2017-03-25 这里打日志 特殊账号不允许有交互内容
-            return;
-        }
         ChatMessage cm = new ChatMessage();
         cm.setServerId(MultiServerHelper.getServerId());
         cm.setSenderId(senderId);

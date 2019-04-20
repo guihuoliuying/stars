@@ -5,7 +5,6 @@ import com.stars.core.actor.Actor;
 import com.stars.core.db.DBUtil;
 import com.stars.core.db.SqlUtil;
 import com.stars.core.event.EventDispatcher;
-import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
 import com.stars.core.module.Module;
 import com.stars.core.module.ModuleContext;
 import com.stars.core.module.ModuleManager;
@@ -384,8 +383,6 @@ public class ServerRoleOp extends Packet {
     }
 
     private void addToSpecialAccount(String account, long roleId) {
-        if (SpecialAccountManager.isSpecialAccount(account)) {
-            SpecialAccountManager.addRoleToAccount(account, roleId);
-        }
+
     }
 }

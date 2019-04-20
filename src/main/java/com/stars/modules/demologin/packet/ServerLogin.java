@@ -2,13 +2,11 @@ package com.stars.modules.demologin.packet;
 
 import com.stars.AccountRow;
 import com.stars.ServerVersion;
+import com.stars.SwitchEntranceGm;
 import com.stars.core.actor.Actor;
 import com.stars.core.clientpatch.PatchManager;
 import com.stars.core.db.DBUtil;
 import com.stars.core.db.SqlUtil;
-import com.stars.core.gmpacket.BlockAccountGm;
-import com.stars.core.gmpacket.SwitchEntranceGm;
-import com.stars.core.gmpacket.WhiteListOpenOrCloseGm;
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerSystem;
 import com.stars.modules.demologin.LoginManager;
@@ -19,7 +17,6 @@ import com.stars.modules.demologin.message.LoginSyncMsg;
 import com.stars.modules.demologin.message.SqueezeMsg;
 import com.stars.modules.demologin.userdata.AccountPassWord;
 import com.stars.modules.demologin.userdata.AccountRole;
-import com.stars.modules.demologin.userdata.BlockAccount;
 import com.stars.modules.demologin.userdata.LoginInfo;
 import com.stars.multiserver.MultiServerHelper;
 import com.stars.network.server.buffer.NewByteBuffer;
@@ -180,15 +177,6 @@ public class ServerLogin extends Packet {
             }
 
             // 封号判断
-            if (BlockAccountGm.isAccountBlock(apw.getAccount())) {
-                BlockAccount blockAccount = BlockAccountGm.getBlockAccount(apw.getAccount());
-                ClientBlockAccount packet = new ClientBlockAccount((int) (blockAccount.getExpireTime() / 1000),
-                        blockAccount.getReason());
-                com.stars.network.server.packet.PacketManager.send(session, packet); // todo: 是否需要断开连接?!
-                com.stars.util.LogUtil.info("登陆|账号验证|account:{}|异常:封号:{}:{}",
-                        apw.getAccount(), blockAccount.getReason(), blockAccount.getExpireTime() / 1000);
-                return;
-            }
 
             // 设置登陆的相关信息
             if (accountRow.getLoginLock().tryLock(500, TimeUnit.MILLISECONDS)) { // 防止因死锁或其他原因导致等待，但不符合测试情况
@@ -277,7 +265,7 @@ public class ServerLogin extends Packet {
     }
 
     private boolean isWhiteList(String accountName) {
-        return WhiteListOpenOrCloseGm.isWhiteList(accountName);
+        return true;
     }
 
     private boolean isDrirectConnected(LoginInfo loginInfo) {

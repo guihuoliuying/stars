@@ -6,8 +6,6 @@ import com.stars.core.attr.Attribute;
 import com.stars.core.attr.FormularUtils;
 import com.stars.core.db.DBUtil;
 import com.stars.core.event.EventDispatcher;
-import com.stars.core.gmpacket.BlockAccountGm;
-import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
 import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
@@ -16,7 +14,6 @@ import com.stars.modules.demologin.LoginModule;
 import com.stars.modules.demologin.packet.ClientReconnect;
 import com.stars.modules.demologin.packet.ClientText;
 import com.stars.modules.demologin.userdata.AccountRole;
-import com.stars.modules.demologin.userdata.BlockAccount;
 import com.stars.modules.name.event.RoleRenameEvent;
 import com.stars.modules.redpoint.RedPointConst;
 import com.stars.modules.role.event.*;
@@ -379,9 +376,6 @@ public class RoleModule extends AbstractModule {
         ClientRole clientRole = new ClientRole(ClientRole.UPDATE_TITLE, role);
         send(clientRole);
         updateRoleSummaryComp();
-        if (SpecialAccountManager.isSpecialAccount(id())) {
-            return;
-        }
     }
 
     public void sendRoleAttr() {
@@ -708,11 +702,6 @@ public class RoleModule extends AbstractModule {
 
             LoginModule lModule = module(MConst.Login);
 
-            BlockAccount bAccount = BlockAccountGm.getBlockAccount(lModule.getAccount());
-            if (bAccount == null || bAccount.getExpireTime() <= now) {
-                BlockAccountGm.putBlockAccount(lModule.getAccount(),
-                        new BlockAccount(lModule.getAccount(), now, now + 120_000, "使用加速"));
-            }
             send(new ClientText("检测到您有加速行为，将禁止您继续游戏"));
             ClientReconnect client = new ClientReconnect(false);
             client.setReason((byte) 2);//被踢下线
@@ -736,11 +725,6 @@ public class RoleModule extends AbstractModule {
                 //客户端内存被修改
                 LoginModule lModule = module(MConst.Login);
                 long now = System.currentTimeMillis();
-                BlockAccount bAccount = BlockAccountGm.getBlockAccount(lModule.getAccount());
-                if (bAccount == null || bAccount.getExpireTime() <= now) {
-                    BlockAccountGm.putBlockAccount(lModule.getAccount(),
-                            new BlockAccount(lModule.getAccount(), now, now + 120_000, "修改客户端内存"));
-                }
                 send(new ClientText("检测到您有修改客户端内存的行为，将禁止您继续游戏"));
                 ClientReconnect client = new ClientReconnect(false);
                 client.setReason((byte) 2);//被踢下线

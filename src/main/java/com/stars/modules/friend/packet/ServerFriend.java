@@ -1,6 +1,5 @@
 package com.stars.modules.friend.packet;
 
-import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerPacket;
 import com.stars.modules.MConst;
@@ -14,7 +13,6 @@ import com.stars.network.server.buffer.NewByteBuffer;
 import com.stars.network.server.packet.PacketManager;
 import com.stars.services.ServiceHelper;
 import com.stars.services.friend.userdata.FriendApplicationPo;
-import com.stars.util.LogUtil;
 
 /**
  * Created by zhaowenshuo on 2016/8/13.
@@ -46,11 +44,6 @@ public class ServerFriend extends PlayerPacket {
 
     @Override
     public void execPacket(Player player) {
-        if (SpecialAccountManager.isSpecialAccount(player.id())) {
-            LogUtil.info("SpecialAccountPacketType:{}", String.format("0x%04X", FriendPacketSet.S_FRIEND));
-            com.stars.network.server.packet.PacketManager.send(player.id(), new ClientText("common_tips_cantcontrol"));
-            return;
-        }
         //清涛说，收/送 花记录界面和送花选择界面不受系统开放影响，所以提到前面处理
         if (subtype == SUBTYPE_FLOWER_RECORD_UI) {
             ServiceHelper.friendService().viewFriendFlowerUI(getRoleId());

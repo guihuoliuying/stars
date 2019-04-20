@@ -5,7 +5,6 @@ import com.stars.ExcutorKey;
 import com.stars.core.actor.invocation.ServiceActor;
 import com.stars.core.db.DBUtil;
 import com.stars.core.db.DbRow;
-import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
 import com.stars.core.persist.DbRowDao;
 import com.stars.core.player.PlayerUtil;
 import com.stars.core.schedule.SchedulerManager;
@@ -1265,8 +1264,7 @@ public class FriendServiceActor extends ServiceActor implements FriendService {
             for (RecommendationFriend recom : onlineList) {
                 if (recom.getName().contains(pattern)
                         && recom.getRoleId() != roleId
-                        && !data.getBlackerMap().containsKey(recom.getRoleId())
-                        && !SpecialAccountManager.isSpecialAccount(recom.getRoleId())) {//2017-03-25 特殊账号不允许被搜到到
+                        && !data.getBlackerMap().containsKey(recom.getRoleId())) {
                     recomMap.put(recom.getRoleId(), recom);
                 }
             }
@@ -1279,8 +1277,7 @@ public class FriendServiceActor extends ServiceActor implements FriendService {
                 List<_HashMap> offlineList = DBUtil.queryList(DBUtil.DB_USER, _HashMap.class, sql);
                 for (_HashMap map : offlineList) {
                     if (roleId != map.getLong("role.roleid")
-                            && !data.getBlackerMap().containsKey(map.getLong("role.roleid"))
-                            && !SpecialAccountManager.isSpecialAccount(map.getLong("role.roleid"))) {
+                            && !data.getBlackerMap().containsKey(map.getLong("role.roleid"))) {
                         RecommendationFriend recom = new RecommendationFriend();
                         recom.setRoleId(map.getLong("role.roleid"));
                         recom.setName(map.getString("role.name"));
@@ -1461,8 +1458,7 @@ public class FriendServiceActor extends ServiceActor implements FriendService {
                 || dataPo.getFriendMap().containsKey(roleMo.getRoleId())
                 || candidateMap.containsKey(roleMo.getRoleId())
                 || dataPo.getRolePo().getRoleId() == roleMo.getRoleId()
-                || dataPo.getApplicationMap().containsKey(roleMo.getRoleId())
-                || SpecialAccountManager.isSpecialAccount(roleMo.getRoleId())) {//2017-03-25 特殊账号不允许被好友推荐
+                || dataPo.getApplicationMap().containsKey(roleMo.getRoleId())) {//2017-03-25 特殊账号不允许被好友推荐
             return;
         }
         candidateMap.put(roleMo.getRoleId(), roleMo);

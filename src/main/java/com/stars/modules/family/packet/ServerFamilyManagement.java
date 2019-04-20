@@ -1,6 +1,5 @@
 package com.stars.modules.family.packet;
 
-import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerPacket;
 import com.stars.core.player.PlayerUtil;
@@ -11,8 +10,6 @@ import com.stars.modules.family.FamilyPacketSet;
 import com.stars.modules.foreshow.ForeShowConst;
 import com.stars.modules.foreshow.ForeShowModule;
 import com.stars.network.server.buffer.NewByteBuffer;
-import com.stars.network.server.packet.PacketManager;
-import com.stars.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,11 +91,6 @@ public class ServerFamilyManagement extends PlayerPacket {
 
     @Override
     public void execPacket(Player player) {
-        if (SpecialAccountManager.isSpecialAccount(player.id())) {
-            LogUtil.info("SpecialAccountPacketType:{}", String.format("0x%04X", FamilyPacketSet.S_MANAGEMENT));
-            PacketManager.send(player.id(), new ClientText("common_tips_cantcontrol"));
-            return;
-        }
         ForeShowModule open = module(MConst.ForeShow);
         if (!open.isOpen(ForeShowConst.FAMILY)){
             PlayerUtil.send(player.id(),new ClientText("您的等级过低，无法操作"));

@@ -1,11 +1,7 @@
 package com.stars.modules.email.event;
 
 import com.stars.core.event.Event;
-import com.stars.core.gmpacket.email.vo.AllEmailGmPo;
-import com.stars.services.mail.EmailServiceActor;
 import com.stars.services.mail.userdata.RoleEmailPo;
-
-import java.util.concurrent.ConcurrentMap;
 
 public class EmailLogEvent extends Event {
 
@@ -34,15 +30,7 @@ public class EmailLogEvent extends Event {
         this.setTool(emailPo.getAffixs());
         int refEmailId = emailPo.getRefEmailId();
         if (refEmailId != 0) {
-            ConcurrentMap<Integer, AllEmailGmPo> allEmailGmMap = EmailServiceActor.getAllEmailGmMap();
-            AllEmailGmPo allEmailGmPo = allEmailGmMap.get(refEmailId);
-            if (allEmailGmPo != null) {
-                this.setFreeTime(allEmailGmPo.getCoolTime() + "");
-                this.setOverTime(allEmailGmPo.getExpireTime() + "");
-            } else {
-                this.setFreeTime("");
-                this.setOverTime("");
-            }
+
         } else {
             this.setFreeTime("");
             this.setOverTime("");

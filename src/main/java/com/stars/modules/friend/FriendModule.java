@@ -1,7 +1,6 @@
 package com.stars.modules.friend;
 
 import com.stars.core.event.EventDispatcher;
-import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
 import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
@@ -197,9 +196,7 @@ public class FriendModule extends AbstractModule {
 
     @Override
     public void onUpateSummary(Map<String, SummaryComponent> componentMap) {
-        if (!SpecialAccountManager.isSpecialAccount(id())) {
-            ServiceHelper.friendService().onUpdateSummary(id());
-        }
+
     }
 
     @Override
@@ -252,8 +249,7 @@ public class FriendModule extends AbstractModule {
     }
 
     public void fireSpecialAccountLogEvent(String content) {
-        if (SpecialAccountManager.isSpecialAccount(id())) {
-        }
+
     }
 
     public void friendLog(FriendLogEvent event) {

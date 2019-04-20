@@ -5,7 +5,6 @@ import com.stars.core.attr.Attribute;
 import com.stars.core.attr.FormularUtils;
 import com.stars.core.db.DBUtil;
 import com.stars.core.event.EventDispatcher;
-import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
 import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
@@ -133,9 +132,7 @@ public class SkillModule extends AbstractModule {
 
     @Override
     public void onUpateSummary(Map<String, SummaryComponent> componentMap) {
-        if (!SpecialAccountManager.isSpecialAccount(id())) {
-            componentMap.put("skill", new SkillSummaryComponentImpl(getUseSkill(), getSkillDamageMap(), roleSkill.getUseSkillMap()));
-        }
+        componentMap.put("skill", new SkillSummaryComponentImpl(getUseSkill(), getSkillDamageMap(), roleSkill.getUseSkillMap()));
     }
 
     /**

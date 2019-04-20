@@ -3,7 +3,6 @@ package com.stars.modules.foreshow;
 
 import com.stars.core.db.DBUtil;
 import com.stars.core.event.EventDispatcher;
-import com.stars.core.gmpacket.specialaccount.SpecialAccountManager;
 import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
@@ -693,15 +692,13 @@ public class ForeShowModule extends AbstractModule {
 
     @Override
     public void onUpateSummary(Map<String, SummaryComponent> componentMap) {
-        if (!SpecialAccountManager.isSpecialAccount(id())) {
-            Map<String, ForeShowStatePo> map = new HashMap<>();
-            map.putAll(openUnShowMap);
-            map.putAll(openShowMap);
-            List<String> opennames = new ArrayList<>();
-            for (ForeShowStatePo po : map.values()) {
-                opennames.add(po.getOpenname());
-            }
-            componentMap.put(MConst.ForeShow, new ForeShowSummaryComponentImp(opennames));
+        Map<String, ForeShowStatePo> map = new HashMap<>();
+        map.putAll(openUnShowMap);
+        map.putAll(openShowMap);
+        List<String> opennames = new ArrayList<>();
+        for (ForeShowStatePo po : map.values()) {
+            opennames.add(po.getOpenname());
         }
+        componentMap.put(MConst.ForeShow, new ForeShowSummaryComponentImp(opennames));
     }
 }

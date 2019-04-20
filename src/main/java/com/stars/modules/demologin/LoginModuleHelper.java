@@ -1,11 +1,11 @@
 package com.stars.modules.demologin;
 
 import com.stars.AccountRow;
+import com.stars.SwitchEntranceGm;
 import com.stars.core.SystemRecordMap;
 import com.stars.core.actor.Actor;
 import com.stars.core.db.DBUtil;
 import com.stars.core.event.EventDispatcher;
-import com.stars.core.gmpacket.SwitchEntranceGm;
 import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.module.ModuleContext;
