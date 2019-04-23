@@ -15,4 +15,8 @@ public abstract class ExprNode {
 
     public abstract Object eval(Object obj);
 
+    public String inorderString() {
+        return "";
+    }
+
 }

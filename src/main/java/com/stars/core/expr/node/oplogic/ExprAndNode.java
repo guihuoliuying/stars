@@ -23,4 +23,9 @@ public class ExprAndNode extends ExprNode {
         long rv = (long) r.eval(obj);
         return (long) ((lv != 0 && rv != 0) ? 1 : 0);
     }
+
+    @Override
+    public String inorderString() {
+        return String.format("(%s,%s,%s)", "and", l.inorderString(), r.inorderString());
+    }
 }

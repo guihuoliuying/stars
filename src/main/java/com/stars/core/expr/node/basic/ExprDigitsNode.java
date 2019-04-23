@@ -24,4 +24,9 @@ public class ExprDigitsNode extends ExprNode {
     public String toString() {
         return Long.toString(digits);
     }
+
+    @Override
+    public String inorderString() {
+        return String.format("(%s,%d)", "digits", digits);
+    }
 }

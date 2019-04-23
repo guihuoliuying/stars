@@ -28,4 +28,13 @@ public class ExprInNode extends ExprNode {
         }
         return (long) 0;
     }
+
+    @Override
+    public String inorderString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        el.forEach(node -> sb.append(node.inorderString()).append(","));
+        sb.append("]");
+        return String.format("(%s,%s,%s)", "in", n.inorderString(), sb.toString());
+    }
 }

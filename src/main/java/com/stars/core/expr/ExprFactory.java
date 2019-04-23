@@ -9,6 +9,10 @@ public class ExprFactory {
     private ExprConfig config;
     private ConcurrentMap<String, ExprNode> cache;
 
+    public ExprFactory() {
+        this.config = new ExprConfig();
+    }
+
     public ExprFactory(ExprConfig config) {
         this.config = config;
     }
@@ -18,7 +22,7 @@ public class ExprFactory {
             return cache.get(exprString);
         } else {
             return cache.computeIfAbsent(
-                    exprString, s -> new ExprParser(new ExprLexer(exprString)).parse());
+                    exprString, s -> new ExprParser(new ExprLexer(exprString), config).parse());
         }
     }
 }

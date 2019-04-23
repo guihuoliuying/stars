@@ -18,4 +18,9 @@ public class ExprAddNode extends ExprNode {
     public Object eval(Object obj) {
         return (long) l.eval(obj) + (long) r.eval(obj);
     }
+
+    @Override
+    public String inorderString() {
+        return String.format("(%s,%s,%s)", "add", l.inorderString(), r.inorderString());
+    }
 }

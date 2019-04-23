@@ -19,4 +19,9 @@ public class ExprStringNode extends ExprNode {
     public Object eval(Object obj) {
         return str;
     }
+
+    @Override
+    public String inorderString() {
+        return String.format("(%s,%s)", "string", str);
+    }
 }

@@ -18,4 +18,9 @@ public class ExprPowNode extends ExprNode {
     public Object eval(Object obj) {
         return (long) Math.pow((long) l.eval(obj), (long) r.eval(obj));
     }
+
+    @Override
+    public String inorderString() {
+        return String.format("(%s,%s,%s)", "pow", l.inorderString(), r.inorderString());
+    }
 }

@@ -28,4 +28,9 @@ public class ExprBetweenNode extends ExprNode {
         return (long) (nv >= rln && nv <= rrn ? 1 : 0);
     }
 
+    @Override
+    public String inorderString() {
+        return String.format("(%s,%s,%s,%s)", "between",
+                n.inorderString(), rl.inorderString(), rr.inorderString());
+    }
 }

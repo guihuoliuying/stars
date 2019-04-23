@@ -46,10 +46,14 @@ public class ExprUtil {
         System.out.println(new ExprParser(new ExprLexer("((1+1)*(1+2))^3")).parse().eval(null));
         System.out.println(new ExprParser(new ExprLexer("(1+1)*(1+2)^3")).parse().eval(null));
 
-        new ExprParser(new ExprLexer("level > 1 and level < 10")).parse();
-        new ExprParser(new ExprLexer("(level > 1]")).parse();
+//        new ExprParser(new ExprLexer("level > 1 and level < 10")).parse();
+//        new ExprParser(new ExprLexer("(level > 1]")).parse();
 
-
+        System.out.println(new ExprParser(new ExprLexer("1 + 1 * 2 ^ 3")).parse().inorderString());
+        System.out.println(new ExprParser(new ExprLexer("((1+1)*(1+2))^3")).parse().inorderString());
+        System.out.println(new ExprParser(new ExprLexer("(1+1)*(1+2)^3")).parse().inorderString());
+        System.out.println(new ExprParser(new ExprLexer("level in (1,2,3,4,5,6)")).parse().inorderString());
+        System.out.println(new ExprParser(new ExprLexer("{add, 1, 2}")).parse().inorderString());
     }
 
 }

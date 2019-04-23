@@ -33,4 +33,13 @@ public class ExprFuncNode extends ExprNode {
         }
         return func.eval(obj, list);
     }
+
+    @Override
+    public String inorderString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        paramList.forEach(node -> sb.append(node.inorderString()).append(","));
+        sb.append("]");
+        return String.format("(%s,%s,%s)", "function", name, sb.toString());
+    }
 }

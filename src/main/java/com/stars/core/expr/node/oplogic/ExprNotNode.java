@@ -20,4 +20,9 @@ public class ExprNotNode extends ExprNode {
         long v = (long) n.eval(obj);
         return (long) (v != 0 ? 0 : 1);
     }
+
+    @Override
+    public String inorderString() {
+        return String.format("(%s,%s)", "not", n.inorderString());
+    }
 }

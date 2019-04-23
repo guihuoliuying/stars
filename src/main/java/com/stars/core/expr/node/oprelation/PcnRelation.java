@@ -46,4 +46,8 @@ public class PcnRelation extends ExprNode {
         return op;
     }
 
+    @Override
+    public String inorderString() {
+        return String.format("(%s,%s,%s)", op, l.inorderString(), r.inorderString());
+    }
 }
