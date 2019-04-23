@@ -20,8 +20,12 @@ public class ExprAndNode extends ExprNode {
     @Override
     public Object eval(Object obj) {
         long lv = (long) l.eval(obj);
+        // short cut
+        if (lv == 0) {
+            return 0;
+        }
         long rv = (long) r.eval(obj);
-        return (long) ((lv != 0 && rv != 0) ? 1 : 0);
+        return (long) (rv != 0 ? 1 : 0);
     }
 
     @Override
