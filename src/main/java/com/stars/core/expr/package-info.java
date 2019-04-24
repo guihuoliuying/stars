@@ -43,4 +43,9 @@ package com.stars.core.expr;
  * <code>ExprNode expr = new ExprParser(new ExprLexer("1 + 1 == 2"), config).parse()</code>
  * 4. 对条件表达式进行求值
  * <code>ExprUtil.isTrue(expr)</code>
+ *
+ * 想法：
+ * 1. 增加双精度，编译时类型检查，类型转换
+ * 2. 增加提示
+ * 3. 执行时性能优化（ASM和javassist）
  */

@@ -39,7 +39,7 @@ public class ExprUtil {
         System.out.println(ctx.getFalseStack());
 
         //
-        System.out.println(ExprUtil.isTrue(new ExprParser(new ExprLexer("1 + 1 == 2")).parse()));
+        System.out.println(ExprUtil.isTrue(new ExprParser(new ExprLexer("level > 10")).parse()));
     }
 
 }
