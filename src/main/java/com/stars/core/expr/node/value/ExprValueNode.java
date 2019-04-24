@@ -1,6 +1,7 @@
 package com.stars.core.expr.node.value;
 
 import com.stars.core.expr.ExprConfig;
+import com.stars.core.expr.ExprContext;
 import com.stars.core.expr.node.ExprNode;
 import com.stars.util.LogUtil;
 
@@ -17,7 +18,7 @@ public class ExprValueNode extends ExprNode {
     }
 
     @Override
-    public Object eval(Object obj) {
+    public Object eval(Object obj, ExprContext ctx) {
         ExprValue pcv = config.getValue(name);
         if (pcv == null) {
             LogUtil.error("条件表达式|不存在单值:" + name);
@@ -35,6 +36,6 @@ public class ExprValueNode extends ExprNode {
 
     @Override
     public String inorderString() {
-        return String.format("(%s,%s)", "value", name);
+        return String.format("(%s,%s)", "V", name);
     }
 }

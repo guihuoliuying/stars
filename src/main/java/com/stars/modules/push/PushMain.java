@@ -43,7 +43,7 @@ public class PushMain {
 //        }
         ExprParser parser = new ExprParser(lexer);
         ExprNode ret = parser.parse();
-        System.out.println("ret: " + ret.eval(null));
+        System.out.println("ret: " + ret.eval(null, null));
     }
 
 }

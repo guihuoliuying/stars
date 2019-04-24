@@ -1,7 +1,11 @@
 package com.stars.core.expr.node.oprelation;
 
 import com.stars.core.expr.ExprConfig;
+import com.stars.core.expr.ExprContext;
 import com.stars.core.expr.node.ExprNode;
+
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 
 /**
  * Created by zhaowenshuo on 2017/3/25.
@@ -20,17 +24,23 @@ public class ExprBetweenNode extends ExprNode {
     }
 
     @Override
-    public Object eval(Object obj) {
-        long nv = (long) n.eval(obj);
-        long rln = (long) rl.eval(obj);
-        long rrn = (long) rr.eval(obj);
+    public Object eval(Object obj, ExprContext ctx) {
+        long nv = (long) n.eval(obj, null);
+        long rln = (long) rl.eval(obj, null);
+        long rrn = (long) rr.eval(obj, null);
         if (rln > rrn) throw new IllegalStateException("eval error");
-        return (long) (nv >= rln && nv <= rrn ? 1 : 0);
+
+        long result = (long) (nv >= rln && nv <= rrn ? 1 : 0);
+        // push the failure message
+        if (result == 0) {
+            ctx.getFalseStack().push(new LinkedHashSet<>(Arrays.asList(this)));
+        }
+        return result;
     }
 
     @Override
     public String inorderString() {
-        return String.format("(%s,%s,%s,%s)", "between",
+        return String.format("(%s,%s,%s,%s)", "Between",
                 n.inorderString(), rl.inorderString(), rr.inorderString());
     }
 }

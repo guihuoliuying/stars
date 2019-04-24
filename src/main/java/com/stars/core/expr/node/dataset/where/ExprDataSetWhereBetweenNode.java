@@ -27,8 +27,8 @@ public class ExprDataSetWhereBetweenNode implements ExprDataSetWhereNode {
     @Override
     public boolean eval(ExprData data, Object obj) {
         long fv = data.getField(fieldName);
-        long rln = (long) rl.eval(obj);
-        long rrn = (long) rr.eval(obj);
+        long rln = (long) rl.eval(obj, null);
+        long rrn = (long) rr.eval(obj, null);
         if (rln > rrn) throw new IllegalStateException("eval error");
         return fv >= rln && fv <= rrn ? true : false;
     }

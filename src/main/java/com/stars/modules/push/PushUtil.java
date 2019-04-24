@@ -11,7 +11,7 @@ import java.util.Map;
 public class PushUtil {
 
     public static boolean isTrue(ExprNode expr, Map<String, Module> moduleMap) {
-        return (Long) expr.eval(moduleMap) != 0L;
+        return (Long) expr.eval(moduleMap, null) != 0L;
     }
 
 }

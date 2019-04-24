@@ -1,6 +1,7 @@
 package com.stars.core.expr.node.oplogic;
 
 import com.stars.core.expr.ExprConfig;
+import com.stars.core.expr.ExprContext;
 import com.stars.core.expr.node.ExprNode;
 
 /**
@@ -16,9 +17,13 @@ public class ExprNotNode extends ExprNode {
     }
 
     @Override
-    public Object eval(Object obj) {
-        long v = (long) n.eval(obj);
-        return (long) (v != 0 ? 0 : 1);
+    public Object eval(Object obj, ExprContext ctx) {
+        long v = (long) n.eval(obj, null);
+        if (v == 0) {
+            ctx.getFalseStack().push(ctx.getFalseStack().pop());
+            return (long) 0;
+        }
+        return (long) 1;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.stars.core.expr.node.basic;
 
 import com.stars.core.expr.ExprConfig;
+import com.stars.core.expr.ExprContext;
 import com.stars.core.expr.node.ExprNode;
 
 /**
@@ -16,7 +17,7 @@ public class ExprDigitsNode extends ExprNode {
     }
 
     @Override
-    public Object eval(Object obj) {
+    public Object eval(Object obj, ExprContext ctx) {
         return digits;
     }
 
@@ -27,6 +28,6 @@ public class ExprDigitsNode extends ExprNode {
 
     @Override
     public String inorderString() {
-        return String.format("(%s,%d)", "digits", digits);
+        return String.format("(%s,%d)", "D", digits);
     }
 }

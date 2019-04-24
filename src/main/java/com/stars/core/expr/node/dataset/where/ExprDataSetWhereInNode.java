@@ -28,7 +28,7 @@ public class ExprDataSetWhereInNode implements ExprDataSetWhereNode {
     public boolean eval(ExprData data, Object obj) {
         long fv = data.getField(fieldName);
         for (ExprNode e : el) {
-            long ev = (long) e.eval(obj);
+            long ev = (long) e.eval(obj, null);
             if (ev == fv) return true;
         }
         return false;

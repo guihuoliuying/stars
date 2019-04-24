@@ -1,6 +1,7 @@
 package com.stars.core.expr.node.basic;
 
 import com.stars.core.expr.ExprConfig;
+import com.stars.core.expr.ExprContext;
 import com.stars.core.expr.node.ExprNode;
 
 /**
@@ -16,12 +17,12 @@ public class ExprStringNode extends ExprNode {
     }
 
     @Override
-    public Object eval(Object obj) {
+    public Object eval(Object obj, ExprContext ctx) {
         return str;
     }
 
     @Override
     public String inorderString() {
-        return String.format("(%s,%s)", "string", str);
+        return String.format("(%s,%s)", "S", str);
     }
 }

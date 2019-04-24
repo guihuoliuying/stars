@@ -1,6 +1,7 @@
 package com.stars.core.expr.node.func;
 
 import com.stars.core.expr.ExprConfig;
+import com.stars.core.expr.ExprContext;
 import com.stars.core.expr.node.ExprNode;
 import com.stars.util.LogUtil;
 
@@ -22,14 +23,14 @@ public class ExprFuncNode extends ExprNode {
     }
 
     @Override
-    public Object eval(Object obj) {
+    public Object eval(Object obj, ExprContext ctx) {
         ExprFunc func = config.getFunc(name);
         if (func == null) {
             LogUtil.error("条件表达式|不存在函数:" + name);
         }
         List<Object> list = new ArrayList<>();
         for (ExprNode param : paramList) {
-            list.add(param.eval(obj));
+            list.add(param.eval(obj, null));
         }
         return func.eval(obj, list);
     }
@@ -40,6 +41,6 @@ public class ExprFuncNode extends ExprNode {
         sb.append("[");
         paramList.forEach(node -> sb.append(node.inorderString()).append(","));
         sb.append("]");
-        return String.format("(%s,%s,%s)", "function", name, sb.toString());
+        return String.format("(%s,%s,%s)", "F", name, sb.toString());
     }
 }

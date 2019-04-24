@@ -1,6 +1,7 @@
 package com.stars.core.expr.node.dataset;
 
 import com.stars.core.expr.ExprConfig;
+import com.stars.core.expr.ExprContext;
 import com.stars.core.expr.node.ExprNode;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class ExprDataSetNode extends ExprNode {
     }
 
     @Override
-    public Object eval(Object obj) {
+    public Object eval(Object obj, ExprContext ctx) {
         ExprDataSet dataSet = config.newDataSet(name, obj);
         long c = 0L;
         while (dataSet.hasNext()) {

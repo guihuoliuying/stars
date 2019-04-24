@@ -13,9 +13,7 @@ import com.stars.core.expr.node.oparith.*;
 import com.stars.core.expr.node.oplogic.ExprAndNode;
 import com.stars.core.expr.node.oplogic.ExprNotNode;
 import com.stars.core.expr.node.oplogic.ExprOrNode;
-import com.stars.core.expr.node.oprelation.ExprBetweenNode;
-import com.stars.core.expr.node.oprelation.ExprInNode;
-import com.stars.core.expr.node.oprelation.PcnRelation;
+import com.stars.core.expr.node.oprelation.*;
 import com.stars.core.expr.node.value.ExprValueNode;
 
 import java.util.ArrayList;
@@ -144,7 +142,26 @@ public class ExprParser {
                 String op = match(TAG_RELATION_OP).lexeme();
 //                ExprNode right = parseNumberExpr();
                 ExprNode right = parseAddSubExpr();
-                ret = new PcnRelation(config, left, right, op);
+                switch (op) {
+                    case "==":
+                        ret = new ExprEqNode(config, left, right);
+                        break;
+                    case "!=":
+                        ret = new ExprNeNode(config, left, right);
+                        break;
+                    case ">":
+                        ret = new ExprGtNode(config, left, right);
+                        break;
+                    case ">=":
+                        ret = new ExprGeNode(config, left, right);
+                        break;
+                    case "<":
+                        ret = new ExprLtNode(config, left, right);
+                        break;
+                    case "<=":
+                        ret = new ExprLeNode(config, left, right);
+                        break;
+                }
                 break;
             case TAG_BETWEEN:
                 match(TAG_BETWEEN);

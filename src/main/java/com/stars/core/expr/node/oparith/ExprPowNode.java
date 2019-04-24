@@ -1,6 +1,7 @@
 package com.stars.core.expr.node.oparith;
 
 import com.stars.core.expr.ExprConfig;
+import com.stars.core.expr.ExprContext;
 import com.stars.core.expr.node.ExprNode;
 
 public class ExprPowNode extends ExprNode {
@@ -15,12 +16,12 @@ public class ExprPowNode extends ExprNode {
     }
 
     @Override
-    public Object eval(Object obj) {
-        return (long) Math.pow((long) l.eval(obj), (long) r.eval(obj));
+    public Object eval(Object obj, ExprContext ctx) {
+        return (long) Math.pow((long) l.eval(obj, null), (long) r.eval(obj, null));
     }
 
     @Override
     public String inorderString() {
-        return String.format("(%s,%s,%s)", "pow", l.inorderString(), r.inorderString());
+        return String.format("(%s,%s,%s)", "Pow", l.inorderString(), r.inorderString());
     }
 }

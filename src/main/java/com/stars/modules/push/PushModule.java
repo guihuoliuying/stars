@@ -421,7 +421,7 @@ public class PushModule extends AbstractModule {
         if (vo == null) {
             return false;
         }
-        return (Long) vo.getCondChecker().eval(moduleMap()) != 0L;
+        return (Long) vo.getCondChecker().eval(moduleMap(), null) != 0L;
     }
 
     public boolean satisfyDate(int pushId) {

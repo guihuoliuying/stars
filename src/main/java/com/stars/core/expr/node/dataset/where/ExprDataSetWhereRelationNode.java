@@ -27,7 +27,7 @@ public class ExprDataSetWhereRelationNode implements ExprDataSetWhereNode {
     @Override
     public boolean eval(ExprData data, Object obj) {
         long fv = data.getField(fieldName);
-        long rv = (long) r.eval(obj);
+        long rv = (long) r.eval(obj, null);
         switch (op) {
             case ">": return fv > rv;
             case ">=": return fv >= rv;

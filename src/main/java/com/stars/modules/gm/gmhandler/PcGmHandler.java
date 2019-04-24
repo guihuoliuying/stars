@@ -25,8 +25,8 @@ public class PcGmHandler implements GmHandler {
         }
         System.out.println(sb.toString());
         ExprNode node = new ExprParser(new ExprLexer(sb.toString())).parse();
-        long ret = (long) node.eval(moduleMap);
-        System.out.println(node.eval(moduleMap));
+        long ret = (long) node.eval(moduleMap, null);
+        System.out.println(node.eval(moduleMap, null));
         ((RoleModule) moduleMap.get(MConst.Role)).warn("ret = " + ret);
     }
 }

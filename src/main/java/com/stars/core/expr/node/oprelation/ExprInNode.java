@@ -1,8 +1,11 @@
 package com.stars.core.expr.node.oprelation;
 
 import com.stars.core.expr.ExprConfig;
+import com.stars.core.expr.ExprContext;
 import com.stars.core.expr.node.ExprNode;
 
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
@@ -20,12 +23,14 @@ public class ExprInNode extends ExprNode {
     }
 
     @Override
-    public Object eval(Object obj) {
-        long nv = (long) n.eval(obj);
+    public Object eval(Object obj, ExprContext ctx) {
+        long nv = (long) n.eval(obj, null);
         for (ExprNode e : el) {
-            long ev = (long) e.eval(obj);
+            long ev = (long) e.eval(obj, null);
             if (ev == nv) return (long) 1;
         }
+        // push the failure message
+        ctx.getFalseStack().push(new LinkedHashSet<>(Arrays.asList(this)));
         return (long) 0;
     }
 
@@ -35,6 +40,6 @@ public class ExprInNode extends ExprNode {
         sb.append("[");
         el.forEach(node -> sb.append(node.inorderString()).append(","));
         sb.append("]");
-        return String.format("(%s,%s,%s)", "in", n.inorderString(), sb.toString());
+        return String.format("(%s,%s,%s)", "In", n.inorderString(), sb.toString());
     }
 }
