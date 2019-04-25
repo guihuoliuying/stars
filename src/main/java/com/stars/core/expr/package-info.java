@@ -36,6 +36,9 @@ package com.stars.core.expr;
  * B. [] - 简略的select count(1) from ... where ...
  * C. {} - 函数调用
  * <p>
+ *     提示说明
+ *
+ * <p>
  * 使用方式
  * 1. 对条件进行扩展，继承ExprValue，ExprDataSet，ExprFunc
  * 2. 在ExprConfig实例中注册这些扩展条件
@@ -48,4 +51,5 @@ package com.stars.core.expr;
  * 1. 增加双精度，编译时类型检查，类型转换
  * 2. 增加提示
  * 3. 执行时性能优化（ASM和javassist）
+ * 4. 精准测试
  */

@@ -3,6 +3,7 @@ package com.stars.core.expr;
 import com.stars.core.expr.node.dataset.ExprDataSet;
 import com.stars.core.expr.node.func.ExprFunc;
 import com.stars.core.expr.node.value.ExprValue;
+import com.stars.core.expr.tips.ExprTips;
 import com.stars.util.LogUtil;
 
 import java.util.HashMap;
@@ -19,6 +20,9 @@ public class ExprConfig {
     private Map<String, Class<? extends ExprDataSet>> dataSetClassMap = new HashMap<>();
     private Map<String, Set<String>> dataSetFieldMap = new HashMap<>();
     private Map<String, ExprFunc> funcMap = new HashMap<>();
+
+    // tips
+    private Map<Integer, ExprTips> tipsMap = new HashMap<>();
 
     protected void registerValue(String name, Class<? extends ExprValue> clazz) {
         checkNotNull(name);
