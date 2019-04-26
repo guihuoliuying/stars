@@ -1,6 +1,6 @@
 package com.stars.server.login2.dbcallback;
 
-import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
+import com.mysql.cj.jdbc.exceptions.MySQLTimeoutException;
 import com.stars.server.login2.asyncdb.AsyncDbCallback;
 import com.stars.server.login2.asyncdb.AsyncDbResult;
 import com.stars.server.login2.model.manager.LAccountManager;
@@ -59,7 +59,7 @@ public class InsertSqlCallback extends AsyncDbCallback {
             // 修改状态
             // 先处理主键重复的失败
             Throwable cause = result.getCause();
-            if (cause != null && cause instanceof MySQLIntegrityConstraintViolationException) {
+            if (cause != null && cause instanceof MySQLTimeoutException) {
                 if (account != null) {
                     synchronized (account) {
                         // 修改状态

@@ -88,7 +88,7 @@ public class MainStartup implements Business {
         try {
             com.stars.util.ExecuteManager.init(32);
             ServerVersion.load();//加载服务版本号
-            initHotswapEnv();
+//            initHotswapEnv();
             DBUtil.init();// 初始化数据库连接池(proxool)
             MultiServerHelper.loadPublicServerConfig();
             loadServerChannel();

@@ -63,7 +63,7 @@ public class RoleModuleFactory extends AbstractModuleFactory<RoleModule> {
         loadVigorPrice();
 
         /* 体力可以储存的最大上限值 */
-        loadVigorCanSaveMaxLimit();
+//        loadVigorCanSaveMaxLimit();
     }
 
     @Override

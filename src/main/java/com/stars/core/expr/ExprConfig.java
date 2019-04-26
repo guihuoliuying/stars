@@ -6,6 +6,7 @@ import com.stars.core.expr.node.value.ExprValue;
 import com.stars.core.expr.tips.ExprTips;
 import com.stars.util.LogUtil;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -75,7 +76,7 @@ public class ExprConfig {
     }
 
     public Set<String> getFieldSet(String name) {
-        return dataSetFieldMap.get(name);
+        return dataSetFieldMap.getOrDefault(name, Collections.emptySet());
     }
 
     public ExprFunc getFunc(String name) {

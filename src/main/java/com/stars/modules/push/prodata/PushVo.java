@@ -3,6 +3,7 @@ package com.stars.modules.push.prodata;
 import com.stars.core.expr.ExprLexer;
 import com.stars.core.expr.ExprParser;
 import com.stars.core.expr.node.ExprNode;
+import com.stars.modules.base.condition.BaseExprConfig;
 import com.stars.modules.push.trigger.PushTriggerSet;
 import com.stars.util.LogUtil;
 
@@ -36,7 +37,7 @@ public class PushVo {
 
     public void init() throws Exception {
         try {
-            this.condChecker = new ExprParser(new ExprLexer(condition)).parse();
+            this.condChecker = new ExprParser(new ExprLexer(condition), BaseExprConfig.config).parse();
             this.triggerSet = new PushTriggerSet(pushId, trigger);
             // pushtimes -> type + times
             this.type = Integer.parseInt(pushTimes.split("\\+")[0]);
