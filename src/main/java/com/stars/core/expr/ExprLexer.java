@@ -64,8 +64,22 @@ public class ExprLexer {
         if (peek == '!' || peek == '！') {
             nextChar();
             if (peek == '=' || peek == '＝') return newTokenAndNextChar(TAG_RELATION_OP, "!=");
+            else if (peek == '(' || peek == '[' || peek == '{' || isDigit(peek) || isLetter(peek))
+                return newToken(TAG_NOT, "not");
             else throw new IllegalStateException("条件解析异常|缺少:=");
         }
+        // 兼容&&和||
+        if (peek == '&') {
+            nextChar();
+            if (peek == '&') return newTokenAndNextChar(TAG_AND, "and");
+            else throw new IllegalStateException("表达式解析异常|缺少: &");
+        }
+        if (peek == '|') {
+            nextChar();
+            if (peek == '|') return newTokenAndNextChar(TAG_OR, "or");
+            else throw new IllegalStateException("表达式解析异常|缺少: |");
+        }
+        // 数值
         if (isDigit(peek)) {
             appendAndNextChar(peek);
             while (isDigit(peek)) appendAndNextChar(peek);
