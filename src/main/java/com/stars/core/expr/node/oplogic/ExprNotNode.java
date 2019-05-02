@@ -19,8 +19,10 @@ public class ExprNotNode extends ExprNode {
     @Override
     public Object eval(Object obj, ExprContext ctx) {
         long v = (long) n.eval(obj, null);
-        if (v == 0) {
-            ctx.getFalseStack().push(ctx.getFalseStack().pop());
+        if (v != 0) {
+            if (ctx.getFalseStack().size() > 0) {
+                ctx.getFalseStack().push(ctx.getFalseStack().pop());
+            }
             return (long) 0;
         }
         return (long) 1;

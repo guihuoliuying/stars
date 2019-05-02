@@ -19,20 +19,24 @@ public class ExprOrNode extends ExprBinaryNode {
 
     @Override
     public Object eval(Object obj, ExprContext ctx) {
-        long lv = (long) l.eval(obj, null);
+        long lv = (long) l.eval(obj, ctx);
         // short cut
         if (lv != 0) {
             return (long) 1;
         }
-        long rv = (long) r.eval(obj, null);
+        long rv = (long) r.eval(obj, ctx);
         if (rv != 0) {
             return (long) 1;
         }
         // message of condition failure
         if (ctx != null) {
             Set<ExprNode> nodeSet = new LinkedHashSet<>();
-            nodeSet.addAll(ctx.getFalseStack().pop());
-            nodeSet.addAll(ctx.getFalseStack().pop());
+            if (ctx.getFalseStack().size() > 0) {
+                nodeSet.addAll(ctx.getFalseStack().pop());
+            }
+            if (ctx.getFalseStack().size() > 0) {
+                nodeSet.addAll(ctx.getFalseStack().pop());
+            }
             ctx.getFalseStack().push(nodeSet);
         }
         return (long) 0;

@@ -19,13 +19,17 @@ public class ExprAndNode extends ExprBinaryNode {
         // left
         long lv = (long) l.eval(obj, ctx);
         if (lv == 0) {
-            ctx.getFalseStack().push(ctx.getFalseStack().pop());
+            if (ctx.getFalseStack().size() > 0) {
+                ctx.getFalseStack().push(ctx.getFalseStack().pop());
+            }
             return (long) 0;
         }
         // right
         long rv = (long) r.eval(obj, ctx);
         if (rv == 0) {
-            ctx.getFalseStack().push(ctx.getFalseStack().pop());
+            if (ctx.getFalseStack().size() > 0) {
+                ctx.getFalseStack().push(ctx.getFalseStack().pop());
+            }
             return (long) 0;
         }
         return (long) 1;

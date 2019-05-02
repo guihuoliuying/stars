@@ -238,11 +238,11 @@ public class ExprParser {
             match(TAG_OP_MUL);
             ret = new ExprMulNode(null, left, parsePowExpr());
             ret = parseMulDivModExpr0(ret);
-        } else if (lookahead.tag() == TAG_OP_SUB) {
+        } else if (lookahead.tag() == TAG_OP_DIV) {
             match(TAG_OP_DIV);
             ret = new ExprDivNode(null, left, parsePowExpr());
             ret = parseMulDivModExpr0(ret);
-        } else if (lookahead.tag() == TAG_OP_SUB) {
+        } else if (lookahead.tag() == TAG_OP_MOD) {
             match(TAG_OP_MOD);
             ret = new ExprModNode(null, left, parsePowExpr());
             ret = parseMulDivModExpr0(ret);
