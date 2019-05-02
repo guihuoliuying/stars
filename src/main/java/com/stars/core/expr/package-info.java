@@ -37,7 +37,7 @@ package com.stars.core.expr;
  * C. {} - 函数调用
  * <p>
  *     提示说明
- *
+ * 目前只支持单值式的说明
  * <p>
  * 使用方式
  * 1. 对条件进行扩展，继承ExprValue，ExprDataSet，ExprFunc

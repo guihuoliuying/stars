@@ -42,4 +42,12 @@ public class ExprInNode extends ExprNode {
         sb.append("]");
         return String.format("(%s,%s,%s)", "In", n.inorderString(), sb.toString());
     }
+
+    public ExprNode getChild() {
+        return n;
+    }
+
+    public List<ExprNode> getElemList() {
+        return el;
+    }
 }

@@ -34,6 +34,10 @@ public class ExprValueNode extends ExprNode {
         return pcv.toString();
     }
 
+    public String getName() {
+        return name;
+    }
+
     @Override
     public String inorderString() {
         return String.format("(%s,%s)", "V", name);

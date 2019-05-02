@@ -52,4 +52,7 @@ public class ExprDataSetNode extends ExprNode {
         return c;
     }
 
+    public String getName() {
+        return name;
+    }
 }

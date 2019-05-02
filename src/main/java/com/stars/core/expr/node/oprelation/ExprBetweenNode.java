@@ -43,4 +43,16 @@ public class ExprBetweenNode extends ExprNode {
         return String.format("(%s,%s,%s,%s)", "Between",
                 n.inorderString(), rl.inorderString(), rr.inorderString());
     }
+
+    public ExprNode getChild() {
+        return n;
+    }
+
+    public ExprNode getRangeLeft() {
+        return rl;
+    }
+
+    public ExprNode getRangeRight() {
+        return rr;
+    }
 }

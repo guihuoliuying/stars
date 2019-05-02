@@ -24,4 +24,12 @@ public abstract class ExprBinaryRelationNode extends ExprBinaryNode {
     }
 
     public abstract Object eval0(Object obj, ExprContext ctx);
+
+    public ExprNode getLeft() {
+        return l;
+    }
+
+    public ExprNode getRight() {
+        return r;
+    }
 }

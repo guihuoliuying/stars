@@ -35,6 +35,10 @@ public class ExprFuncNode extends ExprNode {
         return func.eval(obj, list);
     }
 
+    public String getName() {
+        return name;
+    }
+
     @Override
     public String inorderString() {
         StringBuilder sb = new StringBuilder();

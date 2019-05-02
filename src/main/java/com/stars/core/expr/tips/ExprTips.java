@@ -1,35 +1,68 @@
 package com.stars.core.expr.tips;
 
-import com.google.common.base.Preconditions;
-
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * type(3): value, function, dataset
- * extension id(13):
- * predicate id(13):
+ * extension id(16):
+ * predicate id(10):
  * <p>
  * 通过枚举完成
  */
 public class ExprTips {
 
-    private int tips;
-    private List<String> paramList;
+    private final static Pattern placeholderPattern = Pattern.compile("\\{\\d+\\}");
 
-    public ExprTips(ExprTipsType type, int extensionId, int predicateId, String... params) {
-        Preconditions.checkArgument((extensionId & 0x1FFF) == extensionId);
-        Preconditions.checkArgument((predicateId & 0x1FFF) == extensionId);
-        tips = 0;
-        tips |= type.ordinal() << 26;
-        tips |= extensionId << 13;
-        tips |= predicateId;
+    private int tipsId;
+    private String tips;
+
+    private boolean needParams;
+//    private List<Integer> paramIndexList;
+
+    public ExprTips(int tipsId, String tips) {
+        this.tipsId = tipsId;
+        this.tips = tips;
+        this.needParams = false;
+//        this.paramIndexList = new ArrayList<>();
+        // init place holder
+        Set<String> paramIndexSet = new HashSet<>();
+        Matcher matcher = placeholderPattern.matcher(tips);
+        if (matcher.find()) {
+            this.needParams = true;
+            int start;
+            do {
+                start = matcher.end();
+                paramIndexSet.add(matcher.group());
+            } while (matcher.find(start));
+        }
+        // check the index
+        for (int i = 0; i < paramIndexSet.size(); i++) {
+            if (!paramIndexSet.contains("{" + i + "}")) {
+                throw new IllegalArgumentException("wrong param: {" + i + "}");
+            }
+        }
     }
 
-    public int getTips() {
+    public String makeString(String... params) {
+        String result = tips;
+        for (int i = 0; i < params.length; i++) {
+            result = result.replace("{" + i + "}", params[i]);
+        }
+        return result;
+    }
+
+    public int getTipsId() {
+        return tipsId;
+    }
+
+    public String getTips() {
         return tips;
     }
 
-    public List<String> getParamList() {
-        return paramList;
+    public boolean isNeedParams() {
+        return needParams;
     }
 }
