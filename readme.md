@@ -22,15 +22,32 @@ This engine come from an online project called Si Mei Ren.
 ### Common Service
 ### An Expression
 #### Overview
-`level > 0`
-`1 + 2 == 3`
-`level > 10 && vip > 0`
-`level in (10, 11, 12)`
-`level between (10, 20)`
-`[itemBag, quality > 10] > 10`
-`{isopen, 'friend'}`
+This expression util supply the basic operation for game, including most used relation operator, logic operator and a
+simple select operator. There are some example as follows.
+
+    level > 0                       // the level of player is greater than 0
+    1 + 2 == 3                      // the sum of 1 and 2 is equal to 3
+    level > 10 && vip > 0           // the level of player is greater than 10 and the vip is greater than 0
+    level in (10, 11, 12)           // the level of player is 10, or 11, or 12
+    level between (10, 20)          // the level of player is between 10(inclusive) and 20(inclusive)
+    [itemBag, quality > 10] > 20    // the count of item in itemBag where quality is greater than 10 is greater than 20
+    {isopen, 'friend'}              // call the 'isopen' function, passing the parameter 'friend'
+    
 #### Priority
-#### 
+| Operator | Description |
+| :-----: | ----- |
+| ()  | parentheses |
+| [] | |
+| {} | |
+| ^ | pow |
+| *、/、% | mul, div, mod |
+| +、- | add, sub |
+| ==、!=、>、>=、<、<=、in、between | eq, ne, gt, ge, lt, le, in, btween |
+| not、! | not |
+| and、&& | and |
+| or、&#124;&#124; | or |
+
+#### lll
 
 ## Introduction to Fight Server
 ### Overview
