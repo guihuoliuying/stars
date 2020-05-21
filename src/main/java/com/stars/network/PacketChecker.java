@@ -1,6 +1,5 @@
 package com.stars.network;
 
-import com.stars.modules.chat.ChatPacketSet;
 import com.stars.modules.customerService.CustomerServicePacketSet;
 import com.stars.modules.daily.DailyPacketSet;
 import com.stars.modules.demologin.LoginPacketSet;
@@ -9,7 +8,6 @@ import com.stars.modules.email.EmailPacketSet;
 import com.stars.modules.family.FamilyPacketSet;
 import com.stars.modules.foreshow.ForeShowPacketSet;
 import com.stars.modules.friend.FriendPacketSet;
-import com.stars.modules.friendInvite.InvitePacketSet;
 import com.stars.modules.friendShare.SharePacketSet;
 import com.stars.modules.getway.GetWayPacketSet;
 import com.stars.modules.gm.GmPacketSet;
@@ -81,7 +79,6 @@ public class PacketChecker {
         check((short) 0x0010, (short) 0x0019, packetTypes, bitmap, new RolePacketSet()); // 人物
 
         check((short) 0x0020, (short) 0x0025, packetTypes, bitmap, new NamePacketSet());// 取名
-        check((short) 0x0026, (short) 0x0029, packetTypes, bitmap, new ChatPacketSet());//聊天
         check((short) 0x002a, (short) 0x002d, packetTypes, bitmap, new DailyPacketSet());//活跃度
         check((short) 0x0031, (short) 0x0035, packetTypes, bitmap, new ToolPacketSet()); // 道具
 
@@ -96,7 +93,6 @@ public class PacketChecker {
         check((short) 0x0188, (short) 0x018F, packetTypes, bitmap, new VipPacketSet());    // vip(贵族系统)
         check((short) 0x0190, (short) 0x0197, packetTypes, bitmap, new OperateActivityPacketSet());    // 运营活动系统
         check((short) 0x0284, (short) 0x0287, packetTypes, bitmap, new SharePacketSet()); // 朋友圈分享
-        check((short) 0x028A, (short) 0x028D, packetTypes, bitmap, new InvitePacketSet()); //好友邀请
         check((short) 0x028E, (short) 0x0291, packetTypes, bitmap, new TrueNamePacketSet()); //实名认证
         check((short) 0x0292, (short) 0x029F, packetTypes, bitmap, new PlaceholderPacketSet()); // 符文装备体验副本
         check((short) 0x02A4, (short) 0x02A7, packetTypes, bitmap, new GetWayPacketSet()); // 获取途径
@@ -122,8 +118,6 @@ public class PacketChecker {
 		/*
          * 设置不需缓存的PacketType
 		 */
-        addPacketTypeWithoutCache(ChatPacketSet.Server_ChatMessage); // 聊天(上行)
-        addPacketTypeWithoutCache(ChatPacketSet.Client_ChatMessage); // 聊天(下行)
         addPacketTypeWithoutCache(LoginPacketSet.S_RECONNECT); // 重连(上行)
         addPacketTypeWithoutCache(LoginPacketSet.C_RECONNECT); // 重连(下行)
     }

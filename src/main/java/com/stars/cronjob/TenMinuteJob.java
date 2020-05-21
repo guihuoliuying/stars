@@ -61,7 +61,6 @@ public class TenMinuteJob implements Job{
         try {
 		/* 打印状态 */
             ServiceHelper.summaryService().printState();
-            ServiceHelper.chatService().printState();
         } catch (Throwable cause) {
             LogUtil.error("printServiceState异常", cause);
         }

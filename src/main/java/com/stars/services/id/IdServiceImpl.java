@@ -20,16 +20,16 @@ public class IdServiceImpl implements IdService {
     public void init() throws Throwable {
         BootstrapConfig config = ServerManager.getServer().getConfig();
         idGenerator = new IdGenerator();
-        idGenerator.register("roleId", new RoleIdAllocator(config.getServerId()));
-        idGenerator.register("toolId", new ToolIdAllocator(config.getServerId()));
-        idGenerator.register("familyId", new FamilyIdAllocator(config.getServerId()));
-        idGenerator.register("familyRedPacketId", new FamilyRedPacketIdAllocator(config.getServerId()));
+//        idGenerator.register("roleId", new RoleIdAllocator(config.getServerId()));
+//        idGenerator.register("toolId", new ToolIdAllocator(config.getServerId()));
+//        idGenerator.register("familyId", new FamilyIdAllocator(config.getServerId()));
+//        idGenerator.register("familyRedPacketId", new FamilyRedPacketIdAllocator(config.getServerId()));
         idGenerator.init();
 
-        roleIdAllocator = (RoleIdAllocator) idGenerator.get("roleId");
-        toolIdAllocator = (ToolIdAllocator) idGenerator.get("toolId");
-        familyIdAllocator = (FamilyIdAllocator) idGenerator.get("familyId");
-        familyRedPacketIdAllocator = (FamilyRedPacketIdAllocator) idGenerator.get("familyRedPacketId");
+//        roleIdAllocator = (RoleIdAllocator) idGenerator.get("roleId");
+//        toolIdAllocator = (ToolIdAllocator) idGenerator.get("toolId");
+//        familyIdAllocator = (FamilyIdAllocator) idGenerator.get("familyId");
+//        familyRedPacketIdAllocator = (FamilyRedPacketIdAllocator) idGenerator.get("familyRedPacketId");
     }
 
     public long newRoleId() {

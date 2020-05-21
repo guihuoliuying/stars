@@ -33,7 +33,6 @@ import com.stars.modules.vip.prodata.ChargeVo;
 import com.stars.modules.vip.prodata.VipinfoVo;
 import com.stars.modules.vip.userdata.RoleVip;
 import com.stars.services.ServiceHelper;
-import com.stars.services.chat.ChatManager;
 import com.stars.startup.MainStartup;
 import com.stars.util.DateUtil;
 import com.stars.util.MapUtil;
@@ -94,13 +93,8 @@ public class VipModule extends AbstractModule implements OpActivityModule, Accou
             if (roleVip.getDailySendAnnouncement() == 0) {
                 roleVip.setDailySendAnnouncement((byte) 1);
                 context().update(roleVip);
-                ServiceHelper.chatService().announce(vipinfoVo.getOnlineNotice(),
-                        String.valueOf(accountRow.getVipLevel()), roleModule.getRoleRow().getName());
             }
 
-            ServiceHelper.chatService().chat("系统", ChatManager.CHANNEL_SYSTEM, 0L, 0L,
-                    String.format(DataManager.getGametext(vipinfoVo.getOnlineNotice()),
-                            accountRow.getVipLevel(), roleModule.getRoleRow().getName()), Boolean.FALSE);
         }
     }
 
@@ -246,7 +240,6 @@ public class VipModule extends AbstractModule implements OpActivityModule, Accou
         }
         sendUpdateVipData(ClientVipData.SEND_UPDATE_DATA);
         com.stars.util.LogUtil.info("launch callback payservice order=" + orderNo);
-        ServiceHelper.payService().consignmentCallBack(orderNo, money, chargeId);
 
 
     }
@@ -292,7 +285,6 @@ public class VipModule extends AbstractModule implements OpActivityModule, Accou
         warn("common_tips_getaward", rewardMap.get(ToolManager.BANDGOLD) + "", ToolManager.getItemName(ToolManager.BANDGOLD));
         sendUpdateVipData(ClientVipData.SEND_UPDATE_DATA);
         com.stars.util.LogUtil.info("launch callback payservice order=" + orderNo);
-        ServiceHelper.payService().consignmentCallBack(orderNo, money, chargeId);
     }
 
     /**

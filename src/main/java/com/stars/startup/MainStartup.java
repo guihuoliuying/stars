@@ -13,14 +13,12 @@ import com.stars.core.actor.ActorSystem;
 import com.stars.core.actor.invocation.ServiceActor;
 import com.stars.core.clientpatch.PatchManager;
 import com.stars.core.db.DBUtil;
-import com.stars.core.gmpacket.GmPacketDefine;
 import com.stars.core.hotupdate.YinHanHotUpdateManager;
 import com.stars.core.module.ModuleManager;
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerSystem;
 import com.stars.core.schedule.SchedulerManager;
 import com.stars.modules.MConst;
-import com.stars.modules.chat.ChatModuleFactory;
 import com.stars.modules.daily.DailyModuleFactory;
 import com.stars.modules.data.DataModuleFactory;
 import com.stars.modules.demologin.LoginModuleFactory;
@@ -47,12 +45,9 @@ import com.stars.modules.role.RoleModuleFactory;
 import com.stars.modules.scene.SceneModuleFactory;
 import com.stars.modules.skill.SkillModuleFactory;
 import com.stars.modules.tool.ToolModuleFactory;
-import com.stars.multiserver.MultiServerHelper;
-import com.stars.multiserver.packet.LuaFrameDataBack;
 import com.stars.network.PacketChecker;
 import com.stars.network.PacketUtil;
 import com.stars.network.server.packet.Packet;
-import com.stars.network.server.packet.PacketManager;
 import com.stars.network.server.session.GameSession;
 import com.stars.server.Business;
 import com.stars.server.main.actor.ActorServer;
@@ -90,15 +85,12 @@ public class MainStartup implements Business {
             ServerVersion.load();//加载服务版本号
 //            initHotswapEnv();
             DBUtil.init();// 初始化数据库连接池(proxool)
-            MultiServerHelper.loadPublicServerConfig();
-            loadServerChannel();
-            registerOtherPacket();
             checkPacket(); // 检查协议号，是否全局唯一
             SchedulerHelper.init("./config/jobs/quartz.properties");
             SchedulerManager.init(SchedulerManager.scheduledCorePoolSize);
             initModule(); // 初始化模块
-            loadProductData(); // 加载数据(产品数据)
-            loadSystemRecordMap();
+//            loadProductData(); // 加载数据(产品数据)
+//            loadSystemRecordMap();
             ActorServer.setActorSystem(new ActorSystem()); // 初始化ActorSystem
             PlayerSystem.init();
             ServiceSystem.init();
@@ -108,7 +100,7 @@ public class MainStartup implements Business {
             SchedulerManager.initScheduler();
 //            //输出资源加载文件列表
 //            ResoucePrinter.getInstance().writeResourceList();
-            GmPacketDefine.reg();
+//            GmPacketDefine.reg();
             PatchManager.init();
             initGameServerConfig(); // 初始化服务入口
             ServerStatePrinter.init();
@@ -154,7 +146,6 @@ public class MainStartup implements Business {
         ModuleManager.register(MConst.Dungeon, new DungeonModuleFactory());// 关卡 OK
         ModuleManager.register(MConst.Drop, new DropModuleFactory());// 掉落 OK
         ModuleManager.register(MConst.Induct, new InductModuleFactory());// 引导 OK
-        ModuleManager.register(MConst.Chat, new ChatModuleFactory());//聊天 OK
         ModuleManager.register(MConst.Daily, new DailyModuleFactory());//活跃度或者日常 OK
         ModuleManager.register(MConst.Email, new EmailModuleFactory()); // 邮件 OK -
         ModuleManager.register(MConst.Friend, new FriendModuleFactory()); // 好友 OK -
@@ -304,10 +295,6 @@ public class MainStartup implements Business {
             com.stars.network.server.packet.PacketManager.send(packet.getSession(), new ClientReconnect(false));
         }
         return false;
-    }
-
-    private void registerOtherPacket() throws Exception {
-        PacketManager.register(LuaFrameDataBack.class);// 战斗服返回数据
     }
 
     private void loadServerChannel() {

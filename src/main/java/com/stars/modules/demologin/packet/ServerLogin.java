@@ -18,7 +18,6 @@ import com.stars.modules.demologin.message.SqueezeMsg;
 import com.stars.modules.demologin.userdata.AccountPassWord;
 import com.stars.modules.demologin.userdata.AccountRole;
 import com.stars.modules.demologin.userdata.LoginInfo;
-import com.stars.multiserver.MultiServerHelper;
 import com.stars.network.server.buffer.NewByteBuffer;
 import com.stars.network.server.packet.Packet;
 import com.stars.network.server.packet.PacketManager;
@@ -90,18 +89,6 @@ public class ServerLogin extends Packet {
                 com.stars.network.server.packet.PacketManager.send(session, new ClientText(LoginManager.loginTips));
                 return;
             }
-
-            /* 特殊处理: 360旧端处理 start */
-            int serverId = MultiServerHelper.getServerId();
-            if (serverId >= 10000 && serverId <= 10045) {
-                if (loginInfo != null && loginInfo.getChannel().contains("12000@")) {
-                    closeSessionWhileException(
-                            "登陆|账号验证|SDK|account:" + apw.getAccount() + "|异常:360旧端登陆",
-                            "360旧专区数据已转移，请下载最新客户端前往思美人15区", null);
-                    return;
-                }
-            }
-            /* 特殊处理: 360旧端处理 end */
 
             // 取账号AccountRow
             AccountRow accountRow = null;

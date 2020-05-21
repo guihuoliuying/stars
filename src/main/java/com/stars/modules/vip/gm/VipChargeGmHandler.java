@@ -1,18 +1,11 @@
 package com.stars.modules.vip.gm;
 
-import com.google.gson.Gson;
 import com.stars.core.module.Module;
 import com.stars.core.player.PlayerUtil;
 import com.stars.modules.MConst;
 import com.stars.modules.demologin.LoginModule;
 import com.stars.modules.demologin.packet.ClientText;
 import com.stars.modules.gm.GmHandler;
-import com.stars.modules.vip.VipManager;
-import com.stars.modules.vip.prodata.ChargeVo;
-import com.stars.services.ServiceHelper;
-import com.stars.services.pay.PayExtent;
-import com.stars.services.pay.PayOrderInfo;
-import com.stars.startup.MainStartup;
 
 import java.util.Map;
 
@@ -41,19 +34,5 @@ public class VipChargeGmHandler implements GmHandler {
     }
 
     private void doPayment(long roleId, String account, Map<String, Module> moduleMap, int chargeId) {
-        PayOrderInfo pInfo = new PayOrderInfo();
-        pInfo.setCpTradeNo(String.valueOf(System.currentTimeMillis()));
-        pInfo.setChannelId(-1);
-        ChargeVo chargeVo = VipManager.getChargeVo(MainStartup.serverChannel, chargeId);
-        pInfo.setMoney(chargeVo.getReqRmb() * 100);
-        PayExtent PayEx = new PayExtent();
-        PayEx.setId(chargeId);
-        PayEx.setPoint((byte) 0);
-        Gson gson = new Gson();
-        String str = gson.toJson(PayEx);
-        pInfo.setPrivateField(str);
-        pInfo.setRoleId(String.valueOf(roleId));
-        pInfo.setUserId(account);
-        ServiceHelper.payService().recaivePayOrder(-1, -1, pInfo, false);
     }
 }

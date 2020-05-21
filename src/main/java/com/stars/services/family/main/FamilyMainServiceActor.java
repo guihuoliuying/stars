@@ -258,7 +258,6 @@ public class FamilyMainServiceActor extends ServiceActor implements FamilyMainSe
         notifiedPacket.setMemberName(memberPo.getRoleName());
         sendToAllMember(data, notifiedPacket, roleId);
 
-        ServiceHelper.chatService().delFamilyMemberId(familyId, roleId);
     }
 
     @Override
@@ -856,7 +855,6 @@ public class FamilyMainServiceActor extends ServiceActor implements FamilyMainSe
         doDelMember(auth.getFamilyId(), memberId);
         ServiceHelper.familyRedPacketService().delMember(auth.getFamilyId(), memberId);
         ServiceHelper.familyEventService().logEvent(auth.getFamilyId(), FamilyEvent.M_KICKOUT, auth.getRoleName(), memberPo.getRoleName());
-        ServiceHelper.chatService().delFamilyMemberId(auth.getFamilyId(), memberId);
         // 通知客户端
         ClientFamilyManagement packet = new ClientFamilyManagement(ClientFamilyManagement.SUBTYPE_MEMBER_DEL);
         packet.setMemberId(memberPo.getRoleId());
@@ -918,7 +916,6 @@ public class FamilyMainServiceActor extends ServiceActor implements FamilyMainSe
         // 通知其他服务进行登录
         ServiceHelper.familyRedPacketService().delMember(auth.getFamilyId(), auth.getRoleId());
         ServiceHelper.familyEventService().logEvent(auth.getFamilyId(), FamilyEvent.M_LEAVE, memberPo.getRoleName());
-        ServiceHelper.chatService().delFamilyMemberId(auth.getFamilyId(), auth.getRoleId());
         // 通知客户端
         ClientFamilyManagement packet = new ClientFamilyManagement(ClientFamilyManagement.SUBTYPE_MEMBER_DEL);
         packet.setMemberId(memberPo.getRoleId());

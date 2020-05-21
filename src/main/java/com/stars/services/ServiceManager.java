@@ -2,13 +2,13 @@ package com.stars.services;
 
 import com.stars.bootstrap.BootstrapConfig;
 import com.stars.bootstrap.ServerManager;
-import com.stars.util.LogUtil;
 import com.stars.core.actor.invocation.ServiceActor;
 import com.stars.core.actor.invocation.ServiceActorHelper;
 import com.stars.core.rpc.RpcClient;
 import com.stars.core.rpc.RpcClientConnectedCallback;
 import com.stars.core.rpc.RpcManager;
 import com.stars.core.rpc.proxy.RpcInvocationHandler;
+import com.stars.util.LogUtil;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -49,7 +49,7 @@ public abstract class ServiceManager {
 
     public void init() throws Throwable {
         initSelfServices(); // 初始化自身服务
-        initRpc(); // 初始化Rpc
+//        initRpc(); // 初始化Rpc
     }
 
     /**

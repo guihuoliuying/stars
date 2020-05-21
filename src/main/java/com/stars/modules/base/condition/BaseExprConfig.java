@@ -28,7 +28,6 @@ public class BaseExprConfig extends ExprConfig {
         registerValue("offlinehours", PcvOfflineHours.class); // 这次登陆和上次登陆的时间差（小时）
         registerValue("serverdays", PcvServerDays.class); // 开服的第几天
         registerValue("channel", PcvChannel.class); // 渠道号
-        registerValue("serverid", PcvServerId.class); // 服务id
         registerValue("jobid", PcvJobId.class); // 职业id
         registerValue("iswxbinded", PcvIsWxBinded.class); // 是否微信绑定
         registerValue("charge", PcvCharge.class); // 充值金额

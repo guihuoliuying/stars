@@ -9,7 +9,6 @@ import com.stars.modules.role.prodata.Grade;
 import com.stars.modules.role.prodata.Job;
 import com.stars.modules.role.prodata.Resource;
 import com.stars.modules.role.userdata.Role;
-import com.stars.multiserver.MultiServerHelper;
 import com.stars.network.server.buffer.NewByteBuffer;
 
 import java.util.List;
@@ -83,8 +82,8 @@ public class ClientRole extends PlayerPacket {
                 buff.writeInt(role.getTitleId());
                 buff.writeInt(role.getFightScore());
                 writeReviveInfo(buff);
-                buff.writeString(MultiServerHelper.getServerName());
-                buff.writeInt(MultiServerHelper.getServerId());
+                buff.writeString(""); // MultiServerHelper.getServerName()
+                buff.writeInt(0); // MultiServerHelper.getServerId()
                 buff.writeInt(vipLevel);
                 buff.writeString(role.getCreateTime() + "");
                 buff.writeInt(levelSpeedUpAddtion);

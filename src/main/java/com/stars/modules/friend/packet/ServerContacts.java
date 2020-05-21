@@ -2,11 +2,8 @@ package com.stars.modules.friend.packet;
 
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerPacket;
-import com.stars.modules.MConst;
-import com.stars.modules.chat.ChatModule;
 import com.stars.modules.friend.FriendPacketSet;
 import com.stars.network.server.buffer.NewByteBuffer;
-import com.stars.services.ServiceHelper;
 
 /**
  * Created by zhaowenshuo on 2016/8/11.
@@ -20,18 +17,6 @@ public class ServerContacts extends PlayerPacket {
     private byte open;
     @Override
     public void execPacket(Player player) {
-        ChatModule module = module(MConst.Chat);
-        switch (subtype){
-            case contactList:
-                ServiceHelper.friendService().sendContactsList(getRoleId());
-                break;
-            case checkFriend:
-                module.removeChatList(Long.valueOf(friendId));
-                break;
-            case isOpen:
-                module.chatIsOpen(open);
-                break;
-        }
 
     }
 

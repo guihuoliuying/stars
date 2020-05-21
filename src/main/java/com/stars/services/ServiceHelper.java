@@ -3,21 +3,16 @@ package com.stars.services;
 import com.stars.ExcutorKey;
 import com.stars.core.actor.invocation.ServiceActor;
 import com.stars.core.schedule.SchedulerManager;
-import com.stars.multiserver.fightManager.RMFSManagerService;
-import com.stars.services.chat.ChatService;
 import com.stars.services.family.activities.entry.FamilyActEntryService;
 import com.stars.services.family.event.FamilyEventService;
 import com.stars.services.family.main.FamilyMainService;
 import com.stars.services.family.role.FamilyRoleService;
 import com.stars.services.family.welfare.redpacket.FamilyRedPacketService;
-import com.stars.services.fightServerManager.FSManagerService;
 import com.stars.services.friend.FriendService;
-import com.stars.services.friendInvite.InviteService;
 import com.stars.services.id.IdService;
 import com.stars.services.localservice.LocalService;
 import com.stars.services.mail.EmailService;
 import com.stars.services.multicommon.MultiCommonService;
-import com.stars.services.pay.PayService;
 import com.stars.services.role.RoleService;
 import com.stars.services.summary.SummaryService;
 import com.stars.util.LogUtil;
@@ -97,18 +92,13 @@ public class ServiceHelper {
     static RoleService roleService;
     static EmailService emailService;
     static FriendService friendService;
-    static ChatService chatService;
     static SummaryService summaryService;
     static FamilyRoleService familyRoleService;
     static FamilyMainService familyMainService;
     static FamilyRedPacketService familyRedPacketService;
     static FamilyEventService familyEventService;
     static FamilyActEntryService familyActEntryService;
-    static RMFSManagerService rmfManagerService;
-    static FSManagerService fsManagerService;
-    static PayService payService;
     static LocalService localService;
-    static InviteService inviteService;
     static MultiCommonService multiCommonService;
 
     /* 访问方法 */
@@ -128,9 +118,6 @@ public class ServiceHelper {
         return friendService;
     }
 
-    public static ChatService chatService() {
-        return chatService;
-    }
 
     public static SummaryService summaryService() {
         return summaryService;
@@ -156,20 +143,8 @@ public class ServiceHelper {
         return familyActEntryService;
     }
 
-    public static RMFSManagerService rmfManagerService() {
-        return rmfManagerService;
-    }
-
-    public static FSManagerService fsManagerService() {
-        return fsManagerService;
-    }
-
     public static ServiceManager getManager() {
         return manager;
-    }
-
-    public static PayService payService() {
-        return payService;
     }
 
     public static Service getServiceByName(String serviceName) {
@@ -178,10 +153,6 @@ public class ServiceHelper {
 
     public static LocalService localService() {
         return localService;
-    }
-
-    public static InviteService inviteService() {
-        return inviteService;
     }
 
     public static MultiCommonService multiCommonService() {

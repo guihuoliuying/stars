@@ -123,7 +123,6 @@ public class ToolModuleFactory extends AbstractModuleFactory<ToolModule> {
         ToolManager.regToolFunc(ToolManager.FUNC_TYPE_BOOK, BookToolFunc.class);   // 典籍碎片
         ToolManager.regToolFunc(ToolManager.FUNC_TYPE_MERGE_SERVER_VIP_UPDATED, MergeServerVipUpdatedToolFunc.class); // 合区补偿道具: 触发重新计算vip等级
         ToolManager.regToolFunc(ToolManager.FUNC_TYPE_FAHION_CARD, FashionCardToolFunc.class);//时装化身卡
-        ToolManager.regToolFunc(ToolManager.FUNC_FAKE_PAYMENT, FakePaymentFunc.class); //伪充值道具
         ToolManager.regToolFunc(ToolManager.FUNC_TYPE_OPTIONALTOOL, OptionalBoxFunc.class); //自选道具
     }
 

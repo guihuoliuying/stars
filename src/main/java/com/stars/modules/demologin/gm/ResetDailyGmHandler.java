@@ -7,7 +7,6 @@ import com.stars.modules.demologin.LoginModuleHelper;
 import com.stars.modules.gm.GmHandler;
 import com.stars.modules.role.RoleModule;
 import com.stars.services.ServiceHelper;
-import com.stars.services.chat.ChatManager;
 
 import java.util.Map;
 
@@ -22,9 +21,6 @@ public class ResetDailyGmHandler implements GmHandler {
         LoginModule loginModule = (LoginModule) moduleMap.get(MConst.Login);
         String account = loginModule.getAccount();
         roleModule.warn("账号:'" + account + "'进行每日重置");
-        ServiceHelper.chatService().chat(
-                roleModule.getRoleRow().getName(), ChatManager.CHANNEL_WORLD, roleId, 0L,
-                "账号:'" + account + "'进行每日重置", false);
 
         LoginModuleHelper.resetDaily(false);
         LoginModuleHelper.FiveOClockResetDaily(false);

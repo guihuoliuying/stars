@@ -5,7 +5,6 @@ import com.stars.modules.drop.prodata.DropRewardVo;
 import com.stars.modules.drop.prodata.DropVo;
 import com.stars.modules.tool.ToolManager;
 import com.stars.modules.tool.productdata.ItemVo;
-import com.stars.services.ServiceHelper;
 import com.stars.util.LogUtil;
 import com.stars.util.MapUtil;
 import com.stars.util.StringUtil;
@@ -160,7 +159,6 @@ public class DropUtil {
                 }
                 if (totalContain(rewardMap, dropVo.getReportCode(), dropVo.getReportCount())) {//掉落了传闻道具
                     String desc = String.format(DataManager.getGametext(dropVo.getReportDesc()), roleName, DataManager.getGametext(itemVo.getName()), String.valueOf(dropVo.getReportCount()));
-                    ServiceHelper.chatService().announce(desc);//发送全服公告
                 }
             }
         }

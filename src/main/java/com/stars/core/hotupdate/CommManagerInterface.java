@@ -10,5 +10,5 @@ public interface CommManagerInterface {
     /**
      * 执行comm命令
      */
-    public String comm(List<String> paramerList);
+    String comm(List<String> paramerList);
 }

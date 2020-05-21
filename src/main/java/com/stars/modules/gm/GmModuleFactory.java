@@ -26,8 +26,6 @@ public class GmModuleFactory extends AbstractModuleFactory<GmModule> {
         // 普通GM
         GmManager.reg("reload", new ReloadGmHandler());
         GmManager.reg("kickOff", new KickOffGmHandler());
-        GmManager.reg("chat", new ChatGmHandler());
-        GmManager.reg("rpc", new RpcGmHandler());
         GmManager.reg("i18n", new I18nGmHandler());
         GmManager.reg("gm", new GmGmHandler());
         GmManager.reg("rankemail", new NewServerRankGmHandler());

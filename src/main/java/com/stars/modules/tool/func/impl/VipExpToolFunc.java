@@ -83,10 +83,6 @@ public class VipExpToolFunc extends ToolFunc {
                                 vipinfoVo = VipManager.getVipinfoVo(level);
                                 if (vipinfoVo.getLevelUpNoticeType() == VipManager.VIP_LEVELUP_NOTICE_TYPE_LOACL && StringUtil.isNotEmpty(vipinfoVo.getLevelUpNotice())) {
                                     RoleSummaryComponent rsc = (RoleSummaryComponent) ServiceHelper.summaryService().getSummaryComponent(roleModule.getRoleRow().getRoleId(), "role");
-                                    if (rsc != null) {
-                                        ServiceHelper.chatService().announce(vipinfoVo.getLevelUpNotice(), rsc.getRoleName(),
-                                                String.valueOf(level));
-                                    }
                                 }
                             }
                         }
