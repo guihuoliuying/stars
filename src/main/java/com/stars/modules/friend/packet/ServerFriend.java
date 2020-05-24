@@ -4,8 +4,6 @@ import com.stars.core.player.Player;
 import com.stars.core.player.PlayerPacket;
 import com.stars.modules.MConst;
 import com.stars.modules.demologin.packet.ClientText;
-import com.stars.modules.foreshow.ForeShowConst;
-import com.stars.modules.foreshow.ForeShowModule;
 import com.stars.modules.friend.FriendModule;
 import com.stars.modules.friend.FriendPacketSet;
 import com.stars.modules.role.RoleModule;
@@ -60,10 +58,6 @@ public class ServerFriend extends PlayerPacket {
             }
             FriendModule friendModule = module(MConst.Friend);
             friendModule.sendFlower(objectId, itemId, count);
-            return;
-        }
-        ForeShowModule open = module(MConst.ForeShow);
-        if (!open.isOpen(ForeShowConst.FRIEND)) {
             return;
         }
         switch (subtype) {

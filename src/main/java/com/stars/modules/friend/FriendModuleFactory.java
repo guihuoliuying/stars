@@ -6,10 +6,7 @@ import com.stars.core.module.Module;
 import com.stars.core.player.Player;
 import com.stars.modules.data.DataManager;
 import com.stars.modules.friend.event.*;
-import com.stars.modules.friend.gm.FriendGetRecomGmHandler;
 import com.stars.modules.friend.listener.*;
-import com.stars.modules.gm.GmManager;
-import com.stars.modules.name.event.RoleRenameEvent;
 import com.stars.modules.role.event.RoleLevelUpEvent;
 import com.stars.services.friend.FriendServiceActor;
 import com.stars.services.friend.summary.FriendFlowerSummaryComponentImpl;
@@ -35,7 +32,6 @@ public class FriendModuleFactory extends AbstractModuleFactory<FriendModule> {
 
     @Override
     public void init() throws Exception {
-        GmManager.reg("friend.getrecom", new FriendGetRecomGmHandler());
         Summary.regComponentClass(SummaryConst.C_FRIEND_FLOWER, FriendFlowerSummaryComponentImpl.class);
     }
 
@@ -55,7 +51,6 @@ public class FriendModuleFactory extends AbstractModuleFactory<FriendModule> {
         eventDispatcher.reg(FriendCanReceiveVigorEvent.class,new FriendCanReceiveVigorListener((FriendModule) module));
         eventDispatcher.reg(FriendReceiveFlowerEvent.class,new FriendReceiveListener((FriendModule) module));
         eventDispatcher.reg(FriendLogEvent.class, new FriendLogListener((FriendModule) module));
-        eventDispatcher.reg(RoleRenameEvent.class, new RoleChangeListenner((FriendModule) module));
     }
 
     @Override

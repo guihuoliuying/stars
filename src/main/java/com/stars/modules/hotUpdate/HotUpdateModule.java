@@ -7,7 +7,6 @@ import com.stars.core.player.Player;
 import com.stars.modules.MConst;
 import com.stars.modules.hotUpdate.event.HotUpdateAddItemEvent;
 import com.stars.modules.hotUpdate.event.HotUpdateDeleteItemEvent;
-import com.stars.modules.serverLog.EventType;
 import com.stars.modules.tool.ToolModule;
 import com.stars.services.ServiceHelper;
 import com.stars.services.summary.SummaryComponent;
@@ -96,7 +95,7 @@ public class HotUpdateModule extends AbstractModule {
 
         if(event.getType() == HotUpdateConstant.DIRECTLY){
             ToolModule toolModule = module(MConst.Tool);
-            toolModule.addAndSend(itemMap, EventType.HOTUPDATE_COMM.getCode());
+            toolModule.addAndSend(itemMap);
         }else{
             ServiceHelper.emailService().sendToSingle(id(),
                     event.getMailTemplateId(),id(), "系统",itemMap);
@@ -115,7 +114,7 @@ public class HotUpdateModule extends AbstractModule {
 
         ToolModule toolModule = module(MConst.Tool);
         if(toolModule.contains(itemMap)) {
-            toolModule.deleteAndSend(itemMap,EventType.HOTUPDATE_COMM.getCode());
+            toolModule.deleteAndSend(itemMap);
             realDeleteMap.putAll(itemMap);
         }else{
             long hasCount;
@@ -129,7 +128,7 @@ public class HotUpdateModule extends AbstractModule {
                     realDeleteMap.put(entry.getKey(),(int)hasCount);
                 }
             }
-            toolModule.deleteAndSend(realDeleteMap,EventType.HOTUPDATE_COMM.getCode());
+            toolModule.deleteAndSend(realDeleteMap);
         }
 
         com.stars.util.LogUtil.info("handleDeleteItemEvent|"+event.getLogSignal()+"|"+id()+"|"+

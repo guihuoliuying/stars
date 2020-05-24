@@ -8,8 +8,6 @@ import com.stars.core.module.AbstractModuleFactory;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
 import com.stars.modules.MConst;
-import com.stars.modules.gm.GmManager;
-import com.stars.modules.push.gm.PushGmHandler;
 import com.stars.modules.push.listener.PushListener;
 import com.stars.modules.push.prodata.PushVo;
 import com.stars.modules.push.trigger.PushTrigger;
@@ -89,7 +87,6 @@ public class PushModuleFactory extends AbstractModuleFactory<PushModule> {
 
     @Override
     public void init() throws Exception {
-        GmManager.reg("push", new PushGmHandler());
     }
 
     @Override

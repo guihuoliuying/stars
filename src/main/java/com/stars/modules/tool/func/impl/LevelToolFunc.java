@@ -3,7 +3,6 @@ package com.stars.modules.tool.func.impl;
 import com.stars.core.module.Module;
 import com.stars.modules.MConst;
 import com.stars.modules.role.RoleModule;
-import com.stars.modules.serverLog.EventType;
 import com.stars.modules.tool.ToolModule;
 import com.stars.modules.tool.func.ToolFunc;
 import com.stars.modules.tool.func.ToolFuncResult;
@@ -87,7 +86,7 @@ public class LevelToolFunc extends ToolFunc {
             Map<Integer, Integer> tempMap = new HashMap<>();
             tempMap.putAll(itemMap);
             MapUtil.multiply(tempMap, count);
-            Map<Integer, Integer> result = toolModule.addAndSend(tempMap, EventType.USETOOL.getCode());
+            Map<Integer, Integer> result = toolModule.addAndSend(tempMap);
             if(showType == 0) {            	//默认飘字提示奖励
                 ClientAward clientAward = new ClientAward(result);
                 toolModule.sendPacket(clientAward);

@@ -1,8 +1,6 @@
 package com.stars.services.friend;
 
 import com.stars.modules.MConst;
-import com.stars.modules.foreshow.ForeShowConst;
-import com.stars.modules.foreshow.summary.ForeShowSummaryComponent;
 import com.stars.modules.role.summary.RoleSummaryComponent;
 import com.stars.services.ServiceHelper;
 import com.stars.services.friend.memdata.RecommendationFriend;
@@ -42,10 +40,6 @@ public class RecommendationFriendListUpdateTask implements Runnable {
             RecommendationFriend roleMo = newRecommendationRoleMo(summary);
             if (roleMo == null)
                 continue;
-            ForeShowSummaryComponent openComp = (ForeShowSummaryComponent) summary.getComponent(MConst.ForeShow);
-            if (!openComp.isOpen(ForeShowConst.FRIEND)) {
-                continue;
-            }
             List<RecommendationFriend> list = map.get(roleMo.getLevel());
             if (list == null) {
                 list = new ArrayList<RecommendationFriend>();

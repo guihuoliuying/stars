@@ -11,9 +11,6 @@ import com.stars.core.schedule.SchedulerManager;
 import com.stars.modules.MConst;
 import com.stars.modules.data.DataManager;
 import com.stars.modules.demologin.packet.ClientText;
-import com.stars.modules.family.summary.FamilySummaryComponent;
-import com.stars.modules.foreshow.ForeShowConst;
-import com.stars.modules.foreshow.summary.ForeShowSummaryComponent;
 import com.stars.modules.friend.event.*;
 import com.stars.modules.friend.packet.ClientBlacker;
 import com.stars.modules.friend.packet.ClientContacts;
@@ -88,6 +85,7 @@ public class FriendServiceActor extends ServiceActor implements FriendService {
     @Override
     public void init() throws Throwable {
         // 加载产品数据
+        isLoadData = true; // not load data at the moment
         synchronized (FriendServiceActor.class) {
             if (!isLoadData) {
                 SchedulerManager.scheduleAtFixedRateIndependent(ExcutorKey.FriendRecommendation, new RecommendationFriendListUpdateTask(), 0, 5, TimeUnit.SECONDS);
@@ -603,13 +601,8 @@ public class FriendServiceActor extends ServiceActor implements FriendService {
             ServiceUtil.sendText(applicantId, I18n.get("friend.apply.alreadyDone"));
             return;
         }
-        ForeShowSummaryComponent fsSummary = (ForeShowSummaryComponent) ServiceHelper.summaryService().getSummaryComponent(objectId, MConst.ForeShow);
-        if (fsSummary.isOpen(ForeShowConst.FRIEND)) {
-            applicantData.getAppliedObjectMap().put(objectId, objectId);
-            ServiceHelper.friendService().innerNotifyApplication(objectId, applicantId, applicationPo);
-        } else {
-            ServiceUtil.sendText(applicantId, "friend_familyinvite_notopen");
-        }
+        applicantData.getAppliedObjectMap().put(objectId, objectId);
+        ServiceHelper.friendService().innerNotifyApplication(objectId, applicantId, applicationPo);
         fireSpecialAccountEvent(applicantId, applicantId, "申请" + objectId + "为好友", true);
         //申请好友 日志
         FriendLogEvent event = new FriendLogEvent(FriendLogEvent.APPLY);
@@ -1648,10 +1641,6 @@ public class FriendServiceActor extends ServiceActor implements FriendService {
 
         //公会名称
         String familyName = "";
-        FamilySummaryComponent comp = (FamilySummaryComponent) ServiceHelper.summaryService().getSummaryComponent(friendId, SummaryConst.C_FAMILY);
-        if (comp != null) {
-            familyName = comp.getFamilyName();
-        }
 
         client.setFamilyName(familyName);
         PlayerUtil.send(roleId, client);

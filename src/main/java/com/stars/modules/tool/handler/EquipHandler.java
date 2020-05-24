@@ -24,7 +24,7 @@ public class EquipHandler implements ToolHandler {
     }
 
     @Override
-    public Map<Integer,Integer> add(int itemId, int count,short eventType) {
+    public Map<Integer,Integer> add(int itemId, int count) {
 //        ItemVo itemVo = ToolManager.getItemVo(itemId);
         if(count <= 0) return null;
         Map<Integer,Integer> resultMap = new HashMap<>();
@@ -102,7 +102,7 @@ public class EquipHandler implements ToolHandler {
      * 返回数量少的(删除东西从少的开始删)
      */
     @Override
-    public boolean deleteByItemId(int itemId, int count,short eventType) {
+    public boolean deleteByItemId(int itemId, int count) {
         RoleToolRow toolRow;
         int subCount;//一次循环扣除的数量
         while (count > 0) {

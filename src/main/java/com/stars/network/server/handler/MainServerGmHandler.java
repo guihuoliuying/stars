@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.stars.network.server.buffer.NewByteBuffer;
-import com.stars.server.login.util.Md5Util;
 import com.stars.server.main.gmpacket.GmPacketHandler;
 import com.stars.server.main.gmpacket.GmPacketRequest;
 import com.stars.util.LogUtil;
@@ -82,6 +81,6 @@ public class MainServerGmHandler extends ChannelInboundHandlerAdapter {
     }
 
     public String makeSign(String body){	
-    	return  Md5Util.getMD5Str(publicKey+body);
+    	return "";
     }
 }

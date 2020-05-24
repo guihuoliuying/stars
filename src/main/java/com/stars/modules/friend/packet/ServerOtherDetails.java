@@ -6,8 +6,6 @@ import com.stars.core.player.PlayerUtil;
 import com.stars.modules.MConst;
 import com.stars.modules.demologin.LoginModule;
 import com.stars.modules.demologin.packet.ClientText;
-import com.stars.modules.foreshow.ForeShowConst;
-import com.stars.modules.foreshow.summary.ForeShowSummaryComponent;
 import com.stars.modules.friend.FriendModule;
 import com.stars.modules.friend.FriendPacketSet;
 import com.stars.network.server.buffer.NewByteBuffer;
@@ -34,10 +32,9 @@ public class ServerOtherDetails extends PlayerPacket {
             PlayerUtil.send(getRoleId(), new ClientText("请求异常"));
             return;
         }
-        ForeShowSummaryComponent otherForeShowComp = (ForeShowSummaryComponent) otherSummary.getComponent(MConst.ForeShow);
         // 下发
         ClientOtherDetails detailsPacket = new ClientOtherDetails(
-                selfSummary, otherSummary, friendModule.isFriend(otherId), otherForeShowComp.isOpen(ForeShowConst.FRIEND));
+                selfSummary, otherSummary, friendModule.isFriend(otherId), true);
         PlayerUtil.send(getRoleId(), detailsPacket);
         friendModule.fireSpecialAccountLogEvent("请求对方详细信息");
     }

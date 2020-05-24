@@ -4,18 +4,12 @@ import com.stars.core.event.EventDispatcher;
 import com.stars.core.module.AbstractModule;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
-import com.stars.core.player.PlayerUtil;
 import com.stars.modules.MConst;
-import com.stars.modules.foreshow.ForeShowConst;
-import com.stars.modules.foreshow.ForeShowModule;
 import com.stars.modules.friend.event.FriendAchieveEvent;
 import com.stars.modules.friend.event.FriendLogEvent;
-import com.stars.modules.friend.packet.ClientFriend;
-import com.stars.modules.name.event.RoleRenameEvent;
 import com.stars.modules.redpoint.RedPointConst;
 import com.stars.modules.role.RoleModule;
 import com.stars.modules.role.userdata.Role;
-import com.stars.modules.serverLog.EventType;
 import com.stars.modules.tool.ToolManager;
 import com.stars.modules.tool.ToolModule;
 import com.stars.modules.tool.productdata.ItemVo;
@@ -171,7 +165,7 @@ public class FriendModule extends AbstractModule {
         ToolModule toolModule = module(MConst.Tool);
         long hasCount = toolModule.getCountByItemId(itemId);
         if (hasCount >= count) {//鲜花数量足够
-            if (toolModule.deleteAndSend(itemId, count, EventType.FRIENDSEND.getCode())) {//直接扣除鲜花道具
+            if (toolModule.deleteAndSend(itemId, count)) {//直接扣除鲜花道具
                 toolEnough = true;
             } else {//扣除道具失败
                 return;
@@ -181,9 +175,9 @@ public class FriendModule extends AbstractModule {
         if (!toolEnough) {//鲜花不足,需要购买
             int needBuyCount = (int) (count - hasCount);
             //直接购买
-            if (toolModule.deleteAndSend(itemVo.getBuyPrice()[0], needBuyCount * (itemVo.getBuyPrice()[1]), EventType.FRIENDSEND.getCode())) {
+            if (toolModule.deleteAndSend(itemVo.getBuyPrice()[0], needBuyCount * (itemVo.getBuyPrice()[1]))) {
                 if (hasCount > 0) {//扣除拥有的鲜花道具
-                    toolModule.deleteAndSend(itemId, (int) hasCount, EventType.FRIENDSEND.getCode());
+                    toolModule.deleteAndSend(itemId, (int) hasCount);
                 }
             } else {//金钱不足
                 return;
@@ -238,14 +232,7 @@ public class FriendModule extends AbstractModule {
     }
 
     public void syncReceiveFlowerRecord(FriendRolePo rolePo, ReceiveFlowerRecordPo recordPo) {
-        ForeShowModule open = module(MConst.ForeShow);
-        if (open.isOpen(ForeShowConst.FRIEND)) {
-            ClientFriend client = new ClientFriend(ClientFriend.SUBTYPE_SYN_RECEIVE_FLOWER_RECORD);
-            client.setSendFlower(rolePo.getSendFlower());
-            client.setReceiveFlower(rolePo.getReceiveFlower());
-            client.setReceiveFlowerRecord(recordPo);
-            PlayerUtil.send(rolePo.getRoleId(), client);
-        }
+
     }
 
     public void fireSpecialAccountLogEvent(String content) {
@@ -260,7 +247,5 @@ public class FriendModule extends AbstractModule {
         return friendList;
     }
 
-    public void onRoleRename(RoleRenameEvent event) {
-        ServiceHelper.friendService().updateRoleName(id(), event.getNewName());
-    }
+
 }

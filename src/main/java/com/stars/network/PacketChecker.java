@@ -1,27 +1,13 @@
 package com.stars.network;
 
-import com.stars.modules.customerService.CustomerServicePacketSet;
-import com.stars.modules.daily.DailyPacketSet;
 import com.stars.modules.demologin.LoginPacketSet;
-import com.stars.modules.dungeon.DungeonPacketSet;
 import com.stars.modules.email.EmailPacketSet;
-import com.stars.modules.family.FamilyPacketSet;
-import com.stars.modules.foreshow.ForeShowPacketSet;
 import com.stars.modules.friend.FriendPacketSet;
-import com.stars.modules.friendShare.SharePacketSet;
-import com.stars.modules.getway.GetWayPacketSet;
-import com.stars.modules.gm.GmPacketSet;
 import com.stars.modules.induct.InductPacketSet;
-import com.stars.modules.name.NamePacketSet;
-import com.stars.modules.operateactivity.OperateActivityPacketSet;
 import com.stars.modules.redpoint.RedPointPacketSet;
 import com.stars.modules.role.RolePacketSet;
-import com.stars.modules.scene.ScenePacketSet;
-import com.stars.modules.skill.SkillPacketSet;
 import com.stars.modules.system.SystemPacketSet;
 import com.stars.modules.tool.ToolPacketSet;
-import com.stars.modules.truename.TrueNamePacketSet;
-import com.stars.modules.vip.VipPacketSet;
 import com.stars.network.server.packet.Packet;
 
 import java.util.*;
@@ -77,39 +63,16 @@ public class PacketChecker {
         /* 注意协议号的顺序（至少是4的倍数） */
         check((short) 0x0000, (short) 0x000F, packetTypes, bitmap, new LoginPacketSet()); // 登录
         check((short) 0x0010, (short) 0x0019, packetTypes, bitmap, new RolePacketSet()); // 人物
-
-        check((short) 0x0020, (short) 0x0025, packetTypes, bitmap, new NamePacketSet());// 取名
-        check((short) 0x002a, (short) 0x002d, packetTypes, bitmap, new DailyPacketSet());//活跃度
         check((short) 0x0031, (short) 0x0035, packetTypes, bitmap, new ToolPacketSet()); // 道具
-
-        check((short) 0x0044, (short) 0x0049, packetTypes, bitmap, new SkillPacketSet());//技能
-
-        check((short) 0x0050, (short) 0x0055, packetTypes, bitmap, new DungeonPacketSet()); // 关卡
         check((short) 0x0056, (short) 0x0059, packetTypes, bitmap, new InductPacketSet());// 引导
-
-
-        check((short) 0x0160, (short) 0x0163, packetTypes, bitmap, new ForeShowPacketSet());//系统开放预告
         check((short) 0x017B, (short) 0x017F, packetTypes, bitmap, new RedPointPacketSet());//红点
-        check((short) 0x0188, (short) 0x018F, packetTypes, bitmap, new VipPacketSet());    // vip(贵族系统)
-        check((short) 0x0190, (short) 0x0197, packetTypes, bitmap, new OperateActivityPacketSet());    // 运营活动系统
-        check((short) 0x0284, (short) 0x0287, packetTypes, bitmap, new SharePacketSet()); // 朋友圈分享
-        check((short) 0x028E, (short) 0x0291, packetTypes, bitmap, new TrueNamePacketSet()); //实名认证
-        check((short) 0x0292, (short) 0x029F, packetTypes, bitmap, new PlaceholderPacketSet()); // 符文装备体验副本
-        check((short) 0x02A4, (short) 0x02A7, packetTypes, bitmap, new GetWayPacketSet()); // 获取途径
-        check((short) 0x02A8, (short) 0x02A9, packetTypes, bitmap, new CustomerServicePacketSet()); // vip玩家信息记录
         /* 公共业务 */
         check((short) 0x6000, (short) 0x6007, packetTypes, bitmap, new EmailPacketSet()); // 邮件
         check((short) 0x6008, (short) 0x601F, packetTypes, bitmap, new FriendPacketSet()); // 好友
-        check((short) 0x6020, (short) 0x604F, packetTypes, bitmap, new FamilyPacketSet()); // 家族（基础）
-        check((short) 0x6068, (short) 0x6167, packetTypes, bitmap, new PlaceholderPacketSet()); // 家族（活动）
 
 
 		/* 特殊 */
-        check((short) 0x7B00, (short) 0x7B3F, packetTypes, bitmap, new ScenePacketSet());// 场景
         //0x7C00 - 0x7CFF 登陆服
-
-
-        check((short) 0x7D00, (short) 0x7DFF, packetTypes, bitmap, new GmPacketSet()); // GM
 
         // 0x7E00 - 0x7EFF 256 测试
         check((short) 0x7F00, (short) 0x7FFF, packetTypes, bitmap, new SystemPacketSet()); // 底层

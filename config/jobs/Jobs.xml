@@ -14,23 +14,6 @@
     </processing-directives>
 
     <schedule>
-        <job>
-            <name>TimingExecuteJob</name>
-            <group>DEFAULT</group>
-            <job-class>com.stars.cronjob.TimingExecuteJob</job-class>
-        </job>
-        <trigger>
-            <simple>
-                <name>TimingExecuteJobTrigger</name>
-                <group>DEFAULT</group>
-                <job-name>TimingExecuteJob</job-name>
-                <job-group>DEFAULT</job-group>
-                <!-- 每隔1秒钟运行 -->
-                <repeat-count>-1</repeat-count>
-                <repeat-interval>1000</repeat-interval>
-            </simple>
-        </trigger>
-
         <!-- 每日重置 -->
         <job>
             <name>DailyResetJob</name>
@@ -45,89 +28,6 @@
                 <job-group>DEFAULT</job-group>
                 <cron-expression>5 0 0 * * ?</cron-expression>
                 <!-- 每天00:00:05运行 -->
-            </cron>
-        </trigger>
-
-        <job>
-            <name>FiveOClockResetJob</name>
-            <group>DEFAULT</group>
-            <job-class>com.stars.cronjob.FiveOClockResetJob</job-class>
-        </job>
-        <trigger>
-            <cron>
-                <name>FiveOClockResetJobTrigger</name>
-                <group>DEFAULT</group>
-                <job-name>FiveOClockResetJob</job-name>
-                <job-group>DEFAULT</job-group>
-                <cron-expression>0 0 5 * * ?</cron-expression>
-                <!-- 每天00:00:05运行 -->
-            </cron>
-        </trigger>
-
-        <!--  -->
-        <job>
-            <name>FightingMasterRankJob</name>
-            <group>DEFAULT</group>
-            <job-class>com.stars.multiserver.fightingmaster.FightingMasterRankJob</job-class>
-        </job>
-        <trigger>
-            <cron>
-                <name>FightingMasterRankJobTrigger</name>
-                <group>DEFAULT</group>
-                <job-name>FightingMasterRankJob</job-name>
-                <job-group>DEFAULT</job-group>
-                <cron-expression>0 0 6 * * ?</cron-expression>
-                <!-- 每天06:00运行 -->
-            </cron>
-        </trigger>
-        <!-- 日志统计 -->
-        <job>
-            <name>StatisticsJob</name>
-            <group>DEFAULT</group>
-            <job-class>com.stars.cronjob.StatisticsJob</job-class>
-        </job>
-        <trigger>
-            <cron>
-                <name>StatisticsJobTrigger</name>
-                <group>DEFAULT</group>
-                <job-name>StatisticsJob</job-name>
-                <job-group>DEFAULT</job-group>
-                <cron-expression>0 50 23 * * ?</cron-expression>
-                <!-- 每天06:00运行 -->
-            </cron>
-        </trigger>
-
-        <!-- 日志统计 -->
-        <job>
-            <name>TenMinuteJob</name>
-            <group>DEFAULT</group>
-            <job-class>com.stars.cronjob.TenMinuteJob</job-class>
-        </job>
-        <trigger>
-            <simple>
-                <name>TenMinuteJobTrigger</name>
-                <group>DEFAULT</group>
-                <job-name>TenMinuteJob</job-name>
-                <job-group>DEFAULT</job-group>
-                <!-- 每隔10分钟运行 -->
-                <repeat-count>-1</repeat-count>
-                <repeat-interval>600000</repeat-interval>
-            </simple>
-        </trigger>
-        <!-- 12点正执行 -->
-        <job>
-            <name>TwelveAMJob</name>
-            <group>DEFAULT</group>
-            <job-class>com.stars.cronjob.TwelveAMJob</job-class>
-        </job>
-        <trigger>
-            <cron>
-                <name>TwelveAMJobTrigger</name>
-                <group>DEFAULT</group>
-                <job-name>TwelveAMJob</job-name>
-                <job-group>DEFAULT</job-group>
-                <cron-expression>0 0 12 * * ?</cron-expression>
-                <!-- 每天12点正运行 -->
             </cron>
         </trigger>
     </schedule>

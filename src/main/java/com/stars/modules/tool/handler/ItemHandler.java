@@ -6,7 +6,6 @@ import com.stars.modules.tool.func.ToolFunc;
 import com.stars.modules.tool.productdata.ItemVo;
 import com.stars.modules.tool.userdata.RoleToolRow;
 import com.stars.modules.tool.userdata.RoleToolTable;
-import com.stars.server.login.packet.ClientWarning;
 import com.stars.util.EmptyUtil;
 import com.stars.util.LogUtil;
 import com.stars.util.MapUtil;
@@ -53,7 +52,7 @@ public class ItemHandler implements ToolHandler {
      * 流程长,方法也长,
      */
     @Override
-    public Map<Integer,Integer> add(int itemId, int count,short eventType) {
+    public Map<Integer,Integer> add(int itemId, int count) {
         ItemVo itemVo = ToolManager.getItemVo(itemId);
         Map<Integer,Integer> resultMap = new HashMap<>();
         //如果是自动使用,只走自动使用的逻辑
@@ -105,7 +104,6 @@ public class ItemHandler implements ToolHandler {
                 int nullGrid = getNullGrid();
                 if (nullGrid <= 0) {
                     //背包满了
-                    toolModule.sendPacket(new ClientWarning("item_bagfull"));
                     com.stars.util.LogUtil.info("背包已满,剩余的道具丢弃:" + toolModule.id() + "|" + itemId + "|" + restCount);
                     return resultMap;
                 }
@@ -133,7 +131,7 @@ public class ItemHandler implements ToolHandler {
      * 能跑到这里肯定是数量充足可以删除
      */
     @Override
-    public boolean deleteByItemId(int itemId, int count,short eventType) {
+    public boolean deleteByItemId(int itemId, int count) {
         RoleToolRow toolRow;
         int subCount;//一次循环扣除的数量
         while (count > 0) {

@@ -1,10 +1,6 @@
 package com.stars.bootstrap;
 
-import com.stars.server.connector.Connector;
-import com.stars.server.fight.MultiServer;
-import com.stars.server.login2.LoginServer2;
 import com.stars.server.main.MainServer;
-import com.stars.server.proxy.weaknetwork.NetProxy;
 import com.stars.util.log.CoreLogger;
 
 import java.io.IOException;
@@ -39,51 +35,6 @@ public class GameBootstrap {
         switch (serverType) {
             case BootstrapConfig.MAIN:
                 server = new MainServer(config);
-                break;
-            case BootstrapConfig.CONNECTOR:
-                server = new Connector(config);
-                break;
-            case BootstrapConfig.NETPROXY:
-                server = new NetProxy();
-                break;
-            case BootstrapConfig.LOGIN:
-                server = new LoginServer2();
-                break;
-            case BootstrapConfig.FIGHT:
-                server = new com.stars.server.fight.MultiServer(config);
-                break;
-            case BootstrapConfig.LOOTTREASURE:
-                server = new com.stars.server.fight.MultiServer(config);
-                break;
-            case BootstrapConfig.MULTI:
-                server = new com.stars.server.fight.MultiServer(config);
-                break;
-            case BootstrapConfig.RMCHAT:
-                server = new com.stars.server.fight.MultiServer(config);
-                break;
-            case BootstrapConfig.FIGHTMANAGER:
-                server = new com.stars.server.fight.MultiServer(config);
-                break;
-            case BootstrapConfig.FIGHTMANAGER1:
-                server = new com.stars.server.fight.MultiServer(config);
-                break;
-            case BootstrapConfig.PAYSERVER:
-                server = new com.stars.server.fight.MultiServer(config);
-                break;
-            case BootstrapConfig.PAYSERVER1:
-                server = new com.stars.server.fight.MultiServer(config);
-                break;
-            case BootstrapConfig.FAMILYWAR:
-                server = new com.stars.server.fight.MultiServer(config);
-                break;
-            case BootstrapConfig.SKYRANK:
-                server = new com.stars.server.fight.MultiServer(config);
-                break;
-            case BootstrapConfig.DAILY5V5:
-                server = new com.stars.server.fight.MultiServer(config);
-                break;
-            case BootstrapConfig.CAMP:
-                server = new MultiServer(config);
                 break;
             default:
                 throw new RuntimeException("配置错误");

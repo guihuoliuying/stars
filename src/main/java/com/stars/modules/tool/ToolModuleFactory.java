@@ -8,11 +8,9 @@ import com.stars.core.module.Module;
 import com.stars.core.player.Player;
 import com.stars.modules.MConst;
 import com.stars.modules.data.DataManager;
-import com.stars.modules.gm.GmManager;
 import com.stars.modules.tool.event.GMDelToolEvent;
 import com.stars.modules.tool.func.ToolFunc;
 import com.stars.modules.tool.func.impl.*;
-import com.stars.modules.tool.gm.*;
 import com.stars.modules.tool.listener.GMDelToolListener;
 import com.stars.modules.tool.productdata.ItemVo;
 import com.stars.util.LogUtil;
@@ -96,32 +94,19 @@ public class ToolModuleFactory extends AbstractModuleFactory<ToolModule> {
 
     @Override
     public void init() throws Exception {
-        GmManager.reg("additem", new AddItemGmHandler());
-        GmManager.reg("drop", new DropItemGmHandler());
-        GmManager.reg("delitem", new DeleteItemGmHandler());
-        GmManager.reg("delitems", new DeleteAllBagItemGmHandler());
-        GmManager.reg("delgrid", new DeleteGridGmHandler());
 
         // 注册道具函数
         ToolManager.regToolFunc(ToolManager.FUNC_TYPE_EXP, RoleExpToolFunc.class);
         ToolManager.regToolFunc(ToolManager.FUNC_TYPE_BOX, BoxToolFunc.class);
-        ToolManager.regToolFunc(ToolManager.FUNC_TYPE_DROP, DropToolFunc.class);
         ToolManager.regToolFunc(ToolManager.FUNC_TYPE_UNLOCKEQUIP, UnlockEquipFunc.class);
         ToolManager.regToolFunc(ToolManager.FUNC_TYPE_BUDDYEXPBOX, BuddyExpBoxFunc.class);
-        ToolManager.regToolFunc(ToolManager.FUNC_TYPE_HP, HpToolFunc.class);
-        ToolManager.regToolFunc(ToolManager.FUNC_TYPE_KILLMONSTER, KillMonsterToolFunc.class);
-        ToolManager.regToolFunc(ToolManager.FUNC_TYPE_CLEAR_CD, ClearCdToolFunc.class);
-        ToolManager.regToolFunc(ToolManager.FUNC_TYPE_ADD_BUFF, AddBuffToolFunc.class);
         ToolManager.regToolFunc(ToolManager.FUNC_TYPE_FASHION, FashionToolFunc.class); // 坐骑道具
-        ToolManager.regToolFunc(ToolManager.FUNC_TYPE_JOB_BOX, JobBoxToolFunc.class); // 职业宝箱
         ToolManager.regToolFunc(ToolManager.FUNC_TYPE_FRIEND_FLOWER, FriendFlowerFunc.class); // 好友鲜花道具
         ToolManager.regToolFunc(ToolManager.FUNC_TYPE_BUDDY_EQUIP, BuddyArmEquipFunc.class);// 伙伴武装道具
         ToolManager.regToolFunc(ToolManager.FUNC_TYPE_LEVEL, LevelToolFunc.class);//等级系数
         ToolManager.regToolFunc(ToolManager.FUNC_TYPE_BOX_NO_TIPS, BoxToolFunc2.class);   // 宝箱道具-无提示
-        ToolManager.regToolFunc(ToolManager.FUNC_TYPE_VIP_EXP, VipExpToolFunc.class);   // vip经验道具
         ToolManager.regToolFunc(ToolManager.FUNC_TYPE_MONTHCARD_DAYS, MonthCardFunc.class);   // 月卡道具
         ToolManager.regToolFunc(ToolManager.FUNC_TYPE_BOOK, BookToolFunc.class);   // 典籍碎片
-        ToolManager.regToolFunc(ToolManager.FUNC_TYPE_MERGE_SERVER_VIP_UPDATED, MergeServerVipUpdatedToolFunc.class); // 合区补偿道具: 触发重新计算vip等级
         ToolManager.regToolFunc(ToolManager.FUNC_TYPE_FAHION_CARD, FashionCardToolFunc.class);//时装化身卡
         ToolManager.regToolFunc(ToolManager.FUNC_TYPE_OPTIONALTOOL, OptionalBoxFunc.class); //自选道具
     }

@@ -14,7 +14,6 @@ import com.stars.modules.email.pojodata.EmailConditionArgs;
 import com.stars.modules.redpoint.RedPointConst;
 import com.stars.modules.role.RoleModule;
 import com.stars.modules.role.userdata.Role;
-import com.stars.modules.serverLog.EventType;
 import com.stars.modules.tool.ToolManager;
 import com.stars.modules.tool.ToolModule;
 import com.stars.modules.tool.productdata.ItemVo;
@@ -118,7 +117,7 @@ public class EmailModule extends AbstractModule {
         toolMap = checkChangeJob(toolMap);
         if (toolModule.canAdd(toolMap)) {
             ServiceHelper.emailService().fetchAffixs(id(), emailId);
-            toolModule.addAndSend(toolMap, EventType.MAIl.getCode());
+            toolModule.addAndSend(toolMap);
             ClientEmail packet = new ClientEmail(ClientEmail.C_FETCH_AFFIXS);
             packet.setEmailId(emailId);
             send(packet);
@@ -170,7 +169,7 @@ public class EmailModule extends AbstractModule {
             toolMap = checkChangeJob(toolMap);
             if (toolModule.canAdd(toolMap)) {
                 ServiceHelper.emailService().fetchAffixs(id(), emailId);
-                toolModule.addAndSend(toolMap, EventType.MAIl.getCode());
+                toolModule.addAndSend(toolMap);
                 returnEmailIdList.add(emailId);
             } else {
                 fetchFailureCount++;

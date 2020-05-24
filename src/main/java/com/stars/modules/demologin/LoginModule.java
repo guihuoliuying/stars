@@ -14,18 +14,13 @@ import com.stars.core.player.PlayerSystem;
 import com.stars.core.recordmap.RoleRecord;
 import com.stars.core.recordmap.RoleRecordMapImpl;
 import com.stars.modules.MConst;
-import com.stars.modules.daily.DailyManager;
-import com.stars.modules.daily.event.DailyFuntionEvent;
 import com.stars.modules.data.DataManager;
 import com.stars.modules.demologin.event.LoginSuccessEvent;
-import com.stars.modules.demologin.gm.PrintPacketGmHandler;
 import com.stars.modules.demologin.message.*;
 import com.stars.modules.demologin.packet.*;
 import com.stars.modules.demologin.userdata.AccountRole;
 import com.stars.modules.demologin.userdata.LoginInfo;
 import com.stars.modules.demologin.userdata.LoginRow;
-import com.stars.modules.dungeon.DungeonModule;
-import com.stars.modules.family.FamilyModule;
 import com.stars.modules.role.RoleModule;
 import com.stars.network.server.packet.Packet;
 import com.stars.network.server.packet.PacketManager;
@@ -244,7 +239,6 @@ public class LoginModule extends AbstractModule implements Guard {
             offlineTimestamp = System.currentTimeMillis();
             send(new ClientLogin(true)); // 发送登录成功响应包
             eventDispatcher().fire(new LoginSuccessEvent()); // 抛出登录成功事件
-            eventDispatcher().fire(new DailyFuntionEvent(DailyManager.DAILYID_LOGININ, 1)); // 抛出日常活动事件
             finishMessage(message, true); // 完成登录
 
         } catch (Throwable t) {
@@ -769,8 +763,6 @@ public class LoginModule extends AbstractModule implements Guard {
 
     @Override
     public boolean canAccess(Packet packet) {
-        if (PrintPacketGmHandler.canPrintPacket(String.format("0x%04X", packet.getType())))
-            com.stars.util.LogUtil.info("roleId:{} 收到客户端的packet|packetId:{}", id(), packet.getPacketId());
         if (packetIdTimeStamp == null) {
             return true;
         }
@@ -830,15 +822,6 @@ public class LoginModule extends AbstractModule implements Guard {
         if (online <= 0) {
             online = 1;
         }
-        DungeonModule dungeon = module(MConst.Dungeon);
-        int pg = dungeon.getRoleMaxDungeonId((byte) 0);
-        int jg = dungeon.getRoleMaxDungeonId((byte) 1);
-        //帮派id
-        FamilyModule familyModule = module(MConst.Family);
-        long familyId = familyModule.getAuth().getFamilyId();
-        // imei
-        String imei = loginInfo != null ? (loginInfo.getImei() != null ? loginInfo.getImei() : "") : "";
-        String info = makeOfflineLog(online, gold, money, bandGold, pg, jg, familyId, imei);
     }
 
 

@@ -3,15 +3,10 @@ package com.stars.modules.friend.packet;
 import com.stars.core.player.Player;
 import com.stars.core.player.PlayerPacket;
 import com.stars.modules.MConst;
-import com.stars.modules.family.summary.FamilySummaryComponent;
 import com.stars.modules.friend.FriendPacketSet;
 import com.stars.modules.role.summary.RoleSummaryComponent;
-import com.stars.modules.skill.SkillManager;
-import com.stars.modules.skill.prodata.SkillVo;
-import com.stars.modules.skill.summary.SkillSummaryComponent;
 import com.stars.network.server.buffer.NewByteBuffer;
 import com.stars.services.summary.Summary;
-import com.stars.services.summary.SummaryConst;
 
 import java.util.Map;
 
@@ -113,10 +108,7 @@ public class ClientOtherDetails extends PlayerPacket {
     }
 
     private void writeFamily(com.stars.network.server.buffer.NewByteBuffer buff, Summary summary) {
-        FamilySummaryComponent comp = (FamilySummaryComponent) summary.getComponent(SummaryConst.C_FAMILY);
-        buff.writeString(Long.toString(comp.getFamilyId())); // 家族id
-        buff.writeString(comp.getFamilyName()); // 家族名
-        buff.writeByte(comp.getPostId()); // 家族职位
+
     }
 
     private void writeBuddy(com.stars.network.server.buffer.NewByteBuffer buff, Summary summary) {
@@ -124,31 +116,11 @@ public class ClientOtherDetails extends PlayerPacket {
     }
 
     private void writeSkill(com.stars.network.server.buffer.NewByteBuffer buff, Summary summary) {
-        SkillSummaryComponent comp = (SkillSummaryComponent) summary.getComponent(SummaryConst.C_SKILL);
-        Map<Byte, Integer> skillPositionMap = comp.getSkillPositionMap();
-        Map<Integer, Integer> skillLevelMap = comp.getSkillLevel();
-        buff.writeByte((byte) skillPositionMap.size());
-        SkillVo skillVo;
-//        SkillvupVo skillLevelUpVo;
-        Integer skillId;
-        for (Map.Entry<Byte, Integer> entry : skillPositionMap.entrySet()) {
-            buff.writeByte(entry.getKey());
-            skillId = entry.getValue();
-            skillVo = SkillManager.getSkillVo(skillId);
-//            skillLevelUpVo = SkillManager.getSkillvupVo(skillId,skillLevelMap.get(skillId));
-            buff.writeString(skillVo.getName());
-            buff.writeString(skillVo.getIcon());
-        }
+
     }
 
     private void writeFamliySkill(com.stars.network.server.buffer.NewByteBuffer buff, Summary summary) {
-        FamilySummaryComponent comp = (FamilySummaryComponent) summary.getComponent(SummaryConst.C_FAMILY);
-        Map<String, Integer> skillLevelMap = comp.getSkillLevelMap();
-        buff.writeByte((byte) skillLevelMap.size());
-        for (Map.Entry<String, Integer> entry : skillLevelMap.entrySet()) {
-            buff.writeString(entry.getKey());
-            buff.writeInt(entry.getValue());
-        }
+
     }
 
 

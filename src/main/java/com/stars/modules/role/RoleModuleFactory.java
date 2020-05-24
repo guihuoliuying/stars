@@ -8,16 +8,12 @@ import com.stars.core.module.Module;
 import com.stars.core.player.Player;
 import com.stars.modules.MConst;
 import com.stars.modules.data.DataManager;
-import com.stars.modules.gm.GmManager;
-import com.stars.modules.name.event.RoleRenameEvent;
 import com.stars.modules.role.event.FriendGetVigorEvent;
 import com.stars.modules.role.event.ModifyRoleLevelEvent;
 import com.stars.modules.role.event.ReduceRoleResourceEvent;
-import com.stars.modules.role.gm.*;
 import com.stars.modules.role.listener.FriendGetVigorListener;
 import com.stars.modules.role.listener.ModifyRoleLevelListener;
 import com.stars.modules.role.listener.ReduceRoleResourceListener;
-import com.stars.modules.role.listener.RoleRenameListenner;
 import com.stars.modules.role.prodata.FightScoreRewardVo;
 import com.stars.modules.role.prodata.Grade;
 import com.stars.modules.role.prodata.Job;
@@ -68,11 +64,6 @@ public class RoleModuleFactory extends AbstractModuleFactory<RoleModule> {
 
     @Override
     public void init() {
-        GmManager.reg("setsave", new SaveJobGmHandler());
-        GmManager.reg("addRoleExp", new AddRoleExpGmHandler());
-        GmManager.reg("changerolejob", new ChangeJobGmHandler());
-        GmManager.reg("setrolelevel", new SetRoleLevelGmHandler());
-        GmManager.reg("attr", new AddAttributeGmHandler());
 
         Summary.regComponentClass(MConst.Role, RoleSummaryComponentImpl.class);
     }
@@ -87,7 +78,6 @@ public class RoleModuleFactory extends AbstractModuleFactory<RoleModule> {
         eventDispatcher.reg(FriendGetVigorEvent.class, new FriendGetVigorListener((RoleModule) module));
         eventDispatcher.reg(ReduceRoleResourceEvent.class, new ReduceRoleResourceListener((RoleModule) module));
         eventDispatcher.reg(ModifyRoleLevelEvent.class, new ModifyRoleLevelListener((RoleModule) module));
-        eventDispatcher.reg(RoleRenameEvent.class, new RoleRenameListenner((RoleModule) module));
     }
 
     private void loadJobVo() throws Exception {

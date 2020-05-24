@@ -29,8 +29,8 @@ public class ResouceHandler implements ToolHandler {
      * 增加资源,这里的id必须已经经过判断
      */
     @Override
-    public Map<Integer, Integer> add(int itemId, int count, short eventType) {
-        roleModule.addResource((byte) itemId, count, clientSystemConstant, eventType);
+    public Map<Integer, Integer> add(int itemId, int count) {
+        roleModule.addResource((byte) itemId, count, clientSystemConstant);
         Map<Integer, Integer> resultMap = new HashMap<>();
         resultMap.put(itemId, count);
         return resultMap;
@@ -38,28 +38,28 @@ public class ResouceHandler implements ToolHandler {
 
 
     @Override
-    public boolean deleteByItemId(int itemId, int count, short eventType) {
+    public boolean deleteByItemId(int itemId, int count) {
         if (itemId == ToolManager.GOLD || itemId == ToolManager.BANDGOLD) {//绑金和代金特殊处理
-            return deleteGold(count, eventType);
+            return deleteGold(count);
         }
-        roleModule.addResource((byte) itemId, -count, eventType);
+        roleModule.addResource((byte) itemId, -count);
         return false;
     }
 
-    private boolean deleteGold(int count, short eventType) {
+    private boolean deleteGold(int count) {
         if (count <= 0) return false;
         int bindGold = roleModule.getResource((byte) ToolManager.BANDGOLD);
         if (bindGold > 0) {//优先扣除绑金
             if (bindGold >= count) {
-                roleModule.addResource((byte) ToolManager.BANDGOLD, -count, eventType);
+                roleModule.addResource((byte) ToolManager.BANDGOLD, -count);
                 count = 0;
             } else {
-                roleModule.addResource((byte) ToolManager.BANDGOLD, -bindGold, eventType);
+                roleModule.addResource((byte) ToolManager.BANDGOLD, -bindGold);
                 count -= bindGold;
             }
         }
         if (count > 0) {
-            roleModule.addResource((byte) ToolManager.GOLD, -count, eventType);
+            roleModule.addResource((byte) ToolManager.GOLD, -count);
         }
         return false;
     }

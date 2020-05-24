@@ -2,14 +2,10 @@ package com.stars.modules.base.condition;
 
 import com.stars.core.expr.ExprConfig;
 import com.stars.modules.base.condition.dataset.activedjob.PcdsActivedJobSet;
-import com.stars.modules.base.condition.dataset.dungeonpassed.PcdsDungeonPassedSet;
 import com.stars.modules.base.condition.dataset.offlineHour.PcdsOfflineSet;
 import com.stars.modules.base.condition.dataset.tool.PcdsToolSet;
 import com.stars.modules.base.condition.func.datetime.PcfNow;
 import com.stars.modules.base.condition.func.datetime.PcfToHour;
-import com.stars.modules.base.condition.func.dungeon.PcfDungeonIsActived;
-import com.stars.modules.base.condition.func.dungeon.PcfDungeonIsPassed;
-import com.stars.modules.base.condition.func.open.PcfIsOpen;
 import com.stars.modules.base.condition.value.*;
 import com.stars.modules.base.condition.value.fight.*;
 
@@ -43,16 +39,11 @@ public class BaseExprConfig extends ExprConfig {
         /* 集合 */
         registerDataSet("bag", PcdsToolSet.class); // 背包
         registerDataSet("activedjob", PcdsActivedJobSet.class); // 已激活的职业
-        registerDataSet("dungeon_passed", PcdsDungeonPassedSet.class); // 通关关卡集合
         registerDataSet("loginid", PcdsOfflineSet.class); // 账号下各角色数据集合
 
         /* 函数 */
         registerFunc("now", PcfNow.class); // 获取当前时间
         registerFunc("tohour", PcfToHour.class); // 将毫秒转换成小时
-        registerFunc("isopen", PcfIsOpen.class); // 判断某个系统是否开启
-
-        registerFunc("dungeon_isactived", PcfDungeonIsActived.class); // 判断某个关卡是否激活
-        registerFunc("dungeon_ispassed", PcfDungeonIsPassed.class); // 判断某个关卡是否通关
     }
 
 }

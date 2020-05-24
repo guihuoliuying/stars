@@ -1,14 +1,12 @@
 package com.stars.modules.data;
 
+import com.stars.core.db.DBUtil;
 import com.stars.core.event.EventDispatcher;
 import com.stars.core.module.AbstractModuleFactory;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
-import com.stars.core.db.DBUtil;
-import com.stars.modules.data.gm.SetOpenServerTimeHandle;
 import com.stars.modules.data.prodata.ActivityFlowStepVo;
 import com.stars.modules.data.prodata.GradeCoeffVo;
-import com.stars.modules.gm.GmManager;
 import com.stars.util.DirtyWords;
 import com.stars.util.dirtyword.DirtyWordTire;
 
@@ -31,7 +29,6 @@ public class DataModuleFactory extends AbstractModuleFactory<DataModule> {
     @Override
     public void init() throws Exception {
         /** 设置开服时间gm */
-        GmManager.reg("setOpenServerTime", new SetOpenServerTimeHandle());
     }
 
     @Override

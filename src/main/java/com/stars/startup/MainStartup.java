@@ -19,7 +19,6 @@ import com.stars.core.player.Player;
 import com.stars.core.player.PlayerSystem;
 import com.stars.core.schedule.SchedulerManager;
 import com.stars.modules.MConst;
-import com.stars.modules.daily.DailyModuleFactory;
 import com.stars.modules.data.DataModuleFactory;
 import com.stars.modules.demologin.LoginModuleFactory;
 import com.stars.modules.demologin.LoginModuleHelper;
@@ -27,23 +26,12 @@ import com.stars.modules.demologin.message.OfflineMsg;
 import com.stars.modules.demologin.packet.ClientReconnect;
 import com.stars.modules.demologin.packet.ClientText;
 import com.stars.modules.demologin.packet.ServerReconnect;
-import com.stars.modules.drop.DropModuleFactory;
-import com.stars.modules.dungeon.DungeonModuleFactory;
 import com.stars.modules.email.EmailModuleFactory;
-import com.stars.modules.family.FamilyModuleFactory;
-import com.stars.modules.foreshow.ForeShowModuleFactory;
 import com.stars.modules.friend.FriendModuleFactory;
-import com.stars.modules.getway.GetWayModuleFactory;
-import com.stars.modules.gm.GmModuleFactory;
 import com.stars.modules.hotUpdate.HotUpdateModuleFactory;
-import com.stars.modules.induct.InductModuleFactory;
-import com.stars.modules.name.NameModuleFactory;
-import com.stars.modules.operateactivity.OperateActivityModuleFactory;
 import com.stars.modules.push.PushModuleFactory;
 import com.stars.modules.redpoint.RedPointModuleFactory;
 import com.stars.modules.role.RoleModuleFactory;
-import com.stars.modules.scene.SceneModuleFactory;
-import com.stars.modules.skill.SkillModuleFactory;
 import com.stars.modules.tool.ToolModuleFactory;
 import com.stars.network.PacketChecker;
 import com.stars.network.PacketUtil;
@@ -136,23 +124,23 @@ public class MainStartup implements Business {
         ModuleManager.register(MConst.HotUpdate, new HotUpdateModuleFactory()); // 热更模块(处理线上问题)
         ModuleManager.register(MConst.RedPoint, new RedPointModuleFactory()); // 红点
         ModuleManager.register(MConst.Data, new DataModuleFactory());// 通用配置数据commondefine表 OK
-        ModuleManager.register(MConst.Gm, new GmModuleFactory()); // gm命令 -
+//        ModuleManager.register(MConst.Gm, new GmModuleFactory()); // gm命令 -
         ModuleManager.register(MConst.Push, new PushModuleFactory()); // 精准推送 OK
         ModuleManager.register(MConst.Role, new RoleModuleFactory()); // 人物 OK
-        ModuleManager.register(MConst.Name, new NameModuleFactory()); // 人名 OK
+//        ModuleManager.register(MConst.Name, new NameModuleFactory()); // 人名 OK
         ModuleManager.register(MConst.Tool, new ToolModuleFactory()); // 道具/背包 OK
-        ModuleManager.register(MConst.Skill, new SkillModuleFactory());// 技能 OK(勉强)
-        ModuleManager.register(MConst.Scene, new SceneModuleFactory());// 场景 OK
-        ModuleManager.register(MConst.Dungeon, new DungeonModuleFactory());// 关卡 OK
-        ModuleManager.register(MConst.Drop, new DropModuleFactory());// 掉落 OK
-        ModuleManager.register(MConst.Induct, new InductModuleFactory());// 引导 OK
-        ModuleManager.register(MConst.Daily, new DailyModuleFactory());//活跃度或者日常 OK
+//        ModuleManager.register(MConst.Skill, new SkillModuleFactory());// 技能 OK(勉强)
+//        ModuleManager.register(MConst.Scene, new SceneModuleFactory());// 场景 OK
+//        ModuleManager.register(MConst.Dungeon, new DungeonModuleFactory());// 关卡 OK
+//        ModuleManager.register(MConst.Drop, new DropModuleFactory());// 掉落 OK
+//        ModuleManager.register(MConst.Induct, new InductModuleFactory());// 引导 OK
+//        ModuleManager.register(MConst.Daily, new DailyModuleFactory());//活跃度或者日常 OK
         ModuleManager.register(MConst.Email, new EmailModuleFactory()); // 邮件 OK -
         ModuleManager.register(MConst.Friend, new FriendModuleFactory()); // 好友 OK -
-        ModuleManager.register(MConst.Family, new FamilyModuleFactory()); // 家族 OK
-        ModuleManager.register(MConst.ForeShow, new ForeShowModuleFactory()); // 系统开放（预告） OK
-        ModuleManager.register(MConst.OperateActivity, new OperateActivityModuleFactory()); // 运营活动系统 OK
-        ModuleManager.register(MConst.GetWay, new GetWayModuleFactory()); // 获取途径
+//        ModuleManager.register(MConst.Family, new FamilyModuleFactory()); // 家族 OK
+//        ModuleManager.register(MConst.ForeShow, new ForeShowModuleFactory()); // 系统开放（预告） OK
+//        ModuleManager.register(MConst.OperateActivity, new OperateActivityModuleFactory()); // 运营活动系统 OK
+//        ModuleManager.register(MConst.GetWay, new GetWayModuleFactory()); // 获取途径
         ModuleManager.initDependence();
         ModuleManager.initPacket(); // 初始化数据包
         ModuleManager.init(); // 模块初始化

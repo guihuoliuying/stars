@@ -59,6 +59,7 @@ public class EmailServiceActor extends ServiceActor implements EmailService {
     public void init() throws Throwable {
         // 加载产品数据
         synchronized (EmailServiceActor.class) {
+            isLoadData = true; // skip load data at the moment
             if (!isLoadData) {
                 ConcurrentMap<Integer, AllEmailPo> tmpAllEmailMap = DBUtil.queryConcurrentMap(DBUtil.DB_USER, "allemailid", AllEmailPo.class,
                         "select * from `allemail`");

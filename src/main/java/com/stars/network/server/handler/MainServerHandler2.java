@@ -1,27 +1,19 @@
 package com.stars.network.server.handler;
 
-import com.stars.bootstrap.ServerManager;
+import com.stars.core.rpc.RpcManager;
 import com.stars.network.server.buffer.NewByteBuffer;
 import com.stars.network.server.config.ServerConfig;
 import com.stars.network.server.packet.Packet;
 import com.stars.network.server.packet.PacketManager;
-import com.stars.network.server.session.GameSession;
-import com.stars.network.server.session.SessionManager;
-import com.stars.server.connector.Connector;
-import com.stars.server.connector.packet.FrontendClosedN2mPacket;
-import com.stars.server.connector.packet.SendPubServerConfig;
 import com.stars.server.main.MainServer;
-import com.stars.server.main.message.Disconnected;
 import com.stars.util.ExecuteManager;
-import com.stars.util.log.CoreLogger;
-import com.stars.core.rpc.RpcManager;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.DefaultChannelPromise;
 import io.netty.channel.SimpleChannelInboundHandler;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by zws on 2015/8/25.
@@ -96,23 +88,22 @@ public class MainServerHandler2 extends SimpleChannelInboundHandler<Object> {
             if (PacketManager.isCorePacket(packet)) {
                 if (RpcManager.handlePacket(packet)) {
                     // no-op
-                } else if (packet instanceof FrontendClosedN2mPacket) {
-                    // 前端连接断开
-                    int payload = com.stars.server.main.MainServer.payload.decrementAndGet();
-//                    CoreLogger.info("游戏服负载，{}", MainServer.payload.get());
-                    sessionMap.remove(connectionId);
-                    long roleId = session.getRoleId();
-                    if (roleId != 0) {
-                        com.stars.network.server.session.SessionManager.remove(roleId, session); // fixme: 1 problem. memory leak.
-                    }
-                    Packet p = new Disconnected(roleId);
-                    p.setSession(session);
-                    com.stars.server.main.MainServer.getBusiness().dispatch(p);
-                    if (roleId != 0) {
-                        com.stars.util.log.CoreLogger.error("channelInactive, roleId={}, load={}", roleId, payload);
-                    } else {
-                        CoreLogger.error("channelInactive, roleId=0, load={}", payload);
-                    }
+//                } else if (packet instanceof FrontendClosedN2mPacket) {
+//                    // 前端连接断开
+//                    int payload = com.stars.server.main.MainServer.payload.decrementAndGet();
+//                    sessionMap.remove(connectionId);
+//                    long roleId = session.getRoleId();
+//                    if (roleId != 0) {
+//                        com.stars.network.server.session.SessionManager.remove(roleId, session); // fixme: 1 problem. memory leak.
+//                    }
+//                    Packet p = new Disconnected(roleId);
+//                    p.setSession(session);
+//                    com.stars.server.main.MainServer.getBusiness().dispatch(p);
+//                    if (roleId != 0) {
+//                        com.stars.util.log.CoreLogger.error("channelInactive, roleId={}, load={}", roleId, payload);
+//                    } else {
+//                        CoreLogger.error("channelInactive, roleId=0, load={}", payload);
+//                    }
 
                 } else {
                     ExecuteManager.execute(new Runnable() {
@@ -135,30 +126,30 @@ public class MainServerHandler2 extends SimpleChannelInboundHandler<Object> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
     	
-    	super.channelActive(ctx);
-    	SessionManager.getChannelSet().add(ctx.channel());
-    	ConcurrentHashMap<String, Properties> pubProps = ServerManager.getServer().getConfig().getPubProps();
-    	com.stars.server.connector.packet.SendPubServerConfig serverConfig = new SendPubServerConfig();
-    	Collection<Properties>col= pubProps.values();
-		for (Properties properties : col) {
-			serverConfig.addBackendAddress(Integer.parseInt(properties.getProperty("serverId")),
-					properties.getProperty("serverIp"),
-					Integer.parseInt(properties.getProperty("serverPort")));
-		}
-		com.stars.network.server.session.GameSession gSession = new GameSession();
-		gSession.setChannel(ctx.channel());
-		PacketManager.send(gSession, serverConfig);
+//    	super.channelActive(ctx);
+//    	SessionManager.getChannelSet().add(ctx.channel());
+//    	ConcurrentHashMap<String, Properties> pubProps = ServerManager.getServer().getConfig().getPubProps();
+//    	com.stars.server.connector.packet.SendPubServerConfig serverConfig = new SendPubServerConfig();
+//    	Collection<Properties>col= pubProps.values();
+//		for (Properties properties : col) {
+//			serverConfig.addBackendAddress(Integer.parseInt(properties.getProperty("serverId")),
+//					properties.getProperty("serverIp"),
+//					Integer.parseInt(properties.getProperty("serverPort")));
+//		}
+//		com.stars.network.server.session.GameSession gSession = new GameSession();
+//		gSession.setChannel(ctx.channel());
+//		PacketManager.send(gSession, serverConfig);
     }
     
     private void handleHeartbeat(ChannelHandlerContext ctx) {
-        ByteBuf outBuf = ctx.alloc().buffer();
-        outBuf.writeByte(-82);
-        outBuf.writeInt(6);
-        outBuf.writeInt(-1);
-        outBuf.writeShort(Connector.PROTO_PONG);
-        outBuf.writeByte(-81);
-        ctx.channel().unsafe().write(outBuf, new DefaultChannelPromise(ctx.channel()));
-        ctx.channel().unsafe().flush();
+//        ByteBuf outBuf = ctx.alloc().buffer();
+//        outBuf.writeByte(-82);
+//        outBuf.writeInt(6);
+//        outBuf.writeInt(-1);
+//        outBuf.writeShort(Connector.PROTO_PONG);
+//        outBuf.writeByte(-81);
+//        ctx.channel().unsafe().write(outBuf, new DefaultChannelPromise(ctx.channel()));
+//        ctx.channel().unsafe().flush();
     }
 
 }

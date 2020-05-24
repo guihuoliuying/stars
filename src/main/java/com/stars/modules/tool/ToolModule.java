@@ -12,12 +12,14 @@ import com.stars.modules.MConst;
 import com.stars.modules.data.DataManager;
 import com.stars.modules.redpoint.RedPointConst;
 import com.stars.modules.role.RoleModule;
-import com.stars.modules.serverLog.EventType;
 import com.stars.modules.tool.event.AddToolEvent;
 import com.stars.modules.tool.event.UseToolEvent;
 import com.stars.modules.tool.func.ToolFunc;
 import com.stars.modules.tool.func.ToolFuncResult;
-import com.stars.modules.tool.handler.*;
+import com.stars.modules.tool.handler.EquipHandler;
+import com.stars.modules.tool.handler.ItemHandler;
+import com.stars.modules.tool.handler.ResouceHandler;
+import com.stars.modules.tool.handler.ToolHandler;
 import com.stars.modules.tool.packet.ClientAward;
 import com.stars.modules.tool.packet.ClientTool;
 import com.stars.modules.tool.productdata.ItemVo;
@@ -184,8 +186,8 @@ public class ToolModule extends AbstractModule {
         return ServiceHelper.idService().newToolId();
     }
 
-    private AddToolResult addToolByItemId(int itemId, int count, short eventType) {
-        return addToolByItemId(itemId, count, 0, eventType);
+    private AddToolResult addToolByItemId(int itemId, int count) {
+        return addToolByItemId(itemId, count, 0);
     }
 
     /**
@@ -195,7 +197,7 @@ public class ToolModule extends AbstractModule {
      * clientSystemConstant:默认传个0进来即可,用于客户端的显示逻辑需要;
      * eventType:捆绑事件类型,对应EventType的code
      */
-    private AddToolResult addToolByItemId(int itemId, int count, int clientSystemConstant, short eventType) {
+    private AddToolResult addToolByItemId(int itemId, int count, int clientSystemConstant) {
         ToolHandler handler = getHandlerByItemId(itemId);
         ItemVo itemVo = ToolManager.getItemVo(itemId);
         if (handler == null || count <= 0) {
@@ -209,7 +211,7 @@ public class ToolModule extends AbstractModule {
         if (handler instanceof ResouceHandler) {
             ((ResouceHandler) handler).setClientSystemConstant(clientSystemConstant);
         }
-        AddToolResult addToolResult = new AddToolResult(handler.add(itemId, addCount, eventType));
+        AddToolResult addToolResult = new AddToolResult(handler.add(itemId, addCount));
         addToolResult.setAddCount(addCount);
         addToolResult.setResCount(count - addCount);
         if (addCount > 0) {
@@ -366,9 +368,9 @@ public class ToolModule extends AbstractModule {
     /**
      * 增加道具并且下发数据 暂时每次增加道具都会下发对应背包的所有数据
      */
-    public Map<Integer, Integer> addAndSend(int itemId, int count, short eventType) {
+    public Map<Integer, Integer> addAndSend(int itemId, int count) {
         Map<Integer, Integer> realGetMap = new HashMap<>();
-        AddToolResult addToolResult = addToolByItemId(itemId, count, eventType);
+        AddToolResult addToolResult = addToolByItemId(itemId, count);
         if (addToolResult != null) {
             com.stars.util.MapUtil.add(realGetMap, addToolResult.getRealGetMap());
             if (addToolResult.getResCount() > 0) {
@@ -388,7 +390,7 @@ public class ToolModule extends AbstractModule {
     /**
      * 新增道具并下发,装备和道具都可以一并新增 key:item的配置id. value:数量
      */
-    public Map<Integer, Integer> addAndSend(Map<Integer, Integer> toolMap, short eventType) {
+    public Map<Integer, Integer> addAndSend(Map<Integer, Integer> toolMap) {
         Iterator iter = toolMap.entrySet().iterator();
         int itemId, count;
         HashMap<Integer, Integer> restMap = new HashMap<>();
@@ -398,7 +400,7 @@ public class ToolModule extends AbstractModule {
             Map.Entry<Integer, Integer> entry = (Map.Entry<Integer, Integer>) iter.next();
             itemId = entry.getKey();
             count = entry.getValue();
-            addToolResult = addToolByItemId(itemId, count, eventType);
+            addToolResult = addToolByItemId(itemId, count);
             if (addToolResult != null) {
                 com.stars.util.MapUtil.add(realGetMap, addToolResult.getRealGetMap());
                 if (addToolResult.getResCount() > 0) {
@@ -441,7 +443,7 @@ public class ToolModule extends AbstractModule {
     /**
      * 新增道具并下发,装备和道具都可以一并新增 key:item的配置id. value:数量 带有客户端系统参数
      */
-    public Map<Integer, Integer> addAndSend(Map<Integer, Integer> toolMap, int clientSystemConstant, short eventType) {
+    public Map<Integer, Integer> addAndSend(Map<Integer, Integer> toolMap, int clientSystemConstant) {
         Iterator iter = toolMap.entrySet().iterator();
         int itemId, count;
         AddToolResult addToolResult;
@@ -451,7 +453,7 @@ public class ToolModule extends AbstractModule {
             Map.Entry<Integer, Integer> entry = (Map.Entry<Integer, Integer>) iter.next();
             itemId = entry.getKey();
             count = entry.getValue();
-            addToolResult = addToolByItemId(itemId, count, clientSystemConstant, eventType);
+            addToolResult = addToolByItemId(itemId, count, clientSystemConstant);
             if (addToolResult != null) {
                 com.stars.util.MapUtil.add(realGetMap, addToolResult.getRealGetMap());
                 if (addToolResult.getResCount() > 0) {
@@ -479,7 +481,7 @@ public class ToolModule extends AbstractModule {
     /**
      * 新增道具但不下发 key:item的配置id. value:数量
      */
-    public Map<Integer, Integer> addNotSend(Map<Integer, Integer> toolMap, short eventType) {
+    public Map<Integer, Integer> addNotSend(Map<Integer, Integer> toolMap) {
         Iterator iter = toolMap.entrySet().iterator();
         int itemId, count, restCount;
         HashMap<Integer, Integer> restMap = new HashMap<>();
@@ -489,7 +491,7 @@ public class ToolModule extends AbstractModule {
             Map.Entry<Integer, Integer> entry = (Map.Entry<Integer, Integer>) iter.next();
             itemId = entry.getKey();
             count = entry.getValue();
-            addToolResult = addToolByItemId(itemId, count, eventType);
+            addToolResult = addToolByItemId(itemId, count);
             if (addToolResult != null) {
                 com.stars.util.MapUtil.add(realGetMap, addToolResult.getRealGetMap());
                 if (addToolResult.getResCount() > 0) {
@@ -515,19 +517,19 @@ public class ToolModule extends AbstractModule {
     /**
      * 新增道具并下发,装备和道具都可以一并新增 格式:itemid=道具数量,分号隔开/如100001+200|100002+300
      */
-    public Map<Integer, Integer> addAndSend(String toolStr, short eventType) {
-        return addAndSend(toolStr, 0, eventType);
+    public Map<Integer, Integer> addAndSend(String toolStr) {
+        return addAndSend(toolStr, 0);
     }
 
     /**
      * 新增道具并下发,装备和道具都可以一并新增 格式:itemid=道具数量,分号隔开/如100001+200|100002+300
      */
-    public Map<Integer, Integer> addAndSend(String toolStr, int clientSystemConstant, short eventType) {
+    public Map<Integer, Integer> addAndSend(String toolStr, int clientSystemConstant) {
         if (com.stars.util.EmptyUtil.isEmpty(toolStr)) {
             return null;
         }
         Map<Integer, Integer> toolMap = decodeToolStrToMap(toolStr);
-        return addAndSend(toolMap, clientSystemConstant, eventType);
+        return addAndSend(toolMap, clientSystemConstant);
     }
 
 	/*
@@ -600,11 +602,11 @@ public class ToolModule extends AbstractModule {
     /**
      * 根据配置id删除道具 不会下发数据 调用这个方法必须经过检查
      */
-    private void deleteByItemId(int itemId, int count, short eventType) {
+    private void deleteByItemId(int itemId, int count) {
         if (count <= 0)
             return;
         ToolHandler handler = getHandlerByItemId(itemId);
-        handler.deleteByItemId(itemId, count, eventType);
+        handler.deleteByItemId(itemId, count);
         ItemVo itemVo = ToolManager.getItemVo(itemId);
         if (itemVo != null && itemVo.getFuncType() == ToolManager.FUNC_TYPE_BOX) {
             signCalRedPoint(MConst.Tool, RedPointConst.BAG_USE_BOX);
@@ -612,7 +614,7 @@ public class ToolModule extends AbstractModule {
         eventDispatcher().fire(new UseToolEvent(itemId, count));
     }
 
-    public void deleteByToolId(long toolId, int count, short eventType) {
+    public void deleteByToolId(long toolId, int count) {
         ToolHandler handler = getHandlerByToolId(toolId);
         RoleToolRow row = getToolById(toolId);
         if (handler != null) {
@@ -641,7 +643,7 @@ public class ToolModule extends AbstractModule {
      * @param type
      * @param eventType
      */
-    public void deleteByType(byte type, short eventType) {
+    public void deleteByType(byte type) {
         Map<Long, RoleToolRow> toolMap = itemBag.getToolMap();
         int itemId = 0;
         List<int[]> delectList = new ArrayList<>();
@@ -653,18 +655,18 @@ public class ToolModule extends AbstractModule {
             delectList.add(new int[]{itemId, toolRow.getCount()});
         }
         for (int[] deleteInfo : delectList) {
-            deleteAndSend(deleteInfo[0], deleteInfo[1], eventType);
+            deleteAndSend(deleteInfo[0], deleteInfo[1]);
         }
     }
 
     /**
      * 根据配置id删除道具 只允许删除道具和资源,不准删装备 只有删除成功才会return true.并且下发道具
      */
-    public boolean deleteAndSend(int itemId, int count, short eventType) {
+    public boolean deleteAndSend(int itemId, int count) {
         if (!checkBeforeDelete(itemId, count)) {
             return false;
         }
-        deleteByItemId(itemId, count, eventType);
+        deleteByItemId(itemId, count);
         flushToClient(ToolManager.FLUSH_BAG_TYPE_ITEM);
         if (count > 0) {
             ItemVo itemVo = ToolManager.getItemVo(itemId);
@@ -680,7 +682,7 @@ public class ToolModule extends AbstractModule {
      *
      * @return
      */
-    public boolean deleteAndSend(short eventType) {
+    public boolean deleteAndSend() {
         Map<Long, RoleToolRow> itemMap = itemBag.getToolMap();
         Map<Long, String> map = new HashMap<>();
         for (Map.Entry<Long, RoleToolRow> roleToolRowEntry : itemMap.entrySet()) {
@@ -696,7 +698,7 @@ public class ToolModule extends AbstractModule {
             } catch (Exception e) {
                 ints = new int[]{0, 0};
             }
-            deleteAndSend(ints[0], ints[1], eventType);
+            deleteAndSend(ints[0], ints[1]);
         }
         return true;
     }
@@ -704,14 +706,14 @@ public class ToolModule extends AbstractModule {
     /**
      * 根据map删除道具 检查完再删.
      */
-    public boolean deleteAndSend(Map<Integer, Integer> toolMap, short eventType) {
+    public boolean deleteAndSend(Map<Integer, Integer> toolMap) {
         if (!checkBeforeDelete(toolMap)) {
             return false;
         }
         Iterator iter = toolMap.entrySet().iterator();
         while (iter.hasNext()) {
             Map.Entry<Integer, Integer> entry = (Map.Entry<Integer, Integer>) iter.next();
-            deleteByItemId(entry.getKey(), entry.getValue(), eventType);
+            deleteByItemId(entry.getKey(), entry.getValue());
         }
         flushToClient(ToolManager.FLUSH_BAG_TYPE_ITEM);
         return true;
@@ -867,75 +869,7 @@ public class ToolModule extends AbstractModule {
         this.foreverUsedLimitMap = foreverUsedLimitMap;
     }
 
-    /**
-     * 穿装备时道具模块需要处理的内容 1,把道具改成被穿上的状态 2,整理格子
-     */
-    private void putOn(long toolId, int generalId, int position) {
-        // RoleToolRow toolRow = getEquipById(toolId);
-        // if (toolRow == null) {
-        // return ;
-        // }
-        // int oldGrid = toolRow.getGrid();
-        // toolRow.setEquipStr(generalId + "_" + position);
-        // toolRow.setGrid(0);
-        // toolRow.setUpdateStatus();
-        // EquipHandler handler = (EquipHandler)
-        // handlers.get(ToolManager.EQUIP_BAG);
-        // handler.fillAfterGrid(oldGrid);
-    }
 
-    /**
-     * 脱掉装备 1,脱掉,拿一个新的格子填上 2,下发数据 注:如果穿了以后再脱,会有空格子出现,但是如果单独执行脱逻辑,不一定会有格子
-     */
-    private void putOff(long toolId) {
-        // RoleToolRow toolRow = getEquipById(toolId);
-        // EquipHandler handler = (EquipHandler)
-        // handlers.get(ToolManager.EQUIP_BAG);
-        // int nullGrid = handler.getNullGrid();
-        // if (nullGrid <= 0 || toolRow == null) {
-        // return ;
-        // }
-        // toolRow.setGrid(nullGrid);
-        // equipBag.getGridMap().put(nullGrid, toolId);
-        // toolRow.setEquipStr("");
-        // toolRow.setUpdateStatus();
-    }
-
-    /**
-     * 把某个物品的新表识去掉
-     */
-    // public void changeNewFlag(byte bagType,int grid){
-    // RoleToolRow toolRow = getToolByGrid(bagType,grid);
-    // if(toolRow == null || toolRow.getNewFlag() == (byte)0){
-    // return;
-    // }
-    // toolRow.setNewFlag((byte)0);
-    // toolRow.setUpdateStatus();
-    // }
-
-    /**
-     * 处理制作系统发来的事件 1,先把制作人的姓名改了 2,制作完了改回来
-     */
-    // public void disPatchMakeEvent(MakeEvent event){
-    // this.makerName = event.getName();
-    // Map<Integer,Integer> toolmap = event.getMap();
-    // addAndSend(toolmap);
-    // this.makerName = "";
-    // }
-
-    /**
-     * 处理穿上装备的事件 1,先穿上装备,修改格子号 2,再脱下装备,先穿再脱,格子号会空出来,所以肯定会成功
-     *
-     * @param
-     */
-    // public void disPatchPutOnEvent(PutOnEquipEvent event){
-    // long oldEquipId = event.getOldEquipId() == null? 0:event.getOldEquipId();
-    // putOn(event.getNewEquipId(),event.getGeneralId(),event.getPosition());
-    // if(oldEquipId > 0){
-    // putOff(oldEquipId);
-    // }
-    // sendAll();
-    // }
     @Override
     public Map<String, Module> moduleMap() {
         return super.moduleMap();
@@ -948,7 +882,6 @@ public class ToolModule extends AbstractModule {
     private void initHandler() {
         handlers.put(ToolManager.RESOUCE_BAG, new ResouceHandler((RoleModule) module(MConst.Role)));
         handlers.put(ToolManager.ITEM_BAG, new ItemHandler(this, itemBag));
-        handlers.put(ToolManager.FAMILY_CONTRIBUTION_BAG, new FamilyContributionToolHandler(id(), moduleMap()));
     }
 
     /**
@@ -1003,7 +936,7 @@ public class ToolModule extends AbstractModule {
         for (Map.Entry<Integer, Integer> entry : ToolManager.birthAddItemMap.entrySet()) {
             addMap.put(entry.getKey(), entry.getValue());
         }
-        addNotSend(addMap, EventType.CREATEADDTOOL.getCode());
+        addNotSend(addMap);
     }
 
     @Override
@@ -1112,11 +1045,10 @@ public class ToolModule extends AbstractModule {
                 return;
             }
             try {
-                short eventType = 0;
                 if(hasUsedLimit(itemId)){ //次数有限制，只能使用剩余限制次数
                     count = getRemainUseCount(itemId,count);
                 }
-                deleteByItemId(itemId, count, eventType);
+                deleteByItemId(itemId, count);
                 func.use(moduleMap(), count, args);
                 saveUsedLimitData(itemId,count); //记录次数限制
             } catch (Throwable cause) {
@@ -1223,7 +1155,7 @@ public class ToolModule extends AbstractModule {
                 if(hasUsedLimit(itemId)){ //次数有限制，只能使用剩余限制次数
                     count = getRemainUseCount(itemId,count);
                 }
-                deleteByToolId(toolId, count, EventType.USETOOL.getCode());
+                deleteByToolId(toolId, count);
                 com.stars.util.LogUtil.info("使用道具, roleId={}, toolId={}, itemId={}, count={}", id(), toolId, itemId, count);
                 func.use(moduleMap(), count, args);
                 saveUsedLimitData(itemId,count); //记录次数限制
@@ -1265,8 +1197,8 @@ public class ToolModule extends AbstractModule {
             com.stars.util.LogUtil.info("背包道具数量不足roleId={}, itemId={}, toolId={}", id(), toolRow.getItemId(), toolId);
             return;
         }
-        deleteByToolId(toolId, count, EventType.SELLTOOL.getCode());
-        addAndSend(itemVo.getSellPrice()[0], (itemVo.getSellPrice()[1]) * count, EventType.SELLTOOL.getCode());
+        deleteByToolId(toolId, count);
+        addAndSend(itemVo.getSellPrice()[0], (itemVo.getSellPrice()[1]) * count);
         eventDispatcher().fire(new UseToolEvent(itemId, count));
         // 客户端提示
         Map<Integer, Integer> m = new HashMap<Integer, Integer>();
@@ -1319,8 +1251,8 @@ public class ToolModule extends AbstractModule {
             warn("此物品不能购买");
             return;
         }
-        this.deleteByItemId(itemVo.getBuyPrice()[0], count * (itemVo.getBuyPrice()[1]), EventType.BUYTOOL.getCode());
-        this.addAndSend(itemId, count, EventType.BUYTOOL.getCode());
+        this.deleteByItemId(itemVo.getBuyPrice()[0], count * (itemVo.getBuyPrice()[1]));
+        this.addAndSend(itemId, count);
     }
 
     /**
@@ -1381,10 +1313,10 @@ public class ToolModule extends AbstractModule {
         // 先分解再增加物品
         try {
             if (toolId != 0) {
-                deleteByToolId(toolId, count, EventType.RESOLVETOOL.getCode());
+                deleteByToolId(toolId, count);
                 com.stars.util.LogUtil.info("分解道具, roleId={}, toolId={}, itemId={}, count={}", id(), toolId, itemId, count);
             }
-            map = this.addAndSend(resolveToolMap, EventType.RESOLVETOOL.getCode());
+            map = this.addAndSend(resolveToolMap);
 
         } catch (Throwable cause) {
             com.stars.util.LogUtil.error("道具分解异常, roleId=" + id() + ", itemId=" + itemId + ", count=" + count, cause);
@@ -1500,8 +1432,8 @@ public class ToolModule extends AbstractModule {
         Map<Integer, Integer> cost = new HashMap<>();
         cost.putAll(itemVo.getCompoundNeeds());
         MapUtil.multiply(cost, count);
-        deleteAndSend(cost, EventType.COMPOSETOOL.getCode());
-        addAndSend(itemId, count, EventType.COMPOSETOOL.getCode());
+        deleteAndSend(cost);
+        addAndSend(itemId, count);
     }
 
     public void gmDeleteItem(long toolId, int count) {
@@ -1510,7 +1442,7 @@ public class ToolModule extends AbstractModule {
         RoleToolRow toolRow = getToolById(toolId);
         if (null != toolRow) {
             count = toolRow.getCount() < count ? toolRow.getCount() : count;
-            deleteByToolId(toolId, count, EventType.GM_DEL.getCode());
+            deleteByToolId(toolId, count);
             flushToClient(ToolManager.FLUSH_BAG_TYPE_ALL);
         }
     }
@@ -1519,7 +1451,7 @@ public class ToolModule extends AbstractModule {
         if (count <= 0)
             return false;
         if (checkBeforeDelete(itemId, count)) {
-            deleteByItemId(itemId, count, EventType.SUBTOOL.getCode());
+            deleteByItemId(itemId, count);
             return true;
         } else {
             return false;

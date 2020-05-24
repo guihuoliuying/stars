@@ -14,23 +14,14 @@ import com.stars.modules.demologin.LoginModule;
 import com.stars.modules.demologin.packet.ClientReconnect;
 import com.stars.modules.demologin.packet.ClientText;
 import com.stars.modules.demologin.userdata.AccountRole;
-import com.stars.modules.name.event.RoleRenameEvent;
 import com.stars.modules.redpoint.RedPointConst;
 import com.stars.modules.role.event.*;
-import com.stars.modules.role.packet.ClientFighScoreReward;
 import com.stars.modules.role.packet.ClientHeartBeatCheck;
 import com.stars.modules.role.packet.ClientRole;
 import com.stars.modules.role.packet.ClientRoleResource;
-import com.stars.modules.role.prodata.FightScoreRewardVo;
 import com.stars.modules.role.prodata.Grade;
 import com.stars.modules.role.userdata.Role;
-import com.stars.modules.scene.ArroundScene;
-import com.stars.modules.scene.SceneManager;
-import com.stars.modules.scene.SceneModule;
-import com.stars.modules.scene.prodata.SafeinfoVo;
-import com.stars.modules.serverLog.EventType;
 import com.stars.modules.tool.ToolManager;
-import com.stars.modules.tool.ToolModule;
 import com.stars.services.summary.SummaryComponent;
 import com.stars.util.DateUtil;
 import com.stars.util.I18n;
@@ -207,11 +198,11 @@ public class RoleModule extends AbstractModule {
         updatePartFightScore(RoleManager.FIGHTSCORE_GRADE, FormularUtils.calFightScore(grade.getAttribute()));
     }
 
-    public void addResource(byte resourceId, int count, short eventType) {
-        addResource(resourceId, count, 0, eventType);
+    public void addResource(byte resourceId, int count) {
+        addResource(resourceId, count, 0);
     }
 
-    public void addResource(byte resourceId, int count, int clientSystemConstant, short eventType) {
+    public void addResource(byte resourceId, int count, int clientSystemConstant) {
         if (resourceId == ToolManager.EXP) {
             this.addExp(count);
             return;
@@ -256,15 +247,6 @@ public class RoleModule extends AbstractModule {
         context().update(role);
     }
 
-    /**
-     * 初始化安全区角色出生地
-     */
-    public void initSafeStage() {
-        role.setSafeStageId(SceneManager.initSafeStageId);
-        SafeinfoVo infoVo = SceneManager.getSafeVo(SceneManager.initSafeStageId);
-        role.setPositionStr(infoVo.getCharPosition());
-        context().update(role);
-    }
 
     public void setLastEnterWeddingSceneId(String lastEnterWeddingSceneId) {
         role.setLastEnterWeddingSceneId(lastEnterWeddingSceneId);
@@ -382,33 +364,6 @@ public class RoleModule extends AbstractModule {
         send(new ClientRole(ClientRole.UPDATE_ATTR, role));
     }
 
-    /**
-     * 领取战力奖励
-     *
-     * @param rewardId
-     */
-    public void rewardFightScore(int rewardId) {
-        FightScoreRewardVo rewardVo = RoleManager.getFightScoreRewardVo(rewardId);
-        if (rewardVo == null) {
-            send(new ClientFighScoreReward(rewardId, (byte) 0));
-            return;
-        }
-        if (role.isRewarded(rewardId)) {
-            send(new ClientFighScoreReward(rewardId, (byte) 0));
-            return;
-        }
-        if (role.getFightScore() < rewardVo.getFightScore()) {
-            warn("战力不足");
-            send(new ClientFighScoreReward(rewardId, (byte) 0));
-            return;
-        }
-        ToolModule toolModule = (ToolModule) module(MConst.Tool);
-        toolModule.addAndSend(rewardVo.getRewardMap(), EventType.FIGHTINGAWADR.getCode());
-        role.addRewardId(rewardId);
-        context().update(role);
-        send(new ClientFighScoreReward(rewardId, (byte) 1));
-    }
-
     private void checkAndRecoverVigorWithSending() {
         if (checkAndRecoverVigor()) {
             // todo: send remaining time
@@ -524,38 +479,6 @@ public class RoleModule extends AbstractModule {
 
     }
 
-    /**
-     * 购买金币
-     * 返回:[购买状态,购买获得数量]
-     *
-     * @return -1=购买失败;0=购买成功没有触发翻倍;1=触发翻倍
-     */
-    private int[] buyMoney() {
-        boolean isDouble = false;// 是否触发随机翻倍
-        ToolModule toolModule = module(MConst.Tool);
-        Grade gradeVo = RoleManager.getGradeByJobLevel(role.getJobId(), role.getLevel());
-        Map<Integer, Integer> awardMap = new HashMap<>();
-        awardMap.putAll(gradeVo.getBuyMoneyAward());
-        // 使用免费次数购买
-        if (role.getFreeBuyMoneyCount() < gradeVo.getFreeCount()) {
-            toolModule.addAndSend(awardMap, EventType.BUYTOOL.getCode());
-            role.setFreeBuyMoneyCount((byte) (role.getFreeBuyMoneyCount() + 1));
-            context().update(role);
-        } else {// 付费购买
-
-        }
-        return new int[]{(isDouble ? 1 : 0), awardMap.get(ToolManager.MONEY)};
-    }
-
-    /**
-     * 角色是否满级
-     *
-     * @return true=已满级
-     */
-    public boolean isRoleLevelMax() {
-        Grade nextGradeVo = RoleManager.getGradeByJobLevel(role.getJobId(), role.getLevel() + 1);
-        return nextGradeVo == null;
-    }
 
     private void updateRoleSummaryComp() {
 //        try {
@@ -599,18 +522,7 @@ public class RoleModule extends AbstractModule {
         return getByte(ROLE_AUTO_FLAG + stageType);
     }
 
-    public String getJoinSceneStr() {
-        SceneModule sceneModule = (SceneModule) module(MConst.Scene);
-        if (sceneModule.getScene() instanceof ArroundScene) {
-            StringBuilder builder = new StringBuilder();
-            builder.append(SceneManager.ARROUND_SCENE_PREFIX)
-                    //这里用角色当前场景的地图id作为区分，不再用safeid
-                    .append(sceneModule.getScene().getSceneId())
-                    .append(arroundId);
-            return builder.toString();
-        }
-        return "";
-    }
+
 
     @Override
     public void onLog() {
@@ -654,7 +566,6 @@ public class RoleModule extends AbstractModule {
      * @param event
      */
     public void gmReduceHandler(ReduceRoleResourceEvent event) {
-        addResource((byte) event.getResourceId(), (int) event.getValue(), EventType.GM.getCode());
     }
 
     /**
@@ -752,13 +663,6 @@ public class RoleModule extends AbstractModule {
         } catch (SQLException e) {
             com.stars.util.LogUtil.error(e.getMessage(), e);
         }
-    }
-
-    /**
-     * 角色重命名触发
-     */
-    public void onRoleRename(RoleRenameEvent roleRenameEvent) {
-
     }
 
     public int getBabyStage() {

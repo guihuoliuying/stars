@@ -1,14 +1,11 @@
 package com.stars.modules.induct;
 
+import com.stars.core.db.DBUtil;
 import com.stars.core.event.EventDispatcher;
 import com.stars.core.module.AbstractModuleFactory;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
-import com.stars.core.db.DBUtil;
-import com.stars.modules.gm.GmManager;
 import com.stars.modules.induct.event.InductEvent;
-import com.stars.modules.induct.gm.ClearInductGmHandler;
-import com.stars.modules.induct.gm.InductFinishAllGmHandler;
 import com.stars.modules.induct.listener.InductListener;
 import com.stars.modules.induct.prodata.InductVo;
 
@@ -32,8 +29,6 @@ public class InductModuleFactory extends AbstractModuleFactory<InductModule> {
 
     @Override
     public void init() throws Exception {
-        GmManager.reg("clearinduct", new ClearInductGmHandler());
-        GmManager.reg("inductfinishall", new InductFinishAllGmHandler());
     }
 
     @Override

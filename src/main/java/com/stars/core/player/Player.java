@@ -1,5 +1,8 @@
 package com.stars.core.player;
 
+import com.stars.core.actor.AbstractActor;
+import com.stars.core.actor.Actor;
+import com.stars.core.actor.DeadMessageHandler;
 import com.stars.core.event.EventDispatcher;
 import com.stars.core.exception.LogicException;
 import com.stars.core.module.AbstractModule;
@@ -9,7 +12,6 @@ import com.stars.core.module.ModuleContext;
 import com.stars.core.redpoint.RedPoints;
 import com.stars.modules.MConst;
 import com.stars.modules.demologin.LoginModule;
-import com.stars.modules.demologin.gm.PrintPacketGmHandler;
 import com.stars.modules.demologin.packet.ClientText;
 import com.stars.network.PacketChecker;
 import com.stars.network.PacketUtil;
@@ -21,9 +23,6 @@ import com.stars.services.summary.SummaryComponent;
 import com.stars.util.I18n;
 import com.stars.util.LogUtil;
 import com.stars.util.ServerLogConst;
-import com.stars.core.actor.AbstractActor;
-import com.stars.core.actor.Actor;
-import com.stars.core.actor.DeadMessageHandler;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -102,9 +101,6 @@ public class Player extends AbstractActor {
 //                        String.format("0x%04X", packet.getType()), packet.getPacketId());
             }
             if (guard.canAccess(packet)) {
-                if (PrintPacketGmHandler.canPrintPacket(String.format("0x%04X", packet.getType())))
-                    LogUtil.info("收包 {} |packetType:{}|serverPacketId:{}", id,
-                            String.format("0x%04X", packet.getType()), packet.getPacketId());
                 try {
                     if (packet instanceof PlayerPacket) {
                         ((PlayerPacket) packet).setPlayer(this);

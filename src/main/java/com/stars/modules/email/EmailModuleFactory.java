@@ -5,14 +5,10 @@ import com.stars.core.event.EventDispatcher;
 import com.stars.core.module.AbstractModuleFactory;
 import com.stars.core.module.Module;
 import com.stars.core.player.Player;
-import com.stars.modules.drop.listener.RequestSendSingleEmailListener;
 import com.stars.modules.email.event.EmailRedPointEvent;
-import com.stars.modules.email.event.RequestSendSingleEmailEvent;
 import com.stars.modules.email.event.SpecialEmailEvent;
-import com.stars.modules.email.gm.*;
 import com.stars.modules.email.listener.EmailRedPointListener;
 import com.stars.modules.email.listener.SpecialEmailListener;
-import com.stars.modules.gm.GmManager;
 import com.stars.modules.tool.ToolManager;
 import com.stars.services.mail.prodata.EmailTemplateVo;
 import com.stars.util.MapUtil;
@@ -56,16 +52,10 @@ public class EmailModuleFactory extends AbstractModuleFactory<EmailModule> {
 
     @Override
     public void init() throws Exception {
-        GmManager.reg("recvemail", new RecvEmailGmHandler());
-        GmManager.reg("deleteemail", new DeleteEmailGmHandler());
-        GmManager.reg("reademail", new ReadEmailGmHandler());
-        GmManager.reg("fetchaffixs", new FetchAffixsGmHandler());
-        GmManager.reg("sendemailbytemplate", new SendEmailByTemplateGmHandler());
     }
 
     @Override
     public void registerListener(EventDispatcher eventDispatcher, Module module) {
-        eventDispatcher.reg(RequestSendSingleEmailEvent.class, new RequestSendSingleEmailListener(module));
         eventDispatcher.reg(EmailRedPointEvent.class, new EmailRedPointListener((EmailModule) module));
         eventDispatcher.reg(SpecialEmailEvent.class, new SpecialEmailListener((EmailModule) module));
     }

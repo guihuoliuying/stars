@@ -23,7 +23,6 @@ public class DailyResetJob implements Job {
     public void execute(JobExecutionContext ctx) throws JobExecutionException {
         try {
             LoginModuleHelper.resetDaily(false);
-            ServiceHelper.familyMainService().resetDaily();
             //好友每日重置
             ServiceHelper.friendService().dailyReset();
         } catch (Throwable t) {

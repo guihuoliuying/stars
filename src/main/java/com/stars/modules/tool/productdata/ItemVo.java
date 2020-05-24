@@ -2,7 +2,6 @@ package com.stars.modules.tool.productdata;
 
 import com.stars.core.module.Module;
 import com.stars.modules.MConst;
-import com.stars.modules.dungeon.DungeonModule;
 import com.stars.modules.role.RoleModule;
 import com.stars.modules.tool.func.ToolFunc;
 import com.stars.util.StringUtil;
@@ -243,12 +242,6 @@ public class ItemVo {
             switch (entry.getKey()) {
                 case 1://等级限制
                     if (rm.getLevel() < Integer.parseInt(entry.getValue())) {
-                        return false;
-                    }
-                    break;
-                case 2://通关副本
-                    DungeonModule dm = (DungeonModule) moduleMap.get(MConst.Dungeon);
-                    if (!dm.isPassDungeon(Integer.parseInt(entry.getValue()))) {
                         return false;
                     }
                     break;

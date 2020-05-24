@@ -3,16 +3,10 @@ package com.stars.services;
 import com.stars.ExcutorKey;
 import com.stars.core.actor.invocation.ServiceActor;
 import com.stars.core.schedule.SchedulerManager;
-import com.stars.services.family.activities.entry.FamilyActEntryService;
-import com.stars.services.family.event.FamilyEventService;
-import com.stars.services.family.main.FamilyMainService;
-import com.stars.services.family.role.FamilyRoleService;
-import com.stars.services.family.welfare.redpacket.FamilyRedPacketService;
 import com.stars.services.friend.FriendService;
 import com.stars.services.id.IdService;
 import com.stars.services.localservice.LocalService;
 import com.stars.services.mail.EmailService;
-import com.stars.services.multicommon.MultiCommonService;
 import com.stars.services.role.RoleService;
 import com.stars.services.summary.SummaryService;
 import com.stars.util.LogUtil;
@@ -93,13 +87,7 @@ public class ServiceHelper {
     static EmailService emailService;
     static FriendService friendService;
     static SummaryService summaryService;
-    static FamilyRoleService familyRoleService;
-    static FamilyMainService familyMainService;
-    static FamilyRedPacketService familyRedPacketService;
-    static FamilyEventService familyEventService;
-    static FamilyActEntryService familyActEntryService;
     static LocalService localService;
-    static MultiCommonService multiCommonService;
 
     /* 访问方法 */
     public static IdService idService() {
@@ -123,26 +111,6 @@ public class ServiceHelper {
         return summaryService;
     }
 
-    public static FamilyRoleService familyRoleService() {
-        return familyRoleService;
-    }
-
-    public static FamilyMainService familyMainService() {
-        return familyMainService;
-    }
-
-    public static FamilyRedPacketService familyRedPacketService() {
-        return familyRedPacketService;
-    }
-
-    public static FamilyEventService familyEventService() {
-        return familyEventService;
-    }
-
-    public static FamilyActEntryService familyActEntryService() {
-        return familyActEntryService;
-    }
-
     public static ServiceManager getManager() {
         return manager;
     }
@@ -155,8 +123,5 @@ public class ServiceHelper {
         return localService;
     }
 
-    public static MultiCommonService multiCommonService() {
-        return multiCommonService;
-    }
 
 }

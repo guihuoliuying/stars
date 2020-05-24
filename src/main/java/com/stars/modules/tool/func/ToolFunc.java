@@ -3,7 +3,6 @@ package com.stars.modules.tool.func;
 import com.stars.core.module.Module;
 import com.stars.modules.MConst;
 import com.stars.modules.demologin.packet.ClientText;
-import com.stars.modules.dungeon.DungeonModule;
 import com.stars.modules.role.RoleModule;
 import com.stars.modules.tool.ToolManager;
 import com.stars.modules.tool.ToolModule;
@@ -83,18 +82,6 @@ public abstract class ToolFunc {
 					return new ToolFuncResult(false, new ClientText("item_lvllimit",entry.getValue()));
 				}
 				break;
-			case 2://通关副本
-				DungeonModule dm = (DungeonModule)moduleMap.get(MConst.Dungeon);
-				if (!dm.isPassDungeon(Integer.parseInt(entry.getValue()))) {
-					if (this.useFailedNotice != null) {
-						return new ToolFuncResult(false, new ClientText(useFailedNotice));
-					}
-					return new ToolFuncResult(false, new ClientText("item_copylimit",entry.getValue()));
-				}
-				break;
-			case 3://VIP等级限制
-
-                break;
 			case 4://限时道具
 				long bornTime = (long)args[0];
 				long timeLimit = Long.parseLong(entry.getValue());

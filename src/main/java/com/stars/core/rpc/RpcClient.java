@@ -2,14 +2,13 @@ package com.stars.core.rpc;
 
 import com.stars.bootstrap.BootstrapConfig;
 import com.stars.bootstrap.ServerManager;
+import com.stars.core.rpc.packet.RpcRegistrationReq;
 import com.stars.network.server.codec.GamePacketDecoder;
 import com.stars.network.server.handler.MainServerOutboundHandler;
-import com.stars.network.server.handler.MultiServerHandler;
 import com.stars.network.server.packet.PacketManager;
 import com.stars.network.server.session.GameSession;
 import com.stars.server.Business;
 import com.stars.util.LogUtil;
-import com.stars.core.rpc.packet.RpcRegistrationReq;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -98,7 +97,7 @@ public class RpcClient {
                         //idle
                         pipeline.addLast(new IdleStateHandler(6, 0, 0));
                         //execute
-                        pipeline.addLast("inbound", new MultiServerHandler(business));
+//                        pipeline.addLast("inbound", new MultiServerHandler(business));
                         // handle connector protocol(remove session)
                         pipeline.addLast(new MainServerOutboundHandler());
                     }

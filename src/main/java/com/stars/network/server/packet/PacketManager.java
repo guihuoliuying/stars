@@ -1,12 +1,10 @@
 package com.stars.network.server.packet;
 
-import com.stars.network.server.buffer.NewByteBuffer;
-import com.stars.network.server.session.GameSession;
-import com.stars.network.server.session.SessionManager;
-import com.stars.server.connector.packet.*;
-import com.stars.util.log.CoreLogger;
 import com.stars.core.rpc.packet.RpcInvocationReq;
 import com.stars.core.rpc.packet.RpcRegistrationReq;
+import com.stars.network.server.buffer.NewByteBuffer;
+import com.stars.network.server.session.GameSession;
+import com.stars.util.log.CoreLogger;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.util.ReferenceCountUtil;
@@ -134,24 +132,10 @@ public class PacketManager {
     }
 
     public static void unbindBackend(com.stars.network.server.session.GameSession session) {
-        com.stars.network.server.packet.Packet packet = new com.stars.server.connector.packet.UnbindBackendM2nPacket();
-        packet.setSession(session);
-        send(session, packet);
+
     }
 
     public static void closeFrontend(GameSession session) {
-        com.stars.network.server.packet.Packet packet = new com.stars.server.connector.packet.CloseFrontendM2nPacket();
-        packet.setSession(session);
-        send(session, packet);
-//        Packet p = new Disconnected(session.getRoleId());
-//        p.setSession(session);
-//        MainServer.getBusiness().dispatch(p);
-        if (session.getRoleId() != 0) {
-            SessionManager.remove(session.getRoleId(), session);
-            com.stars.util.log.CoreLogger.error("channelInactive, roleId = " + session.getRoleId());
-        } else {
-            com.stars.util.log.CoreLogger.error("channelInactive, roleId = 0");
-        }
     }
 
     private static void serializeAndSend(Channel channel, Packet packet) {
@@ -221,14 +205,6 @@ public class PacketManager {
      * @throws Exception
      */
     public static void loadCorePacket() throws Exception {
-
-        register((short) 0x7F10, CloseFrontendM2nPacket.class); // 关闭前端连接
-        register((short) 0x7F11, FrontendClosedN2mPacket.class); // 前端连接断开
-        register((short) 0x7F12, UnbindBackendM2nPacket.class); // 解除绑定后端连接
-        register((short) 0x7F13, PingN2mPacket.class); // 心跳测试
-        register((short) 0X7F14, PongM2nPacket.class); // 心跳响应
-//        register((short) 0x7F15, MonitorReq.class);
-//        register((short) 0x7F16, MonitorRsp.class);
         register((short) 0x7F20, RpcRegistrationReq.class);
         register((short) 0x7F21, RpcInvocationReq.class);
     }
