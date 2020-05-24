@@ -88,7 +88,6 @@ public class MainStartup implements Business {
             SchedulerManager.initScheduler();
 //            //输出资源加载文件列表
 //            ResoucePrinter.getInstance().writeResourceList();
-//            GmPacketDefine.reg();
             PatchManager.init();
             initGameServerConfig(); // 初始化服务入口
             ServerStatePrinter.init();
@@ -124,23 +123,11 @@ public class MainStartup implements Business {
         ModuleManager.register(MConst.HotUpdate, new HotUpdateModuleFactory()); // 热更模块(处理线上问题)
         ModuleManager.register(MConst.RedPoint, new RedPointModuleFactory()); // 红点
         ModuleManager.register(MConst.Data, new DataModuleFactory());// 通用配置数据commondefine表 OK
-//        ModuleManager.register(MConst.Gm, new GmModuleFactory()); // gm命令 -
         ModuleManager.register(MConst.Push, new PushModuleFactory()); // 精准推送 OK
         ModuleManager.register(MConst.Role, new RoleModuleFactory()); // 人物 OK
-//        ModuleManager.register(MConst.Name, new NameModuleFactory()); // 人名 OK
         ModuleManager.register(MConst.Tool, new ToolModuleFactory()); // 道具/背包 OK
-//        ModuleManager.register(MConst.Skill, new SkillModuleFactory());// 技能 OK(勉强)
-//        ModuleManager.register(MConst.Scene, new SceneModuleFactory());// 场景 OK
-//        ModuleManager.register(MConst.Dungeon, new DungeonModuleFactory());// 关卡 OK
-//        ModuleManager.register(MConst.Drop, new DropModuleFactory());// 掉落 OK
-//        ModuleManager.register(MConst.Induct, new InductModuleFactory());// 引导 OK
-//        ModuleManager.register(MConst.Daily, new DailyModuleFactory());//活跃度或者日常 OK
         ModuleManager.register(MConst.Email, new EmailModuleFactory()); // 邮件 OK -
         ModuleManager.register(MConst.Friend, new FriendModuleFactory()); // 好友 OK -
-//        ModuleManager.register(MConst.Family, new FamilyModuleFactory()); // 家族 OK
-//        ModuleManager.register(MConst.ForeShow, new ForeShowModuleFactory()); // 系统开放（预告） OK
-//        ModuleManager.register(MConst.OperateActivity, new OperateActivityModuleFactory()); // 运营活动系统 OK
-//        ModuleManager.register(MConst.GetWay, new GetWayModuleFactory()); // 获取途径
         ModuleManager.initDependence();
         ModuleManager.initPacket(); // 初始化数据包
         ModuleManager.init(); // 模块初始化
