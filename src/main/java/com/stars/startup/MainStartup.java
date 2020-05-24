@@ -69,15 +69,15 @@ public class MainStartup implements Business {
     public void init() throws Exception {
         com.stars.util.LogUtil.info("初始化主服业务逻辑...");
         try {
-            com.stars.util.ExecuteManager.init(32);
+            ExecuteManager.init(32);
             ServerVersion.load();//加载服务版本号
-//            initHotswapEnv();
+            initHotswapEnv();
             DBUtil.init();// 初始化数据库连接池(proxool)
             checkPacket(); // 检查协议号，是否全局唯一
             SchedulerHelper.init("./config/jobs/quartz.properties");
             SchedulerManager.init(SchedulerManager.scheduledCorePoolSize);
             initModule(); // 初始化模块
-//            loadProductData(); // 加载数据(产品数据)
+            loadProductData(); // 加载数据(产品数据)
 //            loadSystemRecordMap();
             ActorServer.setActorSystem(new ActorSystem()); // 初始化ActorSystem
             PlayerSystem.init();
@@ -86,8 +86,7 @@ public class MainStartup implements Business {
             ServiceHelper.init(new MainServerServiceManager());
             SchedulerHelper.start();
             SchedulerManager.initScheduler();
-//            //输出资源加载文件列表
-//            ResoucePrinter.getInstance().writeResourceList();
+
             PatchManager.init();
             initGameServerConfig(); // 初始化服务入口
             ServerStatePrinter.init();

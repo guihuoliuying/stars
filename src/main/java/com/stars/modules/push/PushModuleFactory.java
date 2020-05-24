@@ -55,12 +55,14 @@ public class PushModuleFactory extends AbstractModuleFactory<PushModule> {
             activityId2PushVoMap.get(pushVo.getActivityId()).put(pushVo.getPushId(), pushVo);
             // event
             PushTriggerSet triggerSet = pushVo.getTriggerSet();
-            for (PushTrigger trigger : triggerSet.triggerList()) {
-                Class<? extends Event> eventClass = trigger.eventClass();
-                if (!eventClass2TriggerMap.containsKey(eventClass)) {
-                    eventClass2TriggerMap.put(eventClass, new ArrayList<PushTrigger>());
+            if (triggerSet != null) {
+                for (PushTrigger trigger : triggerSet.triggerList()) {
+                    Class<? extends Event> eventClass = trigger.eventClass();
+                    if (!eventClass2TriggerMap.containsKey(eventClass)) {
+                        eventClass2TriggerMap.put(eventClass, new ArrayList<PushTrigger>());
+                    }
+                    eventClass2TriggerMap.get(eventClass).add(trigger);
                 }
-                eventClass2TriggerMap.get(eventClass).add(trigger);
             }
         }
 

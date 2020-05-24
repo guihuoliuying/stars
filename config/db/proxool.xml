@@ -7,13 +7,13 @@ TestHelper.buildCompleteAlternativeProperties()
 <proxool-config>
     <proxool>
         <alias>product</alias>
-        <driver-url>jdbc:mysql://localhost:3306/simeiren_product</driver-url>
+        <driver-url>jdbc:mysql://localhost:3306/stars</driver-url>
         <driver-class>com.mysql.jdbc.Driver</driver-class>
         <driver-properties>
             <property name="characterEncoding" value="utf-8"/>
             <property name="useUnicode" value="true"/>
             <property name="user" value="root"/>
-            <property name="password" value="1234"/>
+            <property name="password" value="123456"/>
         </driver-properties>
         <!--5分钟检查一下该数据库连接是否有用，没用就创建一个-->
         <house-keeping-sleep-time>300000</house-keeping-sleep-time>
@@ -33,13 +33,13 @@ TestHelper.buildCompleteAlternativeProperties()
     </proxool>
     <proxool>
         <alias>user</alias>
-        <driver-url>jdbc:mysql://localhost:3306/simeiren_user</driver-url>
+        <driver-url>jdbc:mysql://localhost:3306/stars</driver-url>
         <driver-class>com.mysql.jdbc.Driver</driver-class>
         <driver-properties>
             <property name="characterEncoding" value="utf-8"/>
             <property name="useUnicode" value="true"/>
             <property name="user" value="root"/>
-            <property name="password" value="1234"/>
+            <property name="password" value="123456"/>
         </driver-properties>
         <!--5分钟检查一下该数据库连接是否有用，没用就创建一个-->
         <house-keeping-sleep-time>300000</house-keeping-sleep-time>
@@ -59,13 +59,13 @@ TestHelper.buildCompleteAlternativeProperties()
     </proxool>
         <proxool>
         <alias>login</alias>
-        <driver-url>jdbc:mysql://localhost:3306/simeiren_login</driver-url>
+        <driver-url>jdbc:mysql://localhost:3306/stars</driver-url>
         <driver-class>com.mysql.jdbc.Driver</driver-class>
         <driver-properties>
             <property name="characterEncoding" value="utf-8"/>
             <property name="useUnicode" value="true"/>
             <property name="user" value="root"/>
-            <property name="password" value="1234"/>
+            <property name="password" value="123456"/>
         </driver-properties>
         <!--5分钟检查一下该数据库连接是否有用，没用就创建一个-->
         <house-keeping-sleep-time>300000</house-keeping-sleep-time>
@@ -85,13 +85,13 @@ TestHelper.buildCompleteAlternativeProperties()
     </proxool>
     <proxool>
         <alias>common</alias>
-        <driver-url>jdbc:mysql://localhost:3306/simeiren_common</driver-url>
+        <driver-url>jdbc:mysql://localhost:3306/stars</driver-url>
         <driver-class>com.mysql.jdbc.Driver</driver-class>
         <driver-properties>
             <property name="characterEncoding" value="utf-8"/>
             <property name="useUnicode" value="true"/>
             <property name="user" value="root"/>
-            <property name="password" value="1234"/>
+            <property name="password" value="123456"/>
         </driver-properties>
         <!--5分钟检查一下该数据库连接是否有用，没用就创建一个-->
         <house-keeping-sleep-time>300000</house-keeping-sleep-time>

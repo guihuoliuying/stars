@@ -36,19 +36,9 @@ public class MainServer extends AbstractServer {
     public void start() throws Exception {
         ExecuteManager.init(); // 线程池初始化
         PacketManager.loadCorePacket(); // 加载底层数据包
-//        RouteClient routeClient = RouteClient.instance();
-//        ConfigClient.addUpdater(new RouteConfigUpdater(routeClient));
-//        ConfigClient.start(getConfig()).get();
-//        Monitor.registerMonitorHandler(MXBeanHandler.class);
-//        Monitor.registerMonitorHandler(MOnlinePlayerNumHandler.class);
-//        routeClient.start();
 //        DbUtil.init(); // 数据库连接池初始化
         business.init(); // 业务层初始化
         MainNet.startup(getConfig().getServerPort()); // 启动网络层
-        MainNet.startupGmSockt(getConfig().getGmPort());//启动gm
-//        if (getConfig().getGmPort() != 0) {
-//            MainNet.startupGmSockt(getConfig().getGmPort());// 启动gm socket
-//        }
         setOn();
     }
 

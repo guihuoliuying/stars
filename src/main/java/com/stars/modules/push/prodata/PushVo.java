@@ -51,7 +51,7 @@ public class PushVo {
             }
         } catch (Exception e) {
             LogUtil.error("推送机制|pushId:{}|异常|trigger:{}|condition:{}", pushId, trigger, condition);
-            throw e;
+//            throw e;
         }
     }
 
